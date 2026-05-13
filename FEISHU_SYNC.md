@@ -1,29 +1,79 @@
-# 飞书数据同步说明 / Feishu Sync Guide
+# CSV/Excel 手动同步说明
 
-这个看板会每 60 秒尝试读取 `dashboard-data.json`。飞书同步脚本负责读取飞书表格，并生成这个文件。读取失败时，看板会继续使用手动录入数据。
+现在这个项目不再需要飞书开放平台应用，也不需要 `FEISHU_APP_ID` / `FEISHU_APP_SECRET`。
 
-## GitHub Pages 自动同步
+同步方式改为：
 
-1. 在飞书开放平台创建自建应用。
-2. 给应用开通电子表格只读权限，例如 `sheets:spreadsheet:readonly`。
-3. 发布应用版本，并把这个应用加入目标表格的协作者，至少给读取权限。
-4. 在 GitHub 仓库进入 `Settings` -> `Secrets and variables` -> `Actions`。
-5. 新增两个 Repository secrets：
-   - `FEISHU_APP_ID`
-   - `FEISHU_APP_SECRET`
-6. 打开 `Actions`，运行 `Sync Feishu Dashboard Data`。
+1. 从飞书表格导出 Excel 或 CSV。
+2. 上传到 GitHub 仓库的 `data/` 文件夹。
+3. 在 GitHub Actions 手动运行同步任务。
+4. 同步任务生成 `dashboard-data.json`。
+5. 看板每 60 秒自动读取 `dashboard-data.json`。
 
-同步成功后，仓库会生成或更新 `dashboard-data.json`，GitHub Pages 上的看板会自动读取。
+## 上传文件位置
 
-## 当前默认映射
+请把导出的文件放在：
 
-当前脚本默认读取这个飞书表：
+```text
+data/
+```
 
-- Spreadsheet Token: `JkdYsFb6KhX1MXtwSlAcYbMOnfd`
-- Sheet ID: `31FeWT`
-- Range: `31FeWT!A1:AB130`
+推荐文件名：
 
-脚本会从 `总产量` 表头中自动寻找这些列：
+```text
+data/May 2026.xlsx
+```
+
+或：
+
+```text
+data/total-production.csv
+```
+
+如果是 Excel，脚本会自动读取工作表：
+
+- `总产量`
+- `每小时产量`
+
+如果是 CSV，脚本默认 CSV 内容是 `总产量` 表；如果还有停机数据，可以另外上传：
+
+```text
+data/downtime.csv
+```
+
+## GitHub 操作步骤
+
+1. 打开 GitHub 仓库。
+2. 进入 `data` 文件夹。
+3. 点 `Add file` -> `Upload files`。
+4. 上传从飞书导出的 `.xlsx` 或 `.csv`。
+5. 点 `Commit changes`。
+6. 进入仓库上方 `Actions`。
+7. 点 `Build Dashboard Data From File`。
+8. 点 `Run workflow`。
+9. `source_file` 可以留空；如果要指定文件，可以填：
+
+```text
+data/May 2026.xlsx
+```
+
+10. `month` 填看板月份，例如：
+
+```text
+2026-05
+```
+
+运行成功后，仓库会自动生成或更新：
+
+```text
+dashboard-data.json
+```
+
+GitHub Pages 上的看板会读取这个文件。
+
+## 数据映射
+
+脚本会从 `总产量` 表里识别这些列：
 
 - `Date` / `日期`
 - `Shift` / `班次`
@@ -37,11 +87,19 @@
 - `Customer`
 - `Metal` / `Material`
 
-白班 / 早班会进入 `08:00-20:00`，晚班会进入 `20:00-次日08:00`。
+白班 / 早班会进入：
 
-## 停机数据
+```text
+08:00-20:00
+```
 
-如果同一个飞书文件里有名为 `每小时产量` 的工作表，脚本会自动读取它。脚本会自动识别：
+晚班会进入：
+
+```text
+20:00-次日08:00
+```
+
+停机数据会识别：
 
 - 停机换款
 - 生产异常停机
@@ -50,21 +108,16 @@
 
 如果停机表里的单位是小时，脚本会自动换算成分钟。
 
-如果你的停机表名称不同，可以在 `.github/workflows/sync-feishu.yml` 里增加：
-
-```yaml
-FEISHU_DOWNTIME_SHEET_TITLE: 你的停机表名称
-```
-
 ## 本地测试
 
-在项目目录里运行：
+如果你想在电脑上先测试，可以运行：
 
 ```powershell
-$env:FEISHU_APP_ID="你的 App ID"
-$env:FEISHU_APP_SECRET="你的 App Secret"
-$env:DASHBOARD_MONTH="2026-05"
-node scripts/sync-feishu.mjs
+node scripts/build-dashboard-data.mjs "C:\Users\USER\Downloads\May 2026.xlsx"
 ```
 
-成功后会生成 `dashboard-data.json`。
+成功后会生成：
+
+```text
+dashboard-data.json
+```

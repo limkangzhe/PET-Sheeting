@@ -1266,7 +1266,7 @@
         const synced = normalizeSyncedData(payload);
         if (!synced) return;
         data = synced;
-        dataSourceLabel = payload.source || "飞书同步 / Feishu Sync";
+        dataSourceLabel = payload.source || "文件同步 / File Sync";
         render();
       } catch {
         dataSourceLabel = "手动数据 / Manual";
