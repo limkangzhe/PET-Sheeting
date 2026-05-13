@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PET 片材生产目视化 Dashboard</title>
+  <title>PET Sheet Production Dashboard</title>
   <style>
     :root {
       color-scheme: dark;
       --bg: #071014;
       --panel: #101a20;
       --panel-2: #13242b;
-      --border: #284047;
+      --border: #2b444c;
       --text: #edf6f7;
-      --muted: #8fa4aa;
+      --muted: #91a8ae;
       --cyan: #35d2e6;
       --green: #58d68d;
       --amber: #ffbd45;
@@ -32,7 +32,7 @@
       min-height: 100%;
       margin: 0;
       background:
-        linear-gradient(180deg, rgba(12, 25, 31, 0.86), rgba(4, 10, 13, 0.96)),
+        linear-gradient(180deg, rgba(12, 25, 31, 0.88), rgba(4, 10, 13, 0.97)),
         repeating-linear-gradient(90deg, transparent 0 74px, rgba(255, 255, 255, 0.025) 75px),
         var(--bg);
       color: var(--text);
@@ -50,7 +50,14 @@
         linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
       background-size: 48px 48px;
-      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 72%);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.72), transparent 72%);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
     }
 
     .screen {
@@ -107,31 +114,31 @@
 
     .plant-name {
       margin: 0;
-      font-size: clamp(24px, 2vw, 38px);
+      font-size: clamp(23px, 1.8vw, 36px);
       line-height: 1.1;
-      font-weight: 800;
+      font-weight: 850;
       white-space: nowrap;
     }
 
     .plant-subtitle {
       margin-top: 7px;
       color: var(--muted);
-      font-size: clamp(13px, 0.8vw, 16px);
+      font-size: clamp(12px, 0.76vw, 15px);
       white-space: nowrap;
     }
 
     .headline {
       justify-self: center;
       text-align: center;
-      min-width: 360px;
+      min-width: 390px;
     }
 
     .headline-title {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-size: clamp(22px, 1.7vw, 34px);
-      font-weight: 800;
+      font-size: clamp(21px, 1.55vw, 32px);
+      font-weight: 850;
       white-space: nowrap;
     }
 
@@ -149,26 +156,72 @@
     .headline-meta {
       margin-top: 8px;
       color: var(--muted);
-      font-size: clamp(12px, 0.76vw, 15px);
+      font-size: clamp(12px, 0.74vw, 14px);
       white-space: nowrap;
     }
 
-    .clock {
+    .clock-wrap {
       justify-self: end;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .clock {
       text-align: right;
+      min-width: 150px;
     }
 
     .time {
       font-variant-numeric: tabular-nums;
-      font-size: clamp(26px, 2vw, 40px);
-      font-weight: 800;
+      font-size: clamp(25px, 1.9vw, 38px);
+      font-weight: 850;
       line-height: 1;
     }
 
     .date {
       margin-top: 8px;
       color: var(--muted);
-      font-size: clamp(13px, 0.8vw, 16px);
+      font-size: clamp(12px, 0.76vw, 15px);
+      white-space: nowrap;
+    }
+
+    .entry-button,
+    .panel-button {
+      border: 1px solid rgba(53, 210, 230, 0.35);
+      border-radius: 8px;
+      background: rgba(53, 210, 230, 0.1);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .entry-button {
+      padding: 10px 13px;
+      color: var(--cyan);
+      font-size: 13px;
+    }
+
+    .entry-button:hover,
+    .panel-button:hover {
+      border-color: rgba(53, 210, 230, 0.62);
+      background: rgba(53, 210, 230, 0.16);
+    }
+
+    .dual {
+      display: inline-grid;
+      gap: 2px;
+      line-height: 1.12;
+    }
+
+    .dual small {
+      color: var(--muted);
+      font-size: 0.64em;
+      font-weight: 700;
+      text-transform: none;
     }
 
     .kpis {
@@ -200,7 +253,7 @@
 
     .kpi {
       min-height: 148px;
-      padding: 22px 24px 20px 28px;
+      padding: 20px 22px 18px 28px;
       display: grid;
       grid-template-rows: auto 1fr auto;
       gap: 8px;
@@ -210,7 +263,7 @@
     .panel-title,
     .metric-label {
       color: var(--muted);
-      font-size: clamp(13px, 0.86vw, 17px);
+      font-size: clamp(13px, 0.82vw, 16px);
       font-weight: 700;
     }
 
@@ -224,7 +277,7 @@
 
     .number {
       font-variant-numeric: tabular-nums;
-      font-size: clamp(42px, 4.2vw, 76px);
+      font-size: clamp(40px, 3.9vw, 72px);
       line-height: 0.96;
       font-weight: 850;
       white-space: nowrap;
@@ -232,8 +285,8 @@
 
     .unit {
       color: var(--muted);
-      font-size: clamp(16px, 1.1vw, 22px);
-      font-weight: 700;
+      font-size: clamp(15px, 1vw, 21px);
+      font-weight: 800;
       white-space: nowrap;
     }
 
@@ -243,8 +296,15 @@
       align-items: center;
       gap: 10px;
       color: var(--muted);
-      font-size: clamp(12px, 0.8vw, 15px);
+      font-size: clamp(11px, 0.72vw, 14px);
       min-width: 0;
+    }
+
+    .kpi-foot span:first-child {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .trend {
@@ -260,7 +320,7 @@
     .main-grid {
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(360px, 0.83fr) minmax(520px, 1.35fr) minmax(360px, 0.9fr);
+      grid-template-columns: minmax(360px, 0.86fr) minmax(520px, 1.32fr) minmax(360px, 0.9fr);
       grid-template-rows: minmax(0, 1fr) minmax(0, 0.78fr);
       gap: clamp(14px, 1vw, 20px);
     }
@@ -276,7 +336,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     .panel-title {
@@ -284,14 +344,14 @@
       align-items: center;
       gap: 10px;
       color: var(--text);
-      font-size: clamp(17px, 1vw, 21px);
-      font-weight: 800;
+      font-size: clamp(16px, 0.98vw, 20px);
+      font-weight: 850;
       white-space: nowrap;
     }
 
     .panel-title::before {
       width: 8px;
-      height: 22px;
+      height: 24px;
       content: "";
       background: var(--accent, var(--cyan));
       box-shadow: 0 0 16px var(--accent, var(--cyan));
@@ -299,7 +359,7 @@
 
     .panel-tag {
       color: var(--muted);
-      font-size: clamp(12px, 0.74vw, 14px);
+      font-size: clamp(11px, 0.7vw, 13px);
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
@@ -308,12 +368,12 @@
       grid-row: span 2;
       --accent: var(--cyan);
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto auto auto 1fr;
     }
 
     .line-status {
-      margin-bottom: 18px;
-      padding: 18px;
+      margin-bottom: 14px;
+      padding: 16px;
       border: 1px solid rgba(53, 210, 230, 0.22);
       border-radius: 8px;
       background: linear-gradient(145deg, rgba(53, 210, 230, 0.12), rgba(88, 214, 141, 0.05));
@@ -325,8 +385,8 @@
       justify-content: space-between;
       gap: 12px;
       color: var(--text);
-      font-size: clamp(22px, 1.45vw, 30px);
-      font-weight: 800;
+      font-size: clamp(20px, 1.3vw, 28px);
+      font-weight: 850;
     }
 
     .run-state {
@@ -334,8 +394,8 @@
       border: 1px solid rgba(88, 214, 141, 0.44);
       border-radius: 999px;
       color: var(--green);
-      font-size: clamp(12px, 0.74vw, 15px);
-      font-weight: 800;
+      font-size: clamp(12px, 0.72vw, 14px);
+      font-weight: 850;
       background: rgba(88, 214, 141, 0.08);
       white-space: nowrap;
     }
@@ -343,7 +403,7 @@
     .line-progress {
       position: relative;
       height: 13px;
-      margin-top: 18px;
+      margin-top: 16px;
       overflow: hidden;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.08);
@@ -356,61 +416,98 @@
       border-radius: inherit;
       background: linear-gradient(90deg, var(--cyan), var(--green));
       box-shadow: 0 0 24px rgba(53, 210, 230, 0.3);
-      transition: width 650ms ease;
+      transition: width 300ms ease;
     }
 
     .metric-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .metric {
-      min-height: 92px;
-      padding: 14px;
+      min-height: 88px;
+      padding: 13px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.035);
     }
 
     .metric-value {
-      margin-top: 10px;
+      margin-top: 9px;
       color: var(--text);
       font-variant-numeric: tabular-nums;
-      font-size: clamp(20px, 1.3vw, 28px);
-      font-weight: 800;
+      font-size: clamp(18px, 1.15vw, 25px);
+      font-weight: 850;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
+    .roll-strip {
+      margin-bottom: 12px;
+      padding: 12px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.032);
+    }
+
+    .roll-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: clamp(12px, 0.72vw, 14px);
+      font-weight: 750;
+    }
+
+    .roll-list {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 52px;
+      overflow: hidden;
+    }
+
+    .roll-chip {
+      padding: 4px 7px;
+      border: 1px solid rgba(53, 210, 230, 0.24);
+      border-radius: 6px;
+      color: rgba(237, 246, 247, 0.84);
+      background: rgba(53, 210, 230, 0.06);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
     .spec-list {
       display: grid;
-      grid-auto-rows: minmax(52px, auto);
-      gap: 10px;
+      grid-auto-rows: minmax(48px, auto);
+      gap: 8px;
       min-height: 0;
     }
 
     .spec-row {
       display: grid;
-      grid-template-columns: 110px 1fr;
+      grid-template-columns: 130px 1fr;
       gap: 12px;
       align-items: center;
-      padding: 0 14px;
+      padding: 0 13px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .spec-key {
       color: var(--muted);
-      font-size: clamp(13px, 0.78vw, 15px);
+      font-size: clamp(12px, 0.72vw, 14px);
       white-space: nowrap;
     }
 
     .spec-val {
       color: var(--text);
-      font-size: clamp(17px, 1vw, 22px);
-      font-weight: 800;
+      font-size: clamp(16px, 0.94vw, 21px);
+      font-weight: 850;
       text-align: right;
       white-space: nowrap;
       overflow: hidden;
@@ -476,7 +573,7 @@
 
     .alarm {
       position: relative;
-      padding: 14px 14px 14px 18px;
+      padding: 13px 13px 13px 18px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.036);
@@ -507,8 +604,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      font-size: clamp(16px, 0.94vw, 20px);
-      font-weight: 800;
+      font-size: clamp(15px, 0.9vw, 19px);
+      font-weight: 850;
     }
 
     .alarm-badge {
@@ -521,14 +618,14 @@
     .alarm-detail {
       margin-top: 8px;
       color: var(--muted);
-      font-size: clamp(12px, 0.74vw, 15px);
+      font-size: clamp(12px, 0.72vw, 14px);
       line-height: 1.45;
     }
 
     .alarm-time {
       margin-top: 8px;
       color: rgba(237, 246, 247, 0.78);
-      font-size: clamp(12px, 0.72vw, 14px);
+      font-size: clamp(12px, 0.7vw, 14px);
       font-variant-numeric: tabular-nums;
     }
 
@@ -552,6 +649,149 @@
       color: rgba(143, 164, 170, 0.72);
       font-size: 12px;
       pointer-events: none;
+    }
+
+    .entry-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      background: rgba(0, 0, 0, 0.42);
+    }
+
+    .entry-overlay.open {
+      display: block;
+    }
+
+    .entry-drawer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(560px, 94vw);
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border-left: 1px solid rgba(53, 210, 230, 0.32);
+      background: #0d171d;
+      box-shadow: -24px 0 70px rgba(0, 0, 0, 0.45);
+    }
+
+    .entry-head,
+    .entry-actions {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .entry-actions {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 0;
+      justify-content: flex-end;
+    }
+
+    .entry-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .entry-title small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .entry-body {
+      overflow: auto;
+      padding: 18px 20px 28px;
+    }
+
+    .form-section {
+      margin-bottom: 18px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.032);
+    }
+
+    .form-section h3 {
+      margin: 0 0 13px;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field.wide {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: #081116;
+      color: var(--text);
+      outline: none;
+    }
+
+    .field input,
+    .field select {
+      height: 38px;
+      padding: 0 10px;
+    }
+
+    .field textarea {
+      min-height: 92px;
+      resize: vertical;
+      padding: 10px;
+      line-height: 1.45;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(53, 210, 230, 0.55);
+      box-shadow: 0 0 0 2px rgba(53, 210, 230, 0.12);
+    }
+
+    .panel-button {
+      min-height: 38px;
+      padding: 0 14px;
+    }
+
+    .panel-button.primary {
+      border-color: rgba(88, 214, 141, 0.42);
+      background: rgba(88, 214, 141, 0.12);
+      color: var(--green);
+    }
+
+    .panel-button.danger {
+      border-color: rgba(255, 91, 95, 0.36);
+      background: rgba(255, 91, 95, 0.1);
+      color: #ff8b8e;
     }
 
     @keyframes pulse {
@@ -587,177 +827,412 @@
   </style>
 </head>
 <body>
-  <main class="screen" aria-label="PET 片材生产目视化大屏">
+  <main class="screen" aria-label="PET sheet production dashboard">
     <header class="topbar">
-      <section class="plant" aria-label="产线信息">
+      <section class="plant" aria-label="Line information">
         <div class="plant-mark">PET</div>
         <div>
-          <h1 class="plant-name">PET 片材生产目视化</h1>
-          <div class="plant-subtitle">挤出一线 / 55 寸车间 TV 全屏显示</div>
+          <h1 class="plant-name">PET 片材生产目视化 / PET Sheet Dashboard</h1>
+          <div class="plant-subtitle">挤出一线 / Extrusion Line 1 / 55 寸 TV 全屏显示</div>
         </div>
       </section>
 
-      <section class="headline" aria-label="运行状态">
-        <div class="headline-title"><span class="status-dot"></span>生产运行中</div>
-        <div class="headline-meta">数据自动刷新 <span id="refreshSeconds">4</span>s / MES 实时看板</div>
+      <section class="headline" aria-label="Running status">
+        <div class="headline-title"><span class="status-dot"></span>生产运行中 / Running</div>
+        <div class="headline-meta">手动数据 / Manual Data / 时钟自动刷新 Auto Clock</div>
       </section>
 
-      <section class="clock" aria-label="当前时间">
-        <div class="time" id="timeNow">--:--:--</div>
-        <div class="date" id="dateNow">----/--/--</div>
+      <section class="clock-wrap" aria-label="Current time">
+        <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
+        <div class="clock">
+          <div class="time" id="timeNow">--:--:--</div>
+          <div class="date" id="dateNow">----/--/--</div>
+        </div>
       </section>
     </header>
 
-    <section class="kpis" aria-label="关键生产指标">
+    <section class="kpis" aria-label="Production KPIs">
       <article class="card kpi" style="--accent: var(--green)">
-        <div class="kpi-label">今日产量</div>
+        <div class="kpi-label"><span class="dual">今日产量<small>Today Output</small></span></div>
         <div class="kpi-value">
           <span class="number" id="outputToday">0.0</span>
-          <span class="unit">吨</span>
+          <span class="unit">吨 / t</span>
         </div>
-        <div class="kpi-foot"><span>目标 46.0 吨</span><span class="trend" id="outputTrend">+0.0%</span></div>
+        <div class="kpi-foot"><span id="rollSummary">0 卷 / 0 kg</span><span class="trend" id="outputTrend">0.0%</span></div>
       </article>
 
       <article class="card kpi" style="--accent: var(--cyan)">
-        <div class="kpi-label">当前线速</div>
+        <div class="kpi-label"><span class="dual">当前线速<small>Line Speed</small></span></div>
         <div class="kpi-value">
           <span class="number" id="lineSpeed">0</span>
           <span class="unit">kg/h</span>
         </div>
-        <div class="kpi-foot"><span>设定 1,850 kg/h</span><span class="trend" id="speedTrend">稳定</span></div>
+        <div class="kpi-foot"><span id="speedSetText">设定 / Set 0 kg/h</span><span class="trend" id="speedTrend">--</span></div>
       </article>
 
       <article class="card kpi" style="--accent: var(--blue)">
-        <div class="kpi-label">正品率</div>
+        <div class="kpi-label"><span class="dual">正品率<small>Good Rate</small></span></div>
         <div class="kpi-value">
           <span class="number" id="goodRate">0.0</span>
           <span class="unit">%</span>
         </div>
-        <div class="kpi-foot"><span>目标 ≥ 98.2%</span><span class="trend" id="goodTrend">达标</span></div>
+        <div class="kpi-foot"><span id="goodTargetText">目标 / Target 0%</span><span class="trend" id="goodTrend">--</span></div>
       </article>
 
       <article class="card kpi" style="--accent: var(--red)">
-        <div class="kpi-label">废料率</div>
+        <div class="kpi-label"><span class="dual">废料率<small>Scrap Rate</small></span></div>
         <div class="kpi-value">
           <span class="number" id="scrapRate">0.0</span>
           <span class="unit">%</span>
         </div>
-        <div class="kpi-foot"><span>控制 ≤ 2.0%</span><span class="trend" id="scrapTrend">偏高</span></div>
+        <div class="kpi-foot"><span id="scrapTargetText">控制 / Limit 0%</span><span class="trend" id="scrapTrend">--</span></div>
       </article>
     </section>
 
     <section class="main-grid">
       <article class="card panel spec-panel">
         <div class="panel-header">
-          <div class="panel-title">当前生产信息</div>
-          <div class="panel-tag" id="batchStatus">批次进行中</div>
+          <div class="panel-title"><span class="dual">当前生产信息<small>Production Info</small></span></div>
+          <div class="panel-tag" id="batchStatus">批次进行中 / Batch Running</div>
         </div>
 
-        <section class="line-status" aria-label="订单完成率">
+        <section class="line-status" aria-label="Order progress">
           <div class="line-name">
-            <span>PET-A01 主线</span>
-            <span class="run-state">RUN</span>
+            <span id="lineName">PET-A01 主线 / Main Line</span>
+            <span class="run-state" id="runState">RUN</span>
           </div>
-          <div class="line-progress" aria-label="订单进度"><span id="orderProgress"></span></div>
+          <div class="line-progress" aria-label="Order progress"><span id="orderProgress"></span></div>
         </section>
 
-        <div class="metric-grid" aria-label="生产规格概要">
+        <div class="metric-grid" aria-label="Production specification summary">
           <div class="metric">
-            <div class="metric-label">当前规格</div>
-            <div class="metric-value" id="specNow">透明片材</div>
+            <div class="metric-label"><span class="dual">当前规格<small>Spec</small></span></div>
+            <div class="metric-value" id="specNow">透明片材 / Clear Sheet</div>
           </div>
           <div class="metric">
-            <div class="metric-label">厚度</div>
+            <div class="metric-label"><span class="dual">厚度<small>Thickness</small></span></div>
             <div class="metric-value" id="thicknessNow">0.80 mm</div>
           </div>
           <div class="metric">
-            <div class="metric-label">宽度</div>
+            <div class="metric-label"><span class="dual">宽度<small>Width</small></span></div>
             <div class="metric-value" id="widthNow">820 mm</div>
           </div>
           <div class="metric">
-            <div class="metric-label">订单进度</div>
+            <div class="metric-label"><span class="dual">订单进度<small>Order Progress</small></span></div>
             <div class="metric-value" id="progressText">72%</div>
           </div>
         </div>
 
-        <div class="spec-list" aria-label="订单详情">
-          <div class="spec-row"><span class="spec-key">订单号</span><span class="spec-val" id="orderNo">PO-260512-018</span></div>
-          <div class="spec-row"><span class="spec-key">客户</span><span class="spec-val">华南包装制品</span></div>
-          <div class="spec-row"><span class="spec-key">材料</span><span class="spec-val">APET 原生料 92% / 回用料 8%</span></div>
-          <div class="spec-row"><span class="spec-key">电晕值</span><span class="spec-val" id="coronaNow">42 dyn</span></div>
-          <div class="spec-row"><span class="spec-key">牵引状态</span><span class="spec-val" id="tractionNow">张力稳定</span></div>
+        <section class="roll-strip" aria-label="Roll weight summary">
+          <div class="roll-head">
+            <span>卷重汇总 / Roll Weight Summary</span>
+            <span id="rollAverage">平均 / Avg 0 kg</span>
+          </div>
+          <div class="roll-list" id="rollList"></div>
+        </section>
+
+        <div class="spec-list" aria-label="Order detail">
+          <div class="spec-row"><span class="spec-key">订单号 / Order No.</span><span class="spec-val" id="orderNo">PO-260512-018</span></div>
+          <div class="spec-row"><span class="spec-key">客户 / Customer</span><span class="spec-val" id="customerNow">华南包装制品</span></div>
+          <div class="spec-row"><span class="spec-key">材料 / Material</span><span class="spec-val" id="materialNow">APET 原生料 92% / Regrind 8%</span></div>
+          <div class="spec-row"><span class="spec-key">电晕值 / Corona</span><span class="spec-val" id="coronaNow">42 dyn</span></div>
+          <div class="spec-row"><span class="spec-key">牵引状态 / Traction</span><span class="spec-val" id="tractionNow">张力稳定 / Stable</span></div>
         </div>
       </article>
 
       <article class="card panel pareto-panel">
         <div class="panel-header">
-          <div class="panel-title">停机时间排行 Pareto</div>
-          <div class="panel-tag">分钟 / 累计占比</div>
+          <div class="panel-title"><span class="dual">停机时间排行 Pareto<small>Downtime Pareto</small></span></div>
+          <div class="panel-tag">分钟 / min / 累计占比 Cumulative</div>
         </div>
         <div class="chart-shell">
-          <canvas id="paretoChart" aria-label="停机时间 Pareto 图"></canvas>
+          <canvas id="paretoChart" aria-label="Downtime Pareto chart"></canvas>
         </div>
       </article>
 
       <article class="card panel alarm-panel">
         <div class="panel-header">
-          <div class="panel-title">异常报警</div>
-          <div class="panel-tag" id="alarmUpdate">--:-- 更新</div>
+          <div class="panel-title"><span class="dual">异常报警<small>Abnormal Alarms</small></span></div>
+          <div class="panel-tag" id="alarmUpdate">--:-- 更新 / Update</div>
         </div>
 
-        <section class="alarm-summary" aria-label="报警统计">
-          <div class="alarm-count"><strong id="criticalCount">2</strong><span>严重</span></div>
-          <div class="alarm-count"><strong id="warningCount">3</strong><span>预警</span></div>
-          <div class="alarm-count"><strong id="handledCount">7</strong><span>已处理</span></div>
+        <section class="alarm-summary" aria-label="Alarm summary">
+          <div class="alarm-count"><strong id="criticalCount">0</strong><span>严重 / Critical</span></div>
+          <div class="alarm-count"><strong id="warningCount">0</strong><span>预警 / Warning</span></div>
+          <div class="alarm-count"><strong id="handledCount">0</strong><span>已处理 / Handled</span></div>
         </section>
 
-        <section class="alarm-list" id="alarmList" aria-label="报警列表"></section>
+        <section class="alarm-list" id="alarmList" aria-label="Alarm list"></section>
       </article>
 
       <article class="card panel shift-panel">
         <div class="panel-header">
-          <div class="panel-title">各班产量对比</div>
-          <div class="panel-tag">早班 / 晚班</div>
+          <div class="panel-title"><span class="dual">各班产量对比<small>Shift Output</small></span></div>
+          <div class="panel-tag">早班 Day / 晚班 Night</div>
         </div>
         <div class="chart-shell">
-          <canvas id="shiftChart" aria-label="早晚班产量对比图"></canvas>
+          <canvas id="shiftChart" aria-label="Shift output chart"></canvas>
         </div>
       </article>
     </section>
   </main>
-  <div class="mini-footer">PET Sheet MES Dashboard / Auto Refresh</div>
+
+  <div class="mini-footer">PET Sheet MES Dashboard / Manual Data</div>
+
+  <aside class="entry-overlay" id="entryOverlay" aria-label="Manual data entry">
+    <div class="entry-drawer">
+      <header class="entry-head">
+        <h2 class="entry-title">数据录入 <small>Manual Data Entry</small></h2>
+        <button class="panel-button" id="entryClose" type="button">关闭 / Close</button>
+      </header>
+
+      <div class="entry-body">
+        <section class="form-section">
+          <h3>产量与 KPI / Output & KPI</h3>
+          <div class="form-grid">
+            <div class="field wide">
+              <label for="rollWeightsInput">每卷卷重 kg / Roll Weight kg</label>
+              <textarea id="rollWeightsInput"></textarea>
+            </div>
+            <div class="field">
+              <label for="targetOutputInput">今日目标 t / Daily Target t</label>
+              <input id="targetOutputInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="lineSpeedInput">当前线速 kg/h / Line Speed</label>
+              <input id="lineSpeedInput" type="number" step="1">
+            </div>
+            <div class="field">
+              <label for="speedSetInput">设定线速 kg/h / Set Speed</label>
+              <input id="speedSetInput" type="number" step="1">
+            </div>
+            <div class="field">
+              <label for="goodRateInput">正品率 % / Good Rate</label>
+              <input id="goodRateInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="goodTargetInput">正品率目标 % / Good Target</label>
+              <input id="goodTargetInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="scrapRateInput">废料率 % / Scrap Rate</label>
+              <input id="scrapRateInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="scrapLimitInput">废料率上限 % / Scrap Limit</label>
+              <input id="scrapLimitInput" type="number" step="0.1">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h3>生产信息 / Production Info</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label for="lineNameInput">产线 / Line</label>
+              <input id="lineNameInput" type="text">
+            </div>
+            <div class="field">
+              <label for="runStateInput">状态 / Status</label>
+              <input id="runStateInput" type="text">
+            </div>
+            <div class="field">
+              <label for="batchStatusInput">批次状态 / Batch Status</label>
+              <input id="batchStatusInput" type="text">
+            </div>
+            <div class="field">
+              <label for="progressInput">订单进度 % / Progress</label>
+              <input id="progressInput" type="number" min="0" max="100" step="1">
+            </div>
+            <div class="field">
+              <label for="specInput">规格 / Spec</label>
+              <input id="specInput" type="text">
+            </div>
+            <div class="field">
+              <label for="thicknessInput">厚度 / Thickness</label>
+              <input id="thicknessInput" type="text">
+            </div>
+            <div class="field">
+              <label for="widthInput">宽度 / Width</label>
+              <input id="widthInput" type="text">
+            </div>
+            <div class="field">
+              <label for="orderNoInput">订单号 / Order No.</label>
+              <input id="orderNoInput" type="text">
+            </div>
+            <div class="field">
+              <label for="customerInput">客户 / Customer</label>
+              <input id="customerInput" type="text">
+            </div>
+            <div class="field">
+              <label for="coronaInput">电晕值 / Corona</label>
+              <input id="coronaInput" type="text">
+            </div>
+            <div class="field wide">
+              <label for="materialInput">材料 / Material</label>
+              <input id="materialInput" type="text">
+            </div>
+            <div class="field wide">
+              <label for="tractionInput">牵引状态 / Traction</label>
+              <input id="tractionInput" type="text">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h3>班次与停机 / Shift & Downtime</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label for="dayActualInput">早班实际 t / Day Actual</label>
+              <input id="dayActualInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="dayTargetInput">早班目标 t / Day Target</label>
+              <input id="dayTargetInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="nightActualInput">晚班实际 t / Night Actual</label>
+              <input id="nightActualInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="nightTargetInput">晚班目标 t / Night Target</label>
+              <input id="nightTargetInput" type="number" step="0.1">
+            </div>
+            <div class="field wide">
+              <label for="downtimeInput">停机排行 / Downtime: 中文|English|分钟</label>
+              <textarea id="downtimeInput"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h3>报警 / Alarms</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label for="handledInput">已处理数量 / Handled Count</label>
+              <input id="handledInput" type="number" step="1">
+            </div>
+            <div class="field wide">
+              <label for="alarmsInput">报警列表 / Alarms: 级别|标签|标题|内容|分钟</label>
+              <textarea id="alarmsInput"></textarea>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="entry-actions">
+        <button class="panel-button danger" id="resetData" type="button">重置 / Reset</button>
+        <button class="panel-button primary" id="applyData" type="button">应用 / Apply</button>
+      </footer>
+    </div>
+  </aside>
 
   <script>
-    const state = {
-      outputToday: 37.6,
+    const storageKey = "pet-sheet-dashboard-manual-data-v1";
+    const defaultData = {
+      rollsKg: [785, 792, 776, 801, 790, 783, 798, 806, 774, 789, 796, 782, 803, 791, 777, 808, 794, 786, 799, 805, 781, 793, 788, 802, 797, 784, 809, 775, 800, 795, 787, 804, 790, 778, 806, 792, 785, 801, 789, 796, 783, 807, 779, 794, 802, 788, 805, 791],
+      targetOutput: 46,
       lineSpeed: 1848,
+      speedSet: 1850,
       goodRate: 98.4,
+      goodTarget: 98.2,
       scrapRate: 1.6,
+      scrapLimit: 2,
       progress: 72,
-      downtime: [
-        { name: "换网", value: 38 },
-        { name: "模唇清理", value: 24 },
-        { name: "温控波动", value: 18 },
-        { name: "收卷调整", value: 13 },
-        { name: "原料等待", value: 9 },
-        { name: "巡检", value: 6 }
-      ],
+      lineName: "PET-A01 主线 / PET-A01 Main Line",
+      runState: "RUN",
+      batchStatus: "批次进行中 / Batch Running",
+      spec: "透明片材 / Clear Sheet",
+      thickness: "0.80 mm",
+      width: "820 mm",
+      orderNo: "PO-260512-018",
+      customer: "华南包装制品 / South China Packaging",
+      material: "APET 原生料 92% / Regrind 8%",
+      corona: "42 dyn",
+      traction: "张力稳定 / Stable Tension",
+      handledCount: 7,
       shifts: [
-        { name: "早班", actual: 22.4, target: 23.0 },
-        { name: "晚班", actual: 15.2, target: 23.0 }
+        { zh: "早班", en: "Day", actual: 22.4, target: 23 },
+        { zh: "晚班", en: "Night", actual: 15.2, target: 23 }
+      ],
+      downtime: [
+        { zh: "换网", en: "Screen Change", value: 38 },
+        { zh: "模唇清理", en: "Die Lip Clean", value: 24 },
+        { zh: "温控波动", en: "Temp Fluct.", value: 18 },
+        { zh: "收卷调整", en: "Winder Adjust", value: 13 },
+        { zh: "原料等待", en: "Material Wait", value: 9 },
+        { zh: "巡检", en: "Inspection", value: 6 }
       ],
       alarms: [
-        { level: "critical", badge: "严重", title: "T3 区温度超温", detail: "实测 284.6°C / 上限 280.0°C", minutes: 3 },
-        { level: "critical", badge: "严重", title: "换网压力高", detail: "过滤器入口 17.8 MPa / 上限 16.5 MPa", minutes: 6 },
-        { level: "warning", badge: "预警", title: "冷却辊温差偏大", detail: "左/右温差 2.4°C，建议检查水路", minutes: 9 },
-        { level: "warning", badge: "预警", title: "边料回收负载高", detail: "粉碎机负载 86%，接近预警线", minutes: 12 },
-        { level: "warning", badge: "预警", title: "厚度 Cpk 下降", detail: "在线测厚波动扩大，当前 Cpk 1.42", minutes: 18 }
+        { level: "critical", badge: "严重 / Critical", title: "T3 区温度超温 / T3 Zone Over Temp", detail: "实测 284.6°C / Actual 284.6°C / 上限 Limit 280.0°C", minutes: 3 },
+        { level: "critical", badge: "严重 / Critical", title: "换网压力高 / Screen Pressure High", detail: "过滤器入口 17.8 MPa / Inlet 17.8 MPa / 上限 Limit 16.5 MPa", minutes: 6 },
+        { level: "warning", badge: "预警 / Warning", title: "冷却辊温差偏大 / Chill Roll Temp Gap", detail: "左右温差 2.4°C / L-R gap 2.4°C", minutes: 9 },
+        { level: "warning", badge: "预警 / Warning", title: "边料回收负载高 / Edge Trim Load High", detail: "粉碎机负载 86% / Granulator load 86%", minutes: 12 }
       ]
     };
 
+    let data = loadData();
     const el = (id) => document.getElementById(id);
-    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
     const fmt = new Intl.NumberFormat("zh-CN");
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    function loadData() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        return saved ? { ...structuredClone(defaultData), ...saved } : structuredClone(defaultData);
+      } catch {
+        return structuredClone(defaultData);
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    }
+
+    function asNumber(value, fallback = 0) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : fallback;
+    }
+
+    function safeText(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function parseRolls(text) {
+      const values = String(text || "").match(/\d+(?:\.\d+)?/g) || [];
+      return values.map(Number).filter((value) => Number.isFinite(value) && value > 0);
+    }
+
+    function parseDowntime(text) {
+      return String(text || "")
+        .split(/\n+/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const [zh = "", en = "", value = "0"] = line.split("|").map((item) => item.trim());
+          return { zh, en, value: asNumber(value, 0) };
+        })
+        .filter((item) => item.zh && item.value > 0)
+        .sort((a, b) => b.value - a.value);
+    }
+
+    function parseAlarms(text) {
+      return String(text || "")
+        .split(/\n+/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const [level = "warning", badge = "预警 / Warning", title = "", detail = "", minutes = "0"] = line.split("|").map((item) => item.trim());
+          const normalizedLevel = level === "critical" ? "critical" : "warning";
+          return { level: normalizedLevel, badge, title, detail, minutes: asNumber(minutes, 0) };
+        })
+        .filter((item) => item.title);
+    }
 
     function updateClock() {
       const now = new Date();
@@ -768,66 +1243,72 @@
         day: "2-digit",
         weekday: "long"
       });
-      el("alarmUpdate").textContent = `${now.toLocaleTimeString("zh-CN", { hour12: false, hour: "2-digit", minute: "2-digit" })} 更新`;
+      el("alarmUpdate").textContent = `${now.toLocaleTimeString("zh-CN", { hour12: false, hour: "2-digit", minute: "2-digit" })} 更新 / Update`;
     }
 
-    function driftData() {
-      const speedDelta = Math.round((Math.random() - 0.5) * 54);
-      state.lineSpeed = clamp(state.lineSpeed + speedDelta, 1765, 1918);
-      state.outputToday = clamp(state.outputToday + state.lineSpeed / 3600 / 1000 * 4 + (Math.random() * 0.015), 0, 46.8);
-      state.goodRate = clamp(state.goodRate + (Math.random() - 0.5) * 0.16, 97.9, 98.9);
-      state.scrapRate = clamp(100 - state.goodRate + (Math.random() - 0.5) * 0.08, 1.1, 2.2);
-      state.progress = clamp(state.progress + 0.12 + Math.random() * 0.2, 72, 96);
-
-      state.shifts[0].actual = clamp(22.4 + (Math.random() - 0.5) * 0.28, 22.1, 22.8);
-      state.shifts[1].actual = clamp(state.outputToday - state.shifts[0].actual, 12.8, 23.5);
-
-      state.downtime = state.downtime.map((item, index) => ({
-        ...item,
-        value: clamp(item.value + (Math.random() - 0.45) * (index < 2 ? 1.5 : 0.8), 3, 46)
-      })).sort((a, b) => b.value - a.value);
-
-      if (Math.random() > 0.72) {
-        state.alarms = state.alarms.map((alarm) => ({
-          ...alarm,
-          minutes: alarm.minutes + 1
-        }));
-      }
+    function rollStats() {
+      const totalKg = data.rollsKg.reduce((sum, value) => sum + asNumber(value), 0);
+      const count = data.rollsKg.length;
+      const avg = count ? totalKg / count : 0;
+      return { totalKg, count, avg, tons: totalKg / 1000 };
     }
 
     function updateKpis() {
-      const target = 46;
-      el("outputToday").textContent = state.outputToday.toFixed(1);
-      el("lineSpeed").textContent = fmt.format(state.lineSpeed);
-      el("goodRate").textContent = state.goodRate.toFixed(1);
-      el("scrapRate").textContent = state.scrapRate.toFixed(1);
-      el("outputTrend").textContent = `${state.outputToday >= target * 0.8 ? "+" : ""}${((state.outputToday / target - 0.78) * 100).toFixed(1)}%`;
-      el("speedTrend").textContent = state.lineSpeed >= 1810 ? "稳定" : "偏低";
-      el("goodTrend").textContent = state.goodRate >= 98.2 ? "达标" : "关注";
-      el("scrapTrend").textContent = state.scrapRate <= 1.8 ? "受控" : "偏高";
+      const rolls = rollStats();
+      const targetPct = data.targetOutput ? rolls.tons / data.targetOutput * 100 : 0;
+      const speedGap = data.speedSet ? (data.lineSpeed - data.speedSet) / data.speedSet * 100 : 0;
 
-      const progress = Math.round(state.progress);
+      el("outputToday").textContent = rolls.tons.toFixed(1);
+      el("rollSummary").textContent = `${rolls.count} 卷 / ${fmt.format(Math.round(rolls.totalKg))} kg`;
+      el("outputTrend").textContent = `${targetPct.toFixed(1)}%`;
+      el("lineSpeed").textContent = fmt.format(Math.round(data.lineSpeed));
+      el("speedSetText").textContent = `设定 / Set ${fmt.format(Math.round(data.speedSet))} kg/h`;
+      el("speedTrend").textContent = `${speedGap >= 0 ? "+" : ""}${speedGap.toFixed(1)}%`;
+      el("goodRate").textContent = asNumber(data.goodRate).toFixed(1);
+      el("goodTargetText").textContent = `目标 / Target ${asNumber(data.goodTarget).toFixed(1)}%`;
+      el("goodTrend").textContent = data.goodRate >= data.goodTarget ? "达标 / OK" : "关注 / Check";
+      el("scrapRate").textContent = asNumber(data.scrapRate).toFixed(1);
+      el("scrapTargetText").textContent = `控制 / Limit ${asNumber(data.scrapLimit).toFixed(1)}%`;
+      el("scrapTrend").textContent = data.scrapRate <= data.scrapLimit ? "受控 / OK" : "偏高 / High";
+    }
+
+    function updateProductionInfo() {
+      const progress = clamp(asNumber(data.progress), 0, 100);
+      const rolls = rollStats();
+      el("batchStatus").textContent = data.batchStatus;
+      el("lineName").textContent = data.lineName;
+      el("runState").textContent = data.runState;
       el("orderProgress").style.width = `${progress}%`;
-      el("progressText").textContent = `${progress}%`;
-      el("coronaNow").textContent = `${(41.8 + Math.random() * 0.5).toFixed(1)} dyn`;
-      el("tractionNow").textContent = state.lineSpeed > 1800 ? "张力稳定" : "轻微波动";
+      el("specNow").textContent = data.spec;
+      el("thicknessNow").textContent = data.thickness;
+      el("widthNow").textContent = data.width;
+      el("progressText").textContent = `${Math.round(progress)}%`;
+      el("orderNo").textContent = data.orderNo;
+      el("customerNow").textContent = data.customer;
+      el("materialNow").textContent = data.material;
+      el("coronaNow").textContent = data.corona;
+      el("tractionNow").textContent = data.traction;
+      el("rollAverage").textContent = `平均 / Avg ${rolls.avg.toFixed(0)} kg`;
+      el("rollList").innerHTML = data.rollsKg.slice(-14).map((weight, index) => {
+        const rollNo = Math.max(1, data.rollsKg.length - 13 + index);
+        return `<span class="roll-chip">R${rollNo} ${fmt.format(weight)} kg</span>`;
+      }).join("");
     }
 
     function updateAlarms() {
-      const critical = state.alarms.filter((alarm) => alarm.level === "critical").length;
-      const warning = state.alarms.filter((alarm) => alarm.level === "warning").length;
+      const critical = data.alarms.filter((alarm) => alarm.level === "critical").length;
+      const warning = data.alarms.filter((alarm) => alarm.level === "warning").length;
       el("criticalCount").textContent = critical;
       el("warningCount").textContent = warning;
-      el("handledCount").textContent = 7 + Math.floor(Math.random() * 2);
-
-      el("alarmList").innerHTML = state.alarms.map((alarm) => `
+      el("handledCount").textContent = data.handledCount;
+      el("alarmList").innerHTML = data.alarms.map((alarm) => `
         <article class="alarm ${alarm.level}">
           <div class="alarm-title">
-            <span>${alarm.title}</span>
-            <span class="alarm-badge">${alarm.badge}</span>
+            <span>${safeText(alarm.title)}</span>
+            <span class="alarm-badge">${safeText(alarm.badge)}</span>
           </div>
-          <div class="alarm-detail">${alarm.detail}</div>
-          <div class="alarm-time">持续 ${alarm.minutes} 分钟 / 已通知班长</div>
+          <div class="alarm-detail">${safeText(alarm.detail)}</div>
+          <div class="alarm-time">持续 ${safeText(alarm.minutes)} 分钟 / Duration ${safeText(alarm.minutes)} min</div>
         </article>
       `).join("");
     }
@@ -858,12 +1339,12 @@
       const canvas = el("paretoChart");
       const { ctx, width, height } = setupCanvas(canvas);
       ctx.clearRect(0, 0, width, height);
-      const pad = { left: 58, right: 58, top: 18, bottom: 54 };
+      const pad = { left: 58, right: 58, top: 18, bottom: 58 };
       const chartW = width - pad.left - pad.right;
       const chartH = height - pad.top - pad.bottom;
-      const values = state.downtime;
+      const values = data.downtime.length ? data.downtime : defaultData.downtime;
       const max = Math.max(...values.map((item) => item.value)) * 1.18;
-      const total = values.reduce((sum, item) => sum + item.value, 0);
+      const total = values.reduce((sum, item) => sum + item.value, 0) || 1;
       const barGap = 14;
       const barW = chartW / values.length - barGap;
       let cumulative = 0;
@@ -888,18 +1369,21 @@
         grad.addColorStop(0, "#ffbd45");
         grad.addColorStop(1, "rgba(255, 189, 69, 0.32)");
         ctx.fillStyle = grad;
-        ctx.fillRect(x, y, barW, barH);
+        ctx.fillRect(x, y, Math.max(8, barW), barH);
         ctx.fillStyle = "#edf6f7";
         ctx.font = "800 14px Microsoft YaHei, Arial";
         ctx.textAlign = "center";
         ctx.fillText(`${Math.round(item.value)}`, x + barW / 2, y - 12);
 
-        ctx.fillStyle = "rgba(237, 246, 247, 0.78)";
-        ctx.font = "700 13px Microsoft YaHei, Arial";
+        ctx.fillStyle = "rgba(237, 246, 247, 0.82)";
+        ctx.font = "700 12px Microsoft YaHei, Arial";
         ctx.save();
-        ctx.translate(x + barW / 2, pad.top + chartH + 20);
-        ctx.rotate(-0.16);
-        ctx.fillText(item.name, 0, 0);
+        ctx.translate(x + barW / 2, pad.top + chartH + 18);
+        ctx.rotate(-0.13);
+        ctx.fillText(item.zh, 0, 0);
+        ctx.fillStyle = "rgba(143, 164, 170, 0.92)";
+        ctx.font = "600 10px Microsoft YaHei, Arial";
+        ctx.fillText(item.en || "", 0, 14);
         ctx.restore();
 
         cumulative += item.value;
@@ -942,7 +1426,7 @@
       const pad = { left: 58, right: 38, top: 18, bottom: 42 };
       const chartW = width - pad.left - pad.right;
       const chartH = height - pad.top - pad.bottom;
-      const max = 26;
+      const max = Math.max(26, ...data.shifts.map((shift) => Math.max(shift.target, shift.actual))) * 1.08;
 
       drawGrid(ctx, pad.left, pad.top, chartW, chartH, 4);
       ctx.fillStyle = "rgba(143, 164, 170, 0.92)";
@@ -955,11 +1439,11 @@
         ctx.fillText(value.toFixed(0), pad.left - 12, y);
       }
 
-      state.shifts.forEach((shift, index) => {
-        const groupW = chartW / state.shifts.length;
+      data.shifts.forEach((shift, index) => {
+        const groupW = chartW / data.shifts.length;
         const x = pad.left + index * groupW + groupW * 0.2;
-        const actualW = groupW * 0.25;
         const targetW = groupW * 0.25;
+        const actualW = groupW * 0.25;
         const targetH = shift.target / max * chartH;
         const actualH = shift.actual / max * chartH;
         const base = pad.top + chartH;
@@ -969,7 +1453,7 @@
         ctx.fillStyle = "rgba(237, 246, 247, 0.7)";
         ctx.font = "700 13px Microsoft YaHei, Arial";
         ctx.textAlign = "center";
-        ctx.fillText("目标", x + targetW / 2, base - targetH - 10);
+        ctx.fillText("目标 / Target", x + targetW / 2, base - targetH - 10);
 
         const ax = x + targetW + 18;
         const grad = ctx.createLinearGradient(0, base - actualH, 0, base);
@@ -981,38 +1465,108 @@
         ctx.font = "900 18px Microsoft YaHei, Arial";
         ctx.fillText(`${shift.actual.toFixed(1)}t`, ax + actualW / 2, base - actualH - 14);
 
-        ctx.fillStyle = "rgba(237, 246, 247, 0.82)";
+        ctx.fillStyle = "rgba(237, 246, 247, 0.86)";
         ctx.font = "800 16px Microsoft YaHei, Arial";
-        ctx.fillText(shift.name, x + groupW * 0.28, base + 26);
+        ctx.fillText(`${shift.zh} / ${shift.en}`, x + groupW * 0.28, base + 26);
       });
+    }
 
-      const legendY = pad.top + 8;
-      ctx.textAlign = "left";
-      ctx.font = "700 13px Microsoft YaHei, Arial";
-      ctx.fillStyle = "rgba(110, 168, 255, 0.55)";
-      ctx.fillRect(width - 150, legendY, 14, 14);
-      ctx.fillStyle = "rgba(237, 246, 247, 0.72)";
-      ctx.fillText("计划", width - 130, legendY + 12);
-      ctx.fillStyle = "#58d68d";
-      ctx.fillRect(width - 90, legendY, 14, 14);
-      ctx.fillStyle = "rgba(237, 246, 247, 0.72)";
-      ctx.fillText("实际", width - 70, legendY + 12);
+    function fillForm() {
+      el("rollWeightsInput").value = data.rollsKg.join("\n");
+      el("targetOutputInput").value = data.targetOutput;
+      el("lineSpeedInput").value = data.lineSpeed;
+      el("speedSetInput").value = data.speedSet;
+      el("goodRateInput").value = data.goodRate;
+      el("goodTargetInput").value = data.goodTarget;
+      el("scrapRateInput").value = data.scrapRate;
+      el("scrapLimitInput").value = data.scrapLimit;
+      el("lineNameInput").value = data.lineName;
+      el("runStateInput").value = data.runState;
+      el("batchStatusInput").value = data.batchStatus;
+      el("progressInput").value = data.progress;
+      el("specInput").value = data.spec;
+      el("thicknessInput").value = data.thickness;
+      el("widthInput").value = data.width;
+      el("orderNoInput").value = data.orderNo;
+      el("customerInput").value = data.customer;
+      el("materialInput").value = data.material;
+      el("coronaInput").value = data.corona;
+      el("tractionInput").value = data.traction;
+      el("dayActualInput").value = data.shifts[0]?.actual ?? 0;
+      el("dayTargetInput").value = data.shifts[0]?.target ?? 0;
+      el("nightActualInput").value = data.shifts[1]?.actual ?? 0;
+      el("nightTargetInput").value = data.shifts[1]?.target ?? 0;
+      el("downtimeInput").value = data.downtime.map((item) => `${item.zh}|${item.en}|${item.value}`).join("\n");
+      el("handledInput").value = data.handledCount;
+      el("alarmsInput").value = data.alarms.map((alarm) => `${alarm.level}|${alarm.badge}|${alarm.title}|${alarm.detail}|${alarm.minutes}`).join("\n");
+    }
+
+    function readForm() {
+      const rolls = parseRolls(el("rollWeightsInput").value);
+      data = {
+        ...data,
+        rollsKg: rolls,
+        targetOutput: asNumber(el("targetOutputInput").value, data.targetOutput),
+        lineSpeed: asNumber(el("lineSpeedInput").value, data.lineSpeed),
+        speedSet: asNumber(el("speedSetInput").value, data.speedSet),
+        goodRate: asNumber(el("goodRateInput").value, data.goodRate),
+        goodTarget: asNumber(el("goodTargetInput").value, data.goodTarget),
+        scrapRate: asNumber(el("scrapRateInput").value, data.scrapRate),
+        scrapLimit: asNumber(el("scrapLimitInput").value, data.scrapLimit),
+        lineName: el("lineNameInput").value.trim(),
+        runState: el("runStateInput").value.trim(),
+        batchStatus: el("batchStatusInput").value.trim(),
+        progress: asNumber(el("progressInput").value, data.progress),
+        spec: el("specInput").value.trim(),
+        thickness: el("thicknessInput").value.trim(),
+        width: el("widthInput").value.trim(),
+        orderNo: el("orderNoInput").value.trim(),
+        customer: el("customerInput").value.trim(),
+        material: el("materialInput").value.trim(),
+        corona: el("coronaInput").value.trim(),
+        traction: el("tractionInput").value.trim(),
+        handledCount: asNumber(el("handledInput").value, data.handledCount),
+        shifts: [
+          { zh: "早班", en: "Day", actual: asNumber(el("dayActualInput").value, 0), target: asNumber(el("dayTargetInput").value, 0) },
+          { zh: "晚班", en: "Night", actual: asNumber(el("nightActualInput").value, 0), target: asNumber(el("nightTargetInput").value, 0) }
+        ],
+        downtime: parseDowntime(el("downtimeInput").value),
+        alarms: parseAlarms(el("alarmsInput").value)
+      };
+      saveData();
+      render();
     }
 
     function render() {
       updateClock();
       updateKpis();
+      updateProductionInfo();
       updateAlarms();
       drawPareto();
       drawShift();
     }
 
-    updateClock();
-    render();
-    setInterval(() => {
-      driftData();
+    el("entryToggle").addEventListener("click", () => {
+      fillForm();
+      el("entryOverlay").classList.add("open");
+    });
+    el("entryClose").addEventListener("click", () => el("entryOverlay").classList.remove("open"));
+    el("entryOverlay").addEventListener("click", (event) => {
+      if (event.target === el("entryOverlay")) el("entryOverlay").classList.remove("open");
+    });
+    el("applyData").addEventListener("click", () => {
+      readForm();
+      el("entryOverlay").classList.remove("open");
+    });
+    el("resetData").addEventListener("click", () => {
+      data = structuredClone(defaultData);
+      saveData();
+      fillForm();
       render();
-    }, 4000);
+    });
+
+    fillForm();
+    render();
     setInterval(updateClock, 1000);
     window.addEventListener("resize", render);
   </script>
