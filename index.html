@@ -9,7 +9,7 @@
       color-scheme: dark;
       --bg: #071014;
       --panel: #101a20;
-      --panel-2: #13242b;
+      --panel-2: #15232a;
       --border: #2b444c;
       --text: #edf6f7;
       --muted: #91a8ae;
@@ -18,7 +18,6 @@
       --amber: #ffbd45;
       --red: #ff5b5f;
       --blue: #6ea8ff;
-      --grid: rgba(142, 174, 181, 0.14);
       --shadow: 0 18px 55px rgba(0, 0, 0, 0.34);
     }
 
@@ -55,8 +54,7 @@
 
     button,
     input,
-    textarea,
-    select {
+    textarea {
       font: inherit;
     }
 
@@ -108,7 +106,7 @@
       background: linear-gradient(145deg, rgba(53, 210, 230, 0.18), rgba(88, 214, 141, 0.08));
       box-shadow: inset 0 0 22px rgba(53, 210, 230, 0.16);
       color: var(--cyan);
-      font-weight: 800;
+      font-weight: 850;
       font-size: 18px;
     }
 
@@ -320,7 +318,7 @@
     .main-grid {
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(360px, 0.86fr) minmax(520px, 1.32fr) minmax(360px, 0.9fr);
+      grid-template-columns: minmax(360px, 0.86fr) minmax(520px, 1.32fr) minmax(380px, 0.96fr);
       grid-template-rows: minmax(0, 1fr) minmax(0, 0.78fr);
       gap: clamp(14px, 1vw, 20px);
     }
@@ -445,7 +443,8 @@
       text-overflow: ellipsis;
     }
 
-    .roll-strip {
+    .roll-strip,
+    .shift-rule {
       margin-bottom: 12px;
       padding: 12px 13px;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -453,13 +452,18 @@
       background: rgba(255, 255, 255, 0.032);
     }
 
-    .roll-head {
+    .roll-head,
+    .rule-row {
       display: flex;
       justify-content: space-between;
       gap: 10px;
       color: var(--muted);
       font-size: clamp(12px, 0.72vw, 14px);
       font-weight: 750;
+    }
+
+    .rule-row + .rule-row {
+      margin-top: 8px;
     }
 
     .roll-list {
@@ -491,7 +495,7 @@
 
     .spec-row {
       display: grid;
-      grid-template-columns: 130px 1fr;
+      grid-template-columns: 132px 1fr;
       gap: 12px;
       align-items: center;
       padding: 0 13px;
@@ -524,109 +528,109 @@
       --accent: var(--blue);
     }
 
-    .alarm-panel {
+    .month-panel {
       grid-row: span 2;
-      --accent: var(--red);
+      --accent: var(--green);
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto auto auto 1fr;
     }
 
-    .alarm-summary {
+    .month-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .month-card {
+      min-height: 92px;
+      padding: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .month-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .month-card strong {
+      display: block;
+      margin-top: 9px;
+      color: var(--text);
+      font-size: clamp(24px, 1.8vw, 34px);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .quality-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
       margin-bottom: 14px;
     }
 
-    .alarm-count {
-      min-height: 74px;
-      padding: 12px;
+    .quality-item {
+      min-height: 68px;
+      padding: 10px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.035);
+      background: rgba(255, 255, 255, 0.03);
       text-align: center;
     }
 
-    .alarm-count strong {
+    .quality-item strong {
       display: block;
-      color: var(--text);
+      font-size: clamp(18px, 1.2vw, 24px);
       font-variant-numeric: tabular-nums;
-      font-size: clamp(22px, 1.7vw, 34px);
-      line-height: 1.1;
     }
 
-    .alarm-count span {
+    .quality-item span {
       display: block;
       margin-top: 5px;
       color: var(--muted);
-      font-size: clamp(11px, 0.7vw, 13px);
+      font-size: 11px;
       white-space: nowrap;
     }
 
-    .alarm-list {
+    .month-list {
       min-height: 0;
       display: grid;
       align-content: start;
       gap: 12px;
-      overflow: hidden;
     }
 
-    .alarm {
-      position: relative;
-      padding: 13px 13px 13px 18px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.036);
-    }
-
-    .alarm::before {
-      position: absolute;
-      left: 0;
-      top: 12px;
-      bottom: 12px;
-      width: 4px;
-      content: "";
-      background: var(--alarm-color, var(--amber));
-      border-radius: 0 999px 999px 0;
-    }
-
-    .alarm.critical {
-      --alarm-color: var(--red);
-      animation: alarmGlow 1.8s infinite ease-in-out;
-    }
-
-    .alarm.warning {
-      --alarm-color: var(--amber);
-    }
-
-    .alarm-title {
-      display: flex;
+    .month-row {
+      display: grid;
+      grid-template-columns: 146px 1fr 54px;
       align-items: center;
-      justify-content: space-between;
       gap: 10px;
-      font-size: clamp(15px, 0.9vw, 19px);
-      font-weight: 850;
+      color: rgba(237, 246, 247, 0.88);
+      font-size: clamp(12px, 0.74vw, 14px);
     }
 
-    .alarm-badge {
-      color: var(--alarm-color, var(--amber));
-      font-size: clamp(11px, 0.68vw, 13px);
-      font-weight: 900;
+    .month-row span:first-child {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .alarm-detail {
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: clamp(12px, 0.72vw, 14px);
-      line-height: 1.45;
+    .bar-track {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
     }
 
-    .alarm-time {
-      margin-top: 8px;
-      color: rgba(237, 246, 247, 0.78);
-      font-size: clamp(12px, 0.7vw, 14px);
-      font-variant-numeric: tabular-nums;
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      min-width: 3px;
     }
 
     .chart-shell {
@@ -667,7 +671,7 @@
       position: absolute;
       top: 0;
       right: 0;
-      width: min(560px, 94vw);
+      width: min(620px, 94vw);
       height: 100%;
       display: grid;
       grid-template-rows: auto 1fr auto;
@@ -724,6 +728,13 @@
       font-size: 16px;
     }
 
+    .form-note {
+      margin: -3px 0 13px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -746,8 +757,7 @@
     }
 
     .field input,
-    .field textarea,
-    .field select {
+    .field textarea {
       width: 100%;
       min-width: 0;
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -757,8 +767,7 @@
       outline: none;
     }
 
-    .field input,
-    .field select {
+    .field input {
       height: 38px;
       padding: 0 10px;
     }
@@ -771,8 +780,7 @@
     }
 
     .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
+    .field textarea:focus {
       border-color: rgba(53, 210, 230, 0.55);
       box-shadow: 0 0 0 2px rgba(53, 210, 230, 0.12);
     }
@@ -806,18 +814,6 @@
       }
     }
 
-    @keyframes alarmGlow {
-      0%,
-      100% {
-        border-color: rgba(255, 91, 95, 0.24);
-        box-shadow: none;
-      }
-      50% {
-        border-color: rgba(255, 91, 95, 0.58);
-        box-shadow: 0 0 24px rgba(255, 91, 95, 0.12);
-      }
-    }
-
     @media (max-aspect-ratio: 16 / 10) {
       .screen {
         min-width: 1024px;
@@ -833,13 +829,13 @@
         <div class="plant-mark">PET</div>
         <div>
           <h1 class="plant-name">PET 片材生产目视化 / PET Sheet Dashboard</h1>
-          <div class="plant-subtitle">挤出一线 / Extrusion Line 1 / 55 寸 TV 全屏显示</div>
+          <div class="plant-subtitle">日数据 + 月数据自动统计 / Daily Data + Monthly Auto Summary</div>
         </div>
       </section>
 
       <section class="headline" aria-label="Running status">
         <div class="headline-title"><span class="status-dot"></span>生产运行中 / Running</div>
-        <div class="headline-meta">手动数据 / Manual Data / 时钟自动刷新 Auto Clock</div>
+        <div class="headline-meta"><span id="selectedDayText">日数据 / Daily</span> · <span id="selectedMonthText">月数据 / Monthly</span></div>
       </section>
 
       <section class="clock-wrap" aria-label="Current time">
@@ -851,9 +847,9 @@
       </section>
     </header>
 
-    <section class="kpis" aria-label="Production KPIs">
+    <section class="kpis" aria-label="Daily production KPIs">
       <article class="card kpi" style="--accent: var(--green)">
-        <div class="kpi-label"><span class="dual">今日产量<small>Today Output</small></span></div>
+        <div class="kpi-label"><span class="dual">日产量<small>Daily Output</small></span></div>
         <div class="kpi-value">
           <span class="number" id="outputToday">0.0</span>
           <span class="unit">吨 / t</span>
@@ -892,13 +888,13 @@
     <section class="main-grid">
       <article class="card panel spec-panel">
         <div class="panel-header">
-          <div class="panel-title"><span class="dual">当前生产信息<small>Production Info</small></span></div>
+          <div class="panel-title"><span class="dual">日生产信息<small>Daily Production Info</small></span></div>
           <div class="panel-tag" id="batchStatus">批次进行中 / Batch Running</div>
         </div>
 
         <section class="line-status" aria-label="Order progress">
           <div class="line-name">
-            <span id="lineName">PET-A01 主线 / Main Line</span>
+            <span id="lineName">PET-A01 主线 / PET-A01 Main Line</span>
             <span class="run-state" id="runState">RUN</span>
           </div>
           <div class="line-progress" aria-label="Order progress"><span id="orderProgress"></span></div>
@@ -923,6 +919,11 @@
           </div>
         </div>
 
+        <section class="shift-rule" aria-label="Shift time rule">
+          <div class="rule-row"><span>早班 / Day Shift</span><strong>08:00 - 20:00</strong></div>
+          <div class="rule-row"><span>晚班 / Night Shift</span><strong>20:00 - 次日 08:00 / Next Day 08:00</strong></div>
+        </section>
+
         <section class="roll-strip" aria-label="Roll weight summary">
           <div class="roll-head">
             <span>卷重汇总 / Roll Weight Summary</span>
@@ -932,43 +933,49 @@
         </section>
 
         <div class="spec-list" aria-label="Order detail">
-          <div class="spec-row"><span class="spec-key">订单号 / Order No.</span><span class="spec-val" id="orderNo">PO-260512-018</span></div>
+          <div class="spec-row"><span class="spec-key">订单号 / Order No.</span><span class="spec-val" id="orderNo">PO-260513-018</span></div>
           <div class="spec-row"><span class="spec-key">客户 / Customer</span><span class="spec-val" id="customerNow">华南包装制品</span></div>
           <div class="spec-row"><span class="spec-key">材料 / Material</span><span class="spec-val" id="materialNow">APET 原生料 92% / Regrind 8%</span></div>
-          <div class="spec-row"><span class="spec-key">电晕值 / Corona</span><span class="spec-val" id="coronaNow">42 dyn</span></div>
-          <div class="spec-row"><span class="spec-key">牵引状态 / Traction</span><span class="spec-val" id="tractionNow">张力稳定 / Stable</span></div>
+          <div class="spec-row"><span class="spec-key">牵引状态 / Traction</span><span class="spec-val" id="tractionNow">张力稳定 / Stable Tension</span></div>
         </div>
       </article>
 
       <article class="card panel pareto-panel">
         <div class="panel-header">
-          <div class="panel-title"><span class="dual">停机时间排行 Pareto<small>Downtime Pareto</small></span></div>
+          <div class="panel-title"><span class="dual">日停机分类 Pareto<small>Daily Downtime Pareto</small></span></div>
           <div class="panel-tag">分钟 / min / 累计占比 Cumulative</div>
         </div>
         <div class="chart-shell">
-          <canvas id="paretoChart" aria-label="Downtime Pareto chart"></canvas>
+          <canvas id="paretoChart" aria-label="Daily downtime Pareto chart"></canvas>
         </div>
       </article>
 
-      <article class="card panel alarm-panel">
+      <article class="card panel month-panel">
         <div class="panel-header">
-          <div class="panel-title"><span class="dual">异常报警<small>Abnormal Alarms</small></span></div>
-          <div class="panel-tag" id="alarmUpdate">--:-- 更新 / Update</div>
+          <div class="panel-title"><span class="dual">月数据自动统计<small>Monthly Auto Summary</small></span></div>
+          <div class="panel-tag" id="monthTag">---- 月 / Month</div>
         </div>
 
-        <section class="alarm-summary" aria-label="Alarm summary">
-          <div class="alarm-count"><strong id="criticalCount">0</strong><span>严重 / Critical</span></div>
-          <div class="alarm-count"><strong id="warningCount">0</strong><span>预警 / Warning</span></div>
-          <div class="alarm-count"><strong id="handledCount">0</strong><span>已处理 / Handled</span></div>
+        <section class="month-cards" aria-label="Monthly output summary">
+          <div class="month-card"><span>月产量 / Monthly Output</span><strong id="monthOutput">0.0t</strong></div>
+          <div class="month-card"><span>月卷数 / Monthly Rolls</span><strong id="monthRolls">0</strong></div>
+          <div class="month-card"><span>有数据天数 / Days With Data</span><strong id="monthDays">0</strong></div>
+          <div class="month-card"><span>日均产量 / Avg Daily</span><strong id="monthDailyAvg">0.0t</strong></div>
         </section>
 
-        <section class="alarm-list" id="alarmList" aria-label="Alarm list"></section>
+        <section class="quality-grid" aria-label="Monthly quality summary">
+          <div class="quality-item"><strong id="monthGood">0.0%</strong><span>月均正品率 / Good</span></div>
+          <div class="quality-item"><strong id="monthScrap">0.0%</strong><span>月均废料率 / Scrap</span></div>
+          <div class="quality-item"><strong id="monthSpeed">0</strong><span>均线速 kg/h / Speed</span></div>
+        </section>
+
+        <section class="month-list" id="monthDowntimeList" aria-label="Monthly downtime categories"></section>
       </article>
 
       <article class="card panel shift-panel">
         <div class="panel-header">
-          <div class="panel-title"><span class="dual">各班产量对比<small>Shift Output</small></span></div>
-          <div class="panel-tag">早班 Day / 晚班 Night</div>
+          <div class="panel-title"><span class="dual">早晚班产量对比<small>Shift Output</small></span></div>
+          <div class="panel-tag" id="shiftRuleText">早班 Day 08-20 / 晚班 Night 20-08</div>
         </div>
         <div class="chart-shell">
           <canvas id="shiftChart" aria-label="Shift output chart"></canvas>
@@ -977,27 +984,57 @@
     </section>
   </main>
 
-  <div class="mini-footer">PET Sheet MES Dashboard / Manual Data</div>
+  <div class="mini-footer">PET Sheet MES Dashboard / Daily Input · Monthly Auto Summary</div>
 
   <aside class="entry-overlay" id="entryOverlay" aria-label="Manual data entry">
     <div class="entry-drawer">
       <header class="entry-head">
-        <h2 class="entry-title">数据录入 <small>Manual Data Entry</small></h2>
+        <h2 class="entry-title">日数据录入 <small>Daily Data Entry</small></h2>
         <button class="panel-button" id="entryClose" type="button">关闭 / Close</button>
       </header>
 
       <div class="entry-body">
         <section class="form-section">
-          <h3>产量与 KPI / Output & KPI</h3>
+          <h3>日期 / Date</h3>
+          <p class="form-note">月数据会按当前月份的每日记录自动统计，不需要单独填写。Monthly data is calculated from daily records automatically.</p>
           <div class="form-grid">
-            <div class="field wide">
-              <label for="rollWeightsInput">每卷卷重 kg / Roll Weight kg</label>
-              <textarea id="rollWeightsInput"></textarea>
+            <div class="field">
+              <label for="recordDateInput">数据日期 / Data Date</label>
+              <input id="recordDateInput" type="date">
             </div>
             <div class="field">
-              <label for="targetOutputInput">今日目标 t / Daily Target t</label>
+              <label for="targetOutputInput">日产量目标 t / Daily Target t</label>
               <input id="targetOutputInput" type="number" step="0.1">
             </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h3>卷重与班次 / Roll Weight & Shift</h3>
+          <p class="form-note">早班为当天 08:00-20:00；晚班为当天 20:00 到隔天 08:00。Day shift is 08:00-20:00; night shift is 20:00-next day 08:00.</p>
+          <div class="form-grid">
+            <div class="field wide">
+              <label for="dayRollsInput">早班卷重 kg / Day Shift Rolls kg</label>
+              <textarea id="dayRollsInput"></textarea>
+            </div>
+            <div class="field wide">
+              <label for="nightRollsInput">晚班卷重 kg / Night Shift Rolls kg</label>
+              <textarea id="nightRollsInput"></textarea>
+            </div>
+            <div class="field">
+              <label for="dayTargetInput">早班目标 t / Day Target</label>
+              <input id="dayTargetInput" type="number" step="0.1">
+            </div>
+            <div class="field">
+              <label for="nightTargetInput">晚班目标 t / Night Target</label>
+              <input id="nightTargetInput" type="number" step="0.1">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h3>KPI / KPI</h3>
+          <div class="form-grid">
             <div class="field">
               <label for="lineSpeedInput">当前线速 kg/h / Line Speed</label>
               <input id="lineSpeedInput" type="number" step="1">
@@ -1060,13 +1097,9 @@
               <label for="orderNoInput">订单号 / Order No.</label>
               <input id="orderNoInput" type="text">
             </div>
-            <div class="field">
+            <div class="field wide">
               <label for="customerInput">客户 / Customer</label>
               <input id="customerInput" type="text">
-            </div>
-            <div class="field">
-              <label for="coronaInput">电晕值 / Corona</label>
-              <input id="coronaInput" type="text">
             </div>
             <div class="field wide">
               <label for="materialInput">材料 / Material</label>
@@ -1080,109 +1113,128 @@
         </section>
 
         <section class="form-section">
-          <h3>班次与停机 / Shift & Downtime</h3>
+          <h3>停机时间 / Downtime</h3>
           <div class="form-grid">
             <div class="field">
-              <label for="dayActualInput">早班实际 t / Day Actual</label>
-              <input id="dayActualInput" type="number" step="0.1">
+              <label for="downtimeChangeoverInput">停机换款 min / Changeover</label>
+              <input id="downtimeChangeoverInput" type="number" step="1">
             </div>
             <div class="field">
-              <label for="dayTargetInput">早班目标 t / Day Target</label>
-              <input id="dayTargetInput" type="number" step="0.1">
+              <label for="downtimeProductionInput">生产异常停机 min / Production Abnormal</label>
+              <input id="downtimeProductionInput" type="number" step="1">
             </div>
             <div class="field">
-              <label for="nightActualInput">晚班实际 t / Night Actual</label>
-              <input id="nightActualInput" type="number" step="0.1">
+              <label for="downtimeEquipmentInput">设备异常停机 min / Equipment Abnormal</label>
+              <input id="downtimeEquipmentInput" type="number" step="1">
             </div>
             <div class="field">
-              <label for="nightTargetInput">晚班目标 t / Night Target</label>
-              <input id="nightTargetInput" type="number" step="0.1">
-            </div>
-            <div class="field wide">
-              <label for="downtimeInput">停机排行 / Downtime: 中文|English|分钟</label>
-              <textarea id="downtimeInput"></textarea>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-section">
-          <h3>报警 / Alarms</h3>
-          <div class="form-grid">
-            <div class="field">
-              <label for="handledInput">已处理数量 / Handled Count</label>
-              <input id="handledInput" type="number" step="1">
-            </div>
-            <div class="field wide">
-              <label for="alarmsInput">报警列表 / Alarms: 级别|标签|标题|内容|分钟</label>
-              <textarea id="alarmsInput"></textarea>
+              <label for="downtimeMaintenanceInput">规划维保停机 min / Planned Maintenance</label>
+              <input id="downtimeMaintenanceInput" type="number" step="1">
             </div>
           </div>
         </section>
       </div>
 
       <footer class="entry-actions">
-        <button class="panel-button danger" id="resetData" type="button">重置 / Reset</button>
-        <button class="panel-button primary" id="applyData" type="button">应用 / Apply</button>
+        <button class="panel-button danger" id="resetData" type="button">重置示例 / Reset Sample</button>
+        <button class="panel-button primary" id="applyData" type="button">保存日数据 / Save Daily Data</button>
       </footer>
     </div>
   </aside>
 
   <script>
-    const storageKey = "pet-sheet-dashboard-manual-data-v1";
+    const storageKey = "pet-sheet-dashboard-daily-monthly-v2";
+    const clone = (value) => JSON.parse(JSON.stringify(value));
+    const fmt = new Intl.NumberFormat("zh-CN");
+    const el = (id) => document.getElementById(id);
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const downtimeCategories = [
+      { key: "changeover", zh: "停机换款", en: "Changeover" },
+      { key: "production", zh: "生产异常停机", en: "Production Abnormal" },
+      { key: "equipment", zh: "设备异常停机", en: "Equipment Abnormal" },
+      { key: "maintenance", zh: "规划维保停机", en: "Planned Maintenance" }
+    ];
+
+    function makeRolls(count, totalKg) {
+      if (!count || !totalKg) return [];
+      const base = Math.floor(totalKg / count);
+      const rolls = Array.from({ length: count }, () => base);
+      let rest = Math.round(totalKg - base * count);
+      let index = 0;
+      while (rest > 0) {
+        const add = Math.min(rest, (index % 5) + 1);
+        rolls[index % count] += add;
+        rest -= add;
+        index += 1;
+      }
+      return rolls;
+    }
+
+    function makeRecord(date, dayCount, dayKg, nightCount, nightKg, overrides = {}) {
+      return {
+        date,
+        dayRollsKg: makeRolls(dayCount, dayKg),
+        nightRollsKg: makeRolls(nightCount, nightKg),
+        targetOutput: 46,
+        lineSpeed: 1400,
+        speedSet: 1500,
+        goodRate: 88.7,
+        goodTarget: 88,
+        scrapRate: 1.6,
+        scrapLimit: 3,
+        progress: 72,
+        dayTarget: 23,
+        nightTarget: 23,
+        lineName: "PET-A01 主线 / PET-A01 Main Line",
+        runState: "RUN",
+        batchStatus: "批次进行中 / Batch Running",
+        spec: "透明片材 / Clear Sheet",
+        thickness: "0.80 mm",
+        width: "820 mm",
+        orderNo: `PO-${date.replaceAll("-", "").slice(2)}-018`,
+        customer: "华南包装制品 / South China Packaging",
+        material: "APET 原生料 92% / Regrind 8%",
+        traction: "张力稳定 / Stable Tension",
+        downtime: {
+          changeover: 38,
+          production: 24,
+          equipment: 18,
+          maintenance: 13
+        },
+        ...overrides
+      };
+    }
+
     const defaultData = {
-      rollsKg: [785, 792, 776, 801, 790, 783, 798, 806, 774, 789, 796, 782, 803, 791, 777, 808, 794, 786, 799, 805, 781, 793, 788, 802, 797, 784, 809, 775, 800, 795, 787, 804, 790, 778, 806, 792, 785, 801, 789, 796, 783, 807, 779, 794, 802, 788, 805, 791],
-      targetOutput: 46,
-      lineSpeed: 1848,
-      speedSet: 1850,
-      goodRate: 98.4,
-      goodTarget: 98.2,
-      scrapRate: 1.6,
-      scrapLimit: 2,
-      progress: 72,
-      lineName: "PET-A01 主线 / PET-A01 Main Line",
-      runState: "RUN",
-      batchStatus: "批次进行中 / Batch Running",
-      spec: "透明片材 / Clear Sheet",
-      thickness: "0.80 mm",
-      width: "820 mm",
-      orderNo: "PO-260512-018",
-      customer: "华南包装制品 / South China Packaging",
-      material: "APET 原生料 92% / Regrind 8%",
-      corona: "42 dyn",
-      traction: "张力稳定 / Stable Tension",
-      handledCount: 7,
-      shifts: [
-        { zh: "早班", en: "Day", actual: 22.4, target: 23 },
-        { zh: "晚班", en: "Night", actual: 15.2, target: 23 }
-      ],
-      downtime: [
-        { zh: "换网", en: "Screen Change", value: 38 },
-        { zh: "模唇清理", en: "Die Lip Clean", value: 24 },
-        { zh: "温控波动", en: "Temp Fluct.", value: 18 },
-        { zh: "收卷调整", en: "Winder Adjust", value: 13 },
-        { zh: "原料等待", en: "Material Wait", value: 9 },
-        { zh: "巡检", en: "Inspection", value: 6 }
-      ],
-      alarms: [
-        { level: "critical", badge: "严重 / Critical", title: "T3 区温度超温 / T3 Zone Over Temp", detail: "实测 284.6°C / Actual 284.6°C / 上限 Limit 280.0°C", minutes: 3 },
-        { level: "critical", badge: "严重 / Critical", title: "换网压力高 / Screen Pressure High", detail: "过滤器入口 17.8 MPa / Inlet 17.8 MPa / 上限 Limit 16.5 MPa", minutes: 6 },
-        { level: "warning", badge: "预警 / Warning", title: "冷却辊温差偏大 / Chill Roll Temp Gap", detail: "左右温差 2.4°C / L-R gap 2.4°C", minutes: 9 },
-        { level: "warning", badge: "预警 / Warning", title: "边料回收负载高 / Edge Trim Load High", detail: "粉碎机负载 86% / Granulator load 86%", minutes: 12 }
+      selectedDate: "2026-05-13",
+      dailyRecords: [
+        makeRecord("2026-05-01", 24, 18840, 23, 18120, { goodRate: 89.4, lineSpeed: 1435, downtime: { changeover: 32, production: 16, equipment: 10, maintenance: 0 } }),
+        makeRecord("2026-05-02", 25, 19650, 24, 19020, { goodRate: 88.9, lineSpeed: 1410, downtime: { changeover: 18, production: 22, equipment: 15, maintenance: 0 } }),
+        makeRecord("2026-05-03", 23, 18130, 24, 18940, { goodRate: 89.1, lineSpeed: 1395, downtime: { changeover: 26, production: 12, equipment: 8, maintenance: 20 } }),
+        makeRecord("2026-05-04", 24, 18970, 23, 18220, { goodRate: 88.2, lineSpeed: 1378, downtime: { changeover: 12, production: 28, equipment: 24, maintenance: 0 } }),
+        makeRecord("2026-05-05", 25, 19780, 24, 18880, { goodRate: 88.8, lineSpeed: 1422, downtime: { changeover: 30, production: 14, equipment: 9, maintenance: 0 } }),
+        makeRecord("2026-05-06", 23, 18090, 22, 17460, { goodRate: 87.9, lineSpeed: 1340, downtime: { changeover: 20, production: 34, equipment: 28, maintenance: 15 } }),
+        makeRecord("2026-05-07", 25, 19830, 24, 18980, { goodRate: 89.3, lineSpeed: 1450, downtime: { changeover: 16, production: 18, equipment: 11, maintenance: 0 } }),
+        makeRecord("2026-05-08", 24, 19040, 24, 18890, { goodRate: 88.5, lineSpeed: 1405, downtime: { changeover: 36, production: 20, equipment: 14, maintenance: 0 } }),
+        makeRecord("2026-05-09", 25, 19710, 23, 18180, { goodRate: 88.6, lineSpeed: 1418, downtime: { changeover: 22, production: 24, equipment: 18, maintenance: 0 } }),
+        makeRecord("2026-05-10", 23, 18020, 23, 17960, { goodRate: 87.8, lineSpeed: 1335, downtime: { changeover: 10, production: 30, equipment: 34, maintenance: 25 } }),
+        makeRecord("2026-05-11", 24, 18990, 24, 18870, { goodRate: 88.9, lineSpeed: 1408, downtime: { changeover: 24, production: 18, equipment: 16, maintenance: 0 } }),
+        makeRecord("2026-05-12", 25, 19760, 24, 18960, { goodRate: 89.2, lineSpeed: 1440, downtime: { changeover: 34, production: 16, equipment: 10, maintenance: 0 } }),
+        makeRecord("2026-05-13", 25, 19832, 25, 19914, { goodRate: 88.7, scrapRate: 1.6, lineSpeed: 1400, speedSet: 1500, downtime: { changeover: 38, production: 24, equipment: 18, maintenance: 13 } })
       ]
     };
 
     let data = loadData();
-    const el = (id) => document.getElementById(id);
-    const fmt = new Intl.NumberFormat("zh-CN");
-    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
     function loadData() {
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
-        return saved ? { ...structuredClone(defaultData), ...saved } : structuredClone(defaultData);
+        if (saved && Array.isArray(saved.dailyRecords)) return saved;
       } catch {
-        return structuredClone(defaultData);
+        return clone(defaultData);
       }
+      return clone(defaultData);
     }
 
     function saveData() {
@@ -1194,6 +1246,11 @@
       return Number.isFinite(number) ? number : fallback;
     }
 
+    function parseRolls(text) {
+      const values = String(text || "").match(/\d+(?:\.\d+)?/g) || [];
+      return values.map(Number).filter((value) => Number.isFinite(value) && value > 0);
+    }
+
     function safeText(value) {
       return String(value ?? "")
         .replace(/&/g, "&amp;")
@@ -1203,35 +1260,102 @@
         .replace(/'/g, "&#039;");
     }
 
-    function parseRolls(text) {
-      const values = String(text || "").match(/\d+(?:\.\d+)?/g) || [];
-      return values.map(Number).filter((value) => Number.isFinite(value) && value > 0);
+    function monthKey(date) {
+      return String(date || "").slice(0, 7);
     }
 
-    function parseDowntime(text) {
-      return String(text || "")
-        .split(/\n+/)
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .map((line) => {
-          const [zh = "", en = "", value = "0"] = line.split("|").map((item) => item.trim());
-          return { zh, en, value: asNumber(value, 0) };
-        })
-        .filter((item) => item.zh && item.value > 0)
-        .sort((a, b) => b.value - a.value);
+    function dayNumber(date) {
+      const day = Number(String(date || "").slice(8, 10));
+      return Number.isFinite(day) ? day : 0;
     }
 
-    function parseAlarms(text) {
-      return String(text || "")
-        .split(/\n+/)
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .map((line) => {
-          const [level = "warning", badge = "预警 / Warning", title = "", detail = "", minutes = "0"] = line.split("|").map((item) => item.trim());
-          const normalizedLevel = level === "critical" ? "critical" : "warning";
-          return { level: normalizedLevel, badge, title, detail, minutes: asNumber(minutes, 0) };
-        })
-        .filter((item) => item.title);
+    function blankRecord(date) {
+      const latest = data.dailyRecords[data.dailyRecords.length - 1] || defaultData.dailyRecords[defaultData.dailyRecords.length - 1];
+      return {
+        ...clone(latest),
+        date,
+        dayRollsKg: [],
+        nightRollsKg: [],
+        progress: 0,
+        orderNo: `PO-${date.replaceAll("-", "").slice(2)}-001`,
+        downtime: { changeover: 0, production: 0, equipment: 0, maintenance: 0 }
+      };
+    }
+
+    function getRecord(date = data.selectedDate) {
+      return data.dailyRecords.find((record) => record.date === date);
+    }
+
+    function ensureRecord(date = data.selectedDate) {
+      let record = getRecord(date);
+      if (!record) {
+        record = blankRecord(date);
+        data.dailyRecords.push(record);
+      }
+      return record;
+    }
+
+    function allRolls(record) {
+      return [...(record.dayRollsKg || []), ...(record.nightRollsKg || [])];
+    }
+
+    function rollStats(record) {
+      const dayKg = (record.dayRollsKg || []).reduce((sum, value) => sum + asNumber(value), 0);
+      const nightKg = (record.nightRollsKg || []).reduce((sum, value) => sum + asNumber(value), 0);
+      const totalKg = dayKg + nightKg;
+      const count = (record.dayRollsKg || []).length + (record.nightRollsKg || []).length;
+      return {
+        dayKg,
+        nightKg,
+        totalKg,
+        count,
+        avg: count ? totalKg / count : 0,
+        tons: totalKg / 1000,
+        dayTons: dayKg / 1000,
+        nightTons: nightKg / 1000
+      };
+    }
+
+    function monthlyStats() {
+      const key = monthKey(data.selectedDate);
+      const records = data.dailyRecords.filter((record) => monthKey(record.date) === key).sort((a, b) => a.date.localeCompare(b.date));
+      const totals = {
+        records,
+        totalKg: 0,
+        rollCount: 0,
+        dayKg: 0,
+        nightKg: 0,
+        lineSpeedSum: 0,
+        goodWeighted: 0,
+        scrapWeighted: 0,
+        weightForRate: 0,
+        downtime: { changeover: 0, production: 0, equipment: 0, maintenance: 0 }
+      };
+
+      records.forEach((record) => {
+        const stats = rollStats(record);
+        totals.totalKg += stats.totalKg;
+        totals.rollCount += stats.count;
+        totals.dayKg += stats.dayKg;
+        totals.nightKg += stats.nightKg;
+        totals.lineSpeedSum += asNumber(record.lineSpeed);
+        totals.goodWeighted += asNumber(record.goodRate) * stats.totalKg;
+        totals.scrapWeighted += asNumber(record.scrapRate) * stats.totalKg;
+        totals.weightForRate += stats.totalKg;
+        downtimeCategories.forEach((category) => {
+          totals.downtime[category.key] += asNumber(record.downtime?.[category.key]);
+        });
+      });
+
+      totals.days = records.length;
+      totals.tons = totals.totalKg / 1000;
+      totals.dayTons = totals.dayKg / 1000;
+      totals.nightTons = totals.nightKg / 1000;
+      totals.avgDailyTons = totals.days ? totals.tons / totals.days : 0;
+      totals.avgLineSpeed = totals.days ? totals.lineSpeedSum / totals.days : 0;
+      totals.avgGoodRate = totals.weightForRate ? totals.goodWeighted / totals.weightForRate : 0;
+      totals.avgScrapRate = totals.weightForRate ? totals.scrapWeighted / totals.weightForRate : 0;
+      return totals;
     }
 
     function updateClock() {
@@ -1243,74 +1367,74 @@
         day: "2-digit",
         weekday: "long"
       });
-      el("alarmUpdate").textContent = `${now.toLocaleTimeString("zh-CN", { hour12: false, hour: "2-digit", minute: "2-digit" })} 更新 / Update`;
     }
 
-    function rollStats() {
-      const totalKg = data.rollsKg.reduce((sum, value) => sum + asNumber(value), 0);
-      const count = data.rollsKg.length;
-      const avg = count ? totalKg / count : 0;
-      return { totalKg, count, avg, tons: totalKg / 1000 };
-    }
+    function updateKpis(record) {
+      const stats = rollStats(record);
+      const targetPct = record.targetOutput ? stats.tons / record.targetOutput * 100 : 0;
+      const speedGap = record.speedSet ? (record.lineSpeed - record.speedSet) / record.speedSet * 100 : 0;
 
-    function updateKpis() {
-      const rolls = rollStats();
-      const targetPct = data.targetOutput ? rolls.tons / data.targetOutput * 100 : 0;
-      const speedGap = data.speedSet ? (data.lineSpeed - data.speedSet) / data.speedSet * 100 : 0;
-
-      el("outputToday").textContent = rolls.tons.toFixed(1);
-      el("rollSummary").textContent = `${rolls.count} 卷 / ${fmt.format(Math.round(rolls.totalKg))} kg`;
+      el("outputToday").textContent = stats.tons.toFixed(1);
+      el("rollSummary").textContent = `${stats.count} 卷 / ${fmt.format(Math.round(stats.totalKg))} kg`;
       el("outputTrend").textContent = `${targetPct.toFixed(1)}%`;
-      el("lineSpeed").textContent = fmt.format(Math.round(data.lineSpeed));
-      el("speedSetText").textContent = `设定 / Set ${fmt.format(Math.round(data.speedSet))} kg/h`;
+      el("lineSpeed").textContent = fmt.format(Math.round(record.lineSpeed));
+      el("speedSetText").textContent = `设定 / Set ${fmt.format(Math.round(record.speedSet))} kg/h`;
       el("speedTrend").textContent = `${speedGap >= 0 ? "+" : ""}${speedGap.toFixed(1)}%`;
-      el("goodRate").textContent = asNumber(data.goodRate).toFixed(1);
-      el("goodTargetText").textContent = `目标 / Target ${asNumber(data.goodTarget).toFixed(1)}%`;
-      el("goodTrend").textContent = data.goodRate >= data.goodTarget ? "达标 / OK" : "关注 / Check";
-      el("scrapRate").textContent = asNumber(data.scrapRate).toFixed(1);
-      el("scrapTargetText").textContent = `控制 / Limit ${asNumber(data.scrapLimit).toFixed(1)}%`;
-      el("scrapTrend").textContent = data.scrapRate <= data.scrapLimit ? "受控 / OK" : "偏高 / High";
+      el("goodRate").textContent = asNumber(record.goodRate).toFixed(1);
+      el("goodTargetText").textContent = `目标 / Target ${asNumber(record.goodTarget).toFixed(1)}%`;
+      el("goodTrend").textContent = record.goodRate >= record.goodTarget ? "达标 / OK" : "关注 / Check";
+      el("scrapRate").textContent = asNumber(record.scrapRate).toFixed(1);
+      el("scrapTargetText").textContent = `控制 / Limit ${asNumber(record.scrapLimit).toFixed(1)}%`;
+      el("scrapTrend").textContent = record.scrapRate <= record.scrapLimit ? "受控 / OK" : "偏高 / High";
     }
 
-    function updateProductionInfo() {
-      const progress = clamp(asNumber(data.progress), 0, 100);
-      const rolls = rollStats();
-      el("batchStatus").textContent = data.batchStatus;
-      el("lineName").textContent = data.lineName;
-      el("runState").textContent = data.runState;
+    function updateProductionInfo(record) {
+      const progress = clamp(asNumber(record.progress), 0, 100);
+      const stats = rollStats(record);
+      el("selectedDayText").textContent = `${record.date} 日数据 / Daily`;
+      el("selectedMonthText").textContent = `${monthKey(record.date)} 月数据 / Monthly`;
+      el("batchStatus").textContent = record.batchStatus;
+      el("lineName").textContent = record.lineName;
+      el("runState").textContent = record.runState;
       el("orderProgress").style.width = `${progress}%`;
-      el("specNow").textContent = data.spec;
-      el("thicknessNow").textContent = data.thickness;
-      el("widthNow").textContent = data.width;
+      el("specNow").textContent = record.spec;
+      el("thicknessNow").textContent = record.thickness;
+      el("widthNow").textContent = record.width;
       el("progressText").textContent = `${Math.round(progress)}%`;
-      el("orderNo").textContent = data.orderNo;
-      el("customerNow").textContent = data.customer;
-      el("materialNow").textContent = data.material;
-      el("coronaNow").textContent = data.corona;
-      el("tractionNow").textContent = data.traction;
-      el("rollAverage").textContent = `平均 / Avg ${rolls.avg.toFixed(0)} kg`;
-      el("rollList").innerHTML = data.rollsKg.slice(-14).map((weight, index) => {
-        const rollNo = Math.max(1, data.rollsKg.length - 13 + index);
+      el("orderNo").textContent = record.orderNo;
+      el("customerNow").textContent = record.customer;
+      el("materialNow").textContent = record.material;
+      el("tractionNow").textContent = record.traction;
+      el("rollAverage").textContent = `平均 / Avg ${stats.avg.toFixed(0)} kg`;
+      el("rollList").innerHTML = allRolls(record).slice(-14).map((weight, index) => {
+        const rollNo = Math.max(1, stats.count - 13 + index);
         return `<span class="roll-chip">R${rollNo} ${fmt.format(weight)} kg</span>`;
       }).join("");
+      el("shiftRuleText").textContent = `${dayNumber(record.date)}号早班 Day 08-20 / ${dayNumber(record.date)}号晚班 Night 20-次日08`;
     }
 
-    function updateAlarms() {
-      const critical = data.alarms.filter((alarm) => alarm.level === "critical").length;
-      const warning = data.alarms.filter((alarm) => alarm.level === "warning").length;
-      el("criticalCount").textContent = critical;
-      el("warningCount").textContent = warning;
-      el("handledCount").textContent = data.handledCount;
-      el("alarmList").innerHTML = data.alarms.map((alarm) => `
-        <article class="alarm ${alarm.level}">
-          <div class="alarm-title">
-            <span>${safeText(alarm.title)}</span>
-            <span class="alarm-badge">${safeText(alarm.badge)}</span>
+    function updateMonthPanel() {
+      const month = monthlyStats();
+      const maxDowntime = Math.max(1, ...downtimeCategories.map((category) => month.downtime[category.key]));
+      el("monthTag").textContent = `${monthKey(data.selectedDate)} 月 / Month`;
+      el("monthOutput").textContent = `${month.tons.toFixed(1)}t`;
+      el("monthRolls").textContent = fmt.format(month.rollCount);
+      el("monthDays").textContent = fmt.format(month.days);
+      el("monthDailyAvg").textContent = `${month.avgDailyTons.toFixed(1)}t`;
+      el("monthGood").textContent = `${month.avgGoodRate.toFixed(1)}%`;
+      el("monthScrap").textContent = `${month.avgScrapRate.toFixed(1)}%`;
+      el("monthSpeed").textContent = fmt.format(Math.round(month.avgLineSpeed));
+      el("monthDowntimeList").innerHTML = downtimeCategories.map((category) => {
+        const value = month.downtime[category.key];
+        const width = value / maxDowntime * 100;
+        return `
+          <div class="month-row">
+            <span>${category.zh} / ${category.en}</span>
+            <div class="bar-track"><div class="bar-fill" style="width: ${width}%"></div></div>
+            <strong>${fmt.format(Math.round(value))}m</strong>
           </div>
-          <div class="alarm-detail">${safeText(alarm.detail)}</div>
-          <div class="alarm-time">持续 ${safeText(alarm.minutes)} 分钟 / Duration ${safeText(alarm.minutes)} min</div>
-        </article>
-      `).join("");
+        `;
+      }).join("");
     }
 
     function setupCanvas(canvas) {
@@ -1335,17 +1459,19 @@
       }
     }
 
-    function drawPareto() {
+    function drawPareto(record) {
       const canvas = el("paretoChart");
       const { ctx, width, height } = setupCanvas(canvas);
       ctx.clearRect(0, 0, width, height);
-      const pad = { left: 58, right: 58, top: 18, bottom: 58 };
+      const pad = { left: 58, right: 58, top: 18, bottom: 64 };
       const chartW = width - pad.left - pad.right;
       const chartH = height - pad.top - pad.bottom;
-      const values = data.downtime.length ? data.downtime : defaultData.downtime;
-      const max = Math.max(...values.map((item) => item.value)) * 1.18;
+      const values = downtimeCategories
+        .map((category) => ({ ...category, value: asNumber(record.downtime?.[category.key]) }))
+        .sort((a, b) => b.value - a.value);
+      const max = Math.max(1, ...values.map((item) => item.value)) * 1.18;
       const total = values.reduce((sum, item) => sum + item.value, 0) || 1;
-      const barGap = 14;
+      const barGap = 22;
       const barW = chartW / values.length - barGap;
       let cumulative = 0;
       const points = [];
@@ -1375,16 +1501,12 @@
         ctx.textAlign = "center";
         ctx.fillText(`${Math.round(item.value)}`, x + barW / 2, y - 12);
 
-        ctx.fillStyle = "rgba(237, 246, 247, 0.82)";
+        ctx.fillStyle = "rgba(237, 246, 247, 0.86)";
         ctx.font = "700 12px Microsoft YaHei, Arial";
-        ctx.save();
-        ctx.translate(x + barW / 2, pad.top + chartH + 18);
-        ctx.rotate(-0.13);
-        ctx.fillText(item.zh, 0, 0);
+        ctx.fillText(item.zh, x + barW / 2, pad.top + chartH + 20);
         ctx.fillStyle = "rgba(143, 164, 170, 0.92)";
         ctx.font = "600 10px Microsoft YaHei, Arial";
-        ctx.fillText(item.en || "", 0, 14);
-        ctx.restore();
+        ctx.fillText(item.en, x + barW / 2, pad.top + chartH + 36);
 
         cumulative += item.value;
         points.push({
@@ -1419,14 +1541,19 @@
       }
     }
 
-    function drawShift() {
+    function drawShift(record) {
       const canvas = el("shiftChart");
       const { ctx, width, height } = setupCanvas(canvas);
       ctx.clearRect(0, 0, width, height);
-      const pad = { left: 58, right: 38, top: 18, bottom: 42 };
+      const stats = rollStats(record);
+      const shifts = [
+        { zh: "早班", en: "Day", actual: stats.dayTons, target: asNumber(record.dayTarget), time: "08:00-20:00" },
+        { zh: "晚班", en: "Night", actual: stats.nightTons, target: asNumber(record.nightTarget), time: "20:00-08:00" }
+      ];
+      const pad = { left: 58, right: 38, top: 18, bottom: 46 };
       const chartW = width - pad.left - pad.right;
       const chartH = height - pad.top - pad.bottom;
-      const max = Math.max(26, ...data.shifts.map((shift) => Math.max(shift.target, shift.actual))) * 1.08;
+      const max = Math.max(26, ...shifts.map((shift) => Math.max(shift.target, shift.actual))) * 1.08;
 
       drawGrid(ctx, pad.left, pad.top, chartW, chartH, 4);
       ctx.fillStyle = "rgba(143, 164, 170, 0.92)";
@@ -1439,8 +1566,8 @@
         ctx.fillText(value.toFixed(0), pad.left - 12, y);
       }
 
-      data.shifts.forEach((shift, index) => {
-        const groupW = chartW / data.shifts.length;
+      shifts.forEach((shift, index) => {
+        const groupW = chartW / shifts.length;
         const x = pad.left + index * groupW + groupW * 0.2;
         const targetW = groupW * 0.25;
         const actualW = groupW * 0.25;
@@ -1467,83 +1594,94 @@
 
         ctx.fillStyle = "rgba(237, 246, 247, 0.86)";
         ctx.font = "800 16px Microsoft YaHei, Arial";
-        ctx.fillText(`${shift.zh} / ${shift.en}`, x + groupW * 0.28, base + 26);
+        ctx.fillText(`${shift.zh} / ${shift.en}`, x + groupW * 0.28, base + 24);
+        ctx.fillStyle = "rgba(143, 164, 170, 0.95)";
+        ctx.font = "650 11px Microsoft YaHei, Arial";
+        ctx.fillText(shift.time, x + groupW * 0.28, base + 39);
       });
     }
 
     function fillForm() {
-      el("rollWeightsInput").value = data.rollsKg.join("\n");
-      el("targetOutputInput").value = data.targetOutput;
-      el("lineSpeedInput").value = data.lineSpeed;
-      el("speedSetInput").value = data.speedSet;
-      el("goodRateInput").value = data.goodRate;
-      el("goodTargetInput").value = data.goodTarget;
-      el("scrapRateInput").value = data.scrapRate;
-      el("scrapLimitInput").value = data.scrapLimit;
-      el("lineNameInput").value = data.lineName;
-      el("runStateInput").value = data.runState;
-      el("batchStatusInput").value = data.batchStatus;
-      el("progressInput").value = data.progress;
-      el("specInput").value = data.spec;
-      el("thicknessInput").value = data.thickness;
-      el("widthInput").value = data.width;
-      el("orderNoInput").value = data.orderNo;
-      el("customerInput").value = data.customer;
-      el("materialInput").value = data.material;
-      el("coronaInput").value = data.corona;
-      el("tractionInput").value = data.traction;
-      el("dayActualInput").value = data.shifts[0]?.actual ?? 0;
-      el("dayTargetInput").value = data.shifts[0]?.target ?? 0;
-      el("nightActualInput").value = data.shifts[1]?.actual ?? 0;
-      el("nightTargetInput").value = data.shifts[1]?.target ?? 0;
-      el("downtimeInput").value = data.downtime.map((item) => `${item.zh}|${item.en}|${item.value}`).join("\n");
-      el("handledInput").value = data.handledCount;
-      el("alarmsInput").value = data.alarms.map((alarm) => `${alarm.level}|${alarm.badge}|${alarm.title}|${alarm.detail}|${alarm.minutes}`).join("\n");
+      const record = ensureRecord(data.selectedDate);
+      el("recordDateInput").value = record.date;
+      el("targetOutputInput").value = record.targetOutput;
+      el("dayRollsInput").value = (record.dayRollsKg || []).join("\n");
+      el("nightRollsInput").value = (record.nightRollsKg || []).join("\n");
+      el("dayTargetInput").value = record.dayTarget;
+      el("nightTargetInput").value = record.nightTarget;
+      el("lineSpeedInput").value = record.lineSpeed;
+      el("speedSetInput").value = record.speedSet;
+      el("goodRateInput").value = record.goodRate;
+      el("goodTargetInput").value = record.goodTarget;
+      el("scrapRateInput").value = record.scrapRate;
+      el("scrapLimitInput").value = record.scrapLimit;
+      el("lineNameInput").value = record.lineName;
+      el("runStateInput").value = record.runState;
+      el("batchStatusInput").value = record.batchStatus;
+      el("progressInput").value = record.progress;
+      el("specInput").value = record.spec;
+      el("thicknessInput").value = record.thickness;
+      el("widthInput").value = record.width;
+      el("orderNoInput").value = record.orderNo;
+      el("customerInput").value = record.customer;
+      el("materialInput").value = record.material;
+      el("tractionInput").value = record.traction;
+      el("downtimeChangeoverInput").value = record.downtime?.changeover ?? 0;
+      el("downtimeProductionInput").value = record.downtime?.production ?? 0;
+      el("downtimeEquipmentInput").value = record.downtime?.equipment ?? 0;
+      el("downtimeMaintenanceInput").value = record.downtime?.maintenance ?? 0;
     }
 
     function readForm() {
-      const rolls = parseRolls(el("rollWeightsInput").value);
-      data = {
-        ...data,
-        rollsKg: rolls,
-        targetOutput: asNumber(el("targetOutputInput").value, data.targetOutput),
-        lineSpeed: asNumber(el("lineSpeedInput").value, data.lineSpeed),
-        speedSet: asNumber(el("speedSetInput").value, data.speedSet),
-        goodRate: asNumber(el("goodRateInput").value, data.goodRate),
-        goodTarget: asNumber(el("goodTargetInput").value, data.goodTarget),
-        scrapRate: asNumber(el("scrapRateInput").value, data.scrapRate),
-        scrapLimit: asNumber(el("scrapLimitInput").value, data.scrapLimit),
+      const date = el("recordDateInput").value || data.selectedDate;
+      data.selectedDate = date;
+      const record = ensureRecord(date);
+      Object.assign(record, {
+        date,
+        targetOutput: asNumber(el("targetOutputInput").value, record.targetOutput),
+        dayRollsKg: parseRolls(el("dayRollsInput").value),
+        nightRollsKg: parseRolls(el("nightRollsInput").value),
+        dayTarget: asNumber(el("dayTargetInput").value, record.dayTarget),
+        nightTarget: asNumber(el("nightTargetInput").value, record.nightTarget),
+        lineSpeed: asNumber(el("lineSpeedInput").value, record.lineSpeed),
+        speedSet: asNumber(el("speedSetInput").value, record.speedSet),
+        goodRate: asNumber(el("goodRateInput").value, record.goodRate),
+        goodTarget: asNumber(el("goodTargetInput").value, record.goodTarget),
+        scrapRate: asNumber(el("scrapRateInput").value, record.scrapRate),
+        scrapLimit: asNumber(el("scrapLimitInput").value, record.scrapLimit),
         lineName: el("lineNameInput").value.trim(),
         runState: el("runStateInput").value.trim(),
         batchStatus: el("batchStatusInput").value.trim(),
-        progress: asNumber(el("progressInput").value, data.progress),
+        progress: asNumber(el("progressInput").value, record.progress),
         spec: el("specInput").value.trim(),
         thickness: el("thicknessInput").value.trim(),
         width: el("widthInput").value.trim(),
         orderNo: el("orderNoInput").value.trim(),
         customer: el("customerInput").value.trim(),
         material: el("materialInput").value.trim(),
-        corona: el("coronaInput").value.trim(),
         traction: el("tractionInput").value.trim(),
-        handledCount: asNumber(el("handledInput").value, data.handledCount),
-        shifts: [
-          { zh: "早班", en: "Day", actual: asNumber(el("dayActualInput").value, 0), target: asNumber(el("dayTargetInput").value, 0) },
-          { zh: "晚班", en: "Night", actual: asNumber(el("nightActualInput").value, 0), target: asNumber(el("nightTargetInput").value, 0) }
-        ],
-        downtime: parseDowntime(el("downtimeInput").value),
-        alarms: parseAlarms(el("alarmsInput").value)
-      };
+        downtime: {
+          changeover: asNumber(el("downtimeChangeoverInput").value, 0),
+          production: asNumber(el("downtimeProductionInput").value, 0),
+          equipment: asNumber(el("downtimeEquipmentInput").value, 0),
+          maintenance: asNumber(el("downtimeMaintenanceInput").value, 0)
+        }
+      });
+      data.dailyRecords = data.dailyRecords
+        .filter((item, index, records) => records.findIndex((recordItem) => recordItem.date === item.date) === index)
+        .sort((a, b) => a.date.localeCompare(b.date));
       saveData();
       render();
     }
 
     function render() {
+      const record = ensureRecord(data.selectedDate);
       updateClock();
-      updateKpis();
-      updateProductionInfo();
-      updateAlarms();
-      drawPareto();
-      drawShift();
+      updateKpis(record);
+      updateProductionInfo(record);
+      updateMonthPanel();
+      drawPareto(record);
+      drawShift(record);
     }
 
     el("entryToggle").addEventListener("click", () => {
@@ -1554,18 +1692,22 @@
     el("entryOverlay").addEventListener("click", (event) => {
       if (event.target === el("entryOverlay")) el("entryOverlay").classList.remove("open");
     });
+    el("recordDateInput").addEventListener("change", () => {
+      data.selectedDate = el("recordDateInput").value || data.selectedDate;
+      fillForm();
+      render();
+    });
     el("applyData").addEventListener("click", () => {
       readForm();
       el("entryOverlay").classList.remove("open");
     });
     el("resetData").addEventListener("click", () => {
-      data = structuredClone(defaultData);
+      data = clone(defaultData);
       saveData();
       fillForm();
       render();
     });
 
-    fillForm();
     render();
     setInterval(updateClock, 1000);
     window.addEventListener("resize", render);
