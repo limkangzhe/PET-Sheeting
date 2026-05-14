@@ -94,9 +94,38 @@ function mergeRecordMaps(target, source) {
       downtime: {
         ...(record.downtime || {}),
         ...(incoming.downtime || {})
-      }
+      },
+      productionBreakdown: addBreakdown(record.productionBreakdown, incoming.productionBreakdown)
     });
   }
+}
+
+function addBreakdown(a = {}, b = {}) {
+  return {
+    goodKg: numberFrom(a.goodKg) + numberFrom(b.goodKg),
+    rejectKg: numberFrom(a.rejectKg) + numberFrom(b.rejectKg),
+    flakesKg: numberFrom(a.flakesKg) + numberFrom(b.flakesKg),
+    purgingKg: numberFrom(a.purgingKg) + numberFrom(b.purgingKg),
+    lossKg: numberFrom(a.lossKg) + numberFrom(b.lossKg),
+    totalKg: numberFrom(a.totalKg) + numberFrom(b.totalKg)
+  };
+}
+
+function applyProductionFormula(record, breakdown) {
+  const totalKg = numberFrom(breakdown?.totalKg);
+  const goodKg = numberFrom(breakdown?.goodKg);
+  if (totalKg > 0) {
+    record.goodRate = round(goodKg / totalKg * 100, 1);
+    record.scrapRate = round((totalKg - goodKg) / totalKg * 100, 1);
+  }
+  record.productionBreakdown = {
+    goodKg,
+    rejectKg: numberFrom(breakdown?.rejectKg),
+    flakesKg: numberFrom(breakdown?.flakesKg),
+    purgingKg: numberFrom(breakdown?.purgingKg),
+    lossKg: numberFrom(breakdown?.lossKg),
+    totalKg
+  };
 }
 
 async function findSourceFile() {
@@ -132,6 +161,9 @@ function parseTotalProduction(values, month) {
     shift: findColumn(header, ["Shift", "班次"]),
     goodKg: findColumn(header, ["成品"]),
     badKg: findColumn(header, ["不良品"]),
+    flakesKg: findColumn(header, ["边料破碎", "Flakes"]),
+    purgingKg: findColumn(header, ["机头料", "换网", "Purging"]),
+    lossKg: findColumn(header, ["无形损耗", "Loss"]),
     badProductKg: findColumn(header, ["不合格品Kg"]),
     goodRolls: findColumn(header, ["合格品卷材"]),
     badRolls: findColumn(header, ["不合格品卷材"]),
@@ -149,18 +181,29 @@ function parseTotalProduction(values, month) {
     const date = `${month}-${String(day).padStart(2, "0")}`;
     const record = ensureRecord(records, date);
     const goodKg = numberFrom(row[columns.goodKg], 0);
-    const badKg = numberFrom(row[columns.badKg], 0) + numberFrom(row[columns.badProductKg], 0);
-    const outputKg = normalizeKg(numberFrom(row[columns.outputKg], 0) || goodKg + badKg);
+    const rejectKg = numberFrom(row[columns.badKg], 0) + numberFrom(row[columns.badProductKg], 0);
+    const flakesKg = numberFrom(row[columns.flakesKg], 0);
+    const purgingKg = numberFrom(row[columns.purgingKg], 0);
+    const lossKg = numberFrom(row[columns.lossKg], 0);
+    const componentKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
+    const outputKg = normalizeKg(componentKg || numberFrom(row[columns.outputKg], 0));
     const rollCount = Math.max(1, Math.round(numberFrom(row[columns.goodRolls], 0) + numberFrom(row[columns.badRolls], 0)));
     const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
 
     if (shift === "day") record.dayRollsKg = rolls;
     if (shift === "night") record.nightRollsKg = rolls;
 
-    const qualityBase = goodKg + badKg;
-    if (qualityBase > 0) {
-      record.goodRate = round(goodKg / qualityBase * 100, 1);
-      record.scrapRate = round(badKg / qualityBase * 100, 1);
+    if (outputKg > 0) {
+      record.goodRate = round(goodKg / outputKg * 100, 1);
+      record.scrapRate = round((outputKg - goodKg) / outputKg * 100, 1);
+      record.productionBreakdown = {
+        goodKg,
+        rejectKg,
+        flakesKg,
+        purgingKg,
+        lossKg,
+        totalKg: outputKg
+      };
     }
 
     const totalKg = rollStats(record).totalKg;
@@ -215,21 +258,20 @@ function parseDailyWorksheets(workbook, fallbackMonth) {
       const parsed = parseDailyBlock(rows, index, fallbackMonth, fallbackDay);
       if (!parsed) continue;
       const record = ensureRecord(records, parsed.date);
-      Object.assign(record, parsed.record, {
-        dayRollsKg: parsed.shift === "day" ? parsed.rolls : record.dayRollsKg,
-        nightRollsKg: parsed.shift === "night" ? parsed.rolls : record.nightRollsKg,
-        downtime: {
-          ...record.downtime,
-          [parsed.shift === "day" ? "changeover" : "changeover"]: record.downtime.changeover + parsed.downtime.changeover,
-          production: record.downtime.production + parsed.downtime.production,
-          equipment: record.downtime.equipment + parsed.downtime.equipment,
-          maintenance: record.downtime.maintenance + parsed.downtime.maintenance
-        }
-      });
+      const existingBreakdown = record.productionBreakdown;
+      Object.assign(record, parsed.record);
+      if (parsed.shift === "day") record.dayRollsKg = parsed.rolls;
+      if (parsed.shift === "night") record.nightRollsKg = parsed.rolls;
+      record.downtime.changeover += parsed.downtime.changeover;
+      record.downtime.production += parsed.downtime.production;
+      record.downtime.equipment += parsed.downtime.equipment;
+      record.downtime.maintenance += parsed.downtime.maintenance;
+      record.productionBreakdown = addBreakdown(existingBreakdown, parsed.record.productionBreakdown);
     }
   }
   for (const record of records.values()) {
     record.progress = clamp(rollStats(record).totalKg / (record.targetOutput * 1000) * 100, 0, 100);
+    applyProductionFormula(record, record.productionBreakdown);
   }
   return records;
 }
@@ -246,13 +288,15 @@ function parseDailyBlock(rows, dateRowIndex, fallbackMonth, fallbackDay) {
   const statsRows = rows.slice(dateRowIndex + 17, dateRowIndex + 24);
   const goodsKg = numberAfterLabelInRows(outputRows, "Goods");
   const rejectKg = numberAfterLabelInRows(outputRows, "Reject");
+  const flakesKg = numberAfterLabelInRows(outputRows, "Flakes");
+  const purgingKg = numberAfterLabelInRows(outputRows, "Purging");
+  const lossKg = numberAfterLabelInRows(outputRows, "Loss");
   const goodsRolls = numberAfterLabel(customerRow, "Goods Roll");
   const rejectRolls = numberAfterLabel(customerRow, "Rej Roll");
   const rollCount = Math.max(1, Math.round(goodsRolls + rejectRolls));
-  const outputKg = goodsKg + rejectKg;
+  const outputKg = goodsKg + rejectKg + flakesKg + purgingKg + lossKg;
   const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
   const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed") || config.lineSpeed;
-  const qualityBase = goodsKg + rejectKg;
 
   return {
     date,
@@ -267,14 +311,22 @@ function parseDailyBlock(rows, dateRowIndex, fallbackMonth, fallbackDay) {
     record: {
       lineSpeed,
       speedSet: config.speedSet,
-      goodRate: qualityBase ? round(goodsKg / qualityBase * 100, 1) : config.goodTarget,
-      scrapRate: qualityBase ? round(rejectKg / qualityBase * 100, 1) : 100 - config.goodTarget,
+      goodRate: outputKg ? round(goodsKg / outputKg * 100, 1) : config.goodTarget,
+      scrapRate: outputKg ? round((outputKg - goodsKg) / outputKg * 100, 1) : 100 - config.goodTarget,
       progress: clamp(outputKg / (config.dailyTarget * 1000) * 100, 0, 100),
       orderNo: valueAfterLabel(poRow, "PO No") || "",
       spec: valueAfterLabel(poRow, "Type") || defaults.spec,
       customer: valueAfterLabel(customerRow, "Customer") || defaults.customer,
       material: defaults.material,
-      traction: defaults.traction
+      traction: defaults.traction,
+      productionBreakdown: {
+        goodKg: goodsKg,
+        rejectKg,
+        flakesKg,
+        purgingKg,
+        lossKg,
+        totalKg: outputKg
+      }
     }
   };
 }
@@ -513,6 +565,14 @@ function ensureRecord(records, date) {
         production: 0,
         equipment: 0,
         maintenance: 0
+      },
+      productionBreakdown: {
+        goodKg: 0,
+        rejectKg: 0,
+        flakesKg: 0,
+        purgingKg: 0,
+        lossKg: 0,
+        totalKg: 0
       }
     });
   }

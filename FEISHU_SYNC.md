@@ -10,6 +10,18 @@
 4. 同步任务生成 `dashboard-data.json`。
 5. 看板每 60 秒自动读取 `dashboard-data.json`。
 
+## 网站内更新与下载
+
+打开看板后，右上角有：
+
+- `更新 Excel / Upload`：可以直接选择 `.xlsx`、`.csv` 或 `dashboard-data.json`，网页会立即刷新当前看板数据。
+- `下载数据 / Download`：下载当前看板使用的 `dashboard-data.json`。
+- `重置布局 / Layout`：恢复默认看板位置。
+
+注意：网页内上传会更新当前浏览器里的看板。如果你要让 GitHub Pages 上的公开看板也更新，请把下载出来的 `dashboard-data.json` 上传回 GitHub 仓库根目录。
+
+主看板里的卡片可以拖动换位置，位置会保存在当前浏览器里。
+
 ## 上传文件位置
 
 请把导出的文件放在：
@@ -86,6 +98,13 @@ GitHub Pages 上的看板会读取这个文件。
 - `PO No.`
 - `Customer`
 - `Metal` / `Material`
+
+当前产量与正品率口径：
+
+```text
+总产出 = Good 正品 + Reject 废品 + Flakes 边料 + Purging 机头料 + Loss 无形损耗
+正品率 = Good 正品 / 总产出
+```
 
 白班 / 早班会进入：
 

@@ -186,6 +186,14 @@
       white-space: nowrap;
     }
 
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .entry-button,
     .panel-button {
       border: 1px solid rgba(53, 210, 230, 0.35);
@@ -201,6 +209,14 @@
       padding: 10px 13px;
       color: var(--cyan);
       font-size: 13px;
+    }
+
+    .file-input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .entry-button:hover,
@@ -518,13 +534,25 @@
       text-overflow: ellipsis;
     }
 
+    .panel[draggable="true"] .panel-header {
+      cursor: grab;
+    }
+
+    .panel.dragging {
+      opacity: 0.42;
+      outline: 2px dashed rgba(53, 210, 230, 0.55);
+    }
+
+    .panel.drag-over {
+      border-color: rgba(53, 210, 230, 0.72);
+      box-shadow: 0 0 0 2px rgba(53, 210, 230, 0.12), var(--shadow);
+    }
+
     .pareto-panel {
-      grid-column: 2 / 3;
       --accent: var(--amber);
     }
 
     .shift-panel {
-      grid-column: 2 / 3;
       --accent: var(--blue);
     }
 
@@ -839,7 +867,13 @@
       </section>
 
       <section class="clock-wrap" aria-label="Current time">
-        <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
+        <div class="top-actions">
+          <button class="entry-button" id="uploadData" type="button">更新 Excel / Upload</button>
+          <button class="entry-button" id="downloadData" type="button">下载数据 / Download</button>
+          <button class="entry-button" id="resetLayout" type="button">重置布局 / Layout</button>
+          <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
+          <input class="file-input" id="dataFileInput" type="file" accept=".xlsx,.csv,.json,application/json,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        </div>
         <div class="clock">
           <div class="time" id="timeNow">--:--:--</div>
           <div class="date" id="dateNow">----/--/--</div>
@@ -886,7 +920,7 @@
     </section>
 
     <section class="main-grid">
-      <article class="card panel spec-panel">
+      <article class="card panel spec-panel" data-panel-id="spec" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">日生产信息<small>Daily Production Info</small></span></div>
           <div class="panel-tag" id="batchStatus">批次进行中 / Batch Running</div>
@@ -930,6 +964,11 @@
             <span id="rollAverage">平均 / Avg 0 kg</span>
           </div>
           <div class="roll-list" id="rollList"></div>
+          <div class="roll-head" style="margin-top: 10px;">
+            <span>产出组成 / Output Mix</span>
+            <span>Good + Reject + Flakes + Purging + Loss</span>
+          </div>
+          <div class="roll-list" id="breakdownList"></div>
         </section>
 
         <div class="spec-list" aria-label="Order detail">
@@ -940,7 +979,7 @@
         </div>
       </article>
 
-      <article class="card panel pareto-panel">
+      <article class="card panel pareto-panel" data-panel-id="downtime" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">日停机分类 Pareto<small>Daily Downtime Pareto</small></span></div>
           <div class="panel-tag">分钟 / min / 累计占比 Cumulative</div>
@@ -950,7 +989,7 @@
         </div>
       </article>
 
-      <article class="card panel month-panel">
+      <article class="card panel month-panel" data-panel-id="month" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">月数据自动统计<small>Monthly Auto Summary</small></span></div>
           <div class="panel-tag" id="monthTag">---- 月 / Month</div>
@@ -972,7 +1011,7 @@
         <section class="month-list" id="monthDowntimeList" aria-label="Monthly downtime categories"></section>
       </article>
 
-      <article class="card panel shift-panel">
+      <article class="card panel shift-panel" data-panel-id="shift" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">早晚班产量对比<small>Shift Output</small></span></div>
           <div class="panel-tag" id="shiftRuleText">早班 Day 08-20 / 晚班 Night 20-08</div>
@@ -1144,6 +1183,8 @@
 
   <script>
     const storageKey = "pet-sheet-dashboard-daily-monthly-v2";
+    const layoutKey = "pet-sheet-dashboard-panel-layout-v1";
+    const defaultPanelOrder = ["spec", "shift", "month", "downtime"];
     const clone = (value) => JSON.parse(JSON.stringify(value));
     const fmt = new Intl.NumberFormat("zh-CN");
     const el = (id) => document.getElementById(id);
@@ -1227,6 +1268,7 @@
 
     let data = loadData();
     let dataSourceLabel = "手动数据 / Manual";
+    let localOverride = localStorage.getItem(`${storageKey}-local-override`) === "1";
 
     function loadData() {
       try {
@@ -1259,6 +1301,7 @@
     }
 
     async function loadSyncedData() {
+      if (localOverride) return;
       try {
         const response = await fetch(`dashboard-data.json?ts=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) return;
@@ -1267,6 +1310,7 @@
         if (!synced) return;
         data = synced;
         dataSourceLabel = payload.source || "文件同步 / File Sync";
+        localStorage.setItem(`${storageKey}-local-override`, "0");
         render();
       } catch {
         dataSourceLabel = "手动数据 / Manual";
@@ -1294,6 +1338,27 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function numberFrom(value, fallback = 0) {
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      const cleaned = String(value ?? "").replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+      if (!cleaned) return fallback;
+      const number = Number(cleaned[0]);
+      return Number.isFinite(number) ? number : fallback;
+    }
+
+    function round(value, digits) {
+      const factor = 10 ** digits;
+      return Math.round(value * factor) / factor;
+    }
+
+    function includes(value, expected) {
+      return String(value || "").toLowerCase().includes(String(expected).toLowerCase());
+    }
+
+    function text(value) {
+      return String(value ?? "").trim();
     }
 
     function monthKey(date) {
@@ -1394,6 +1459,521 @@
       return totals;
     }
 
+    function payloadFromRecords(records, source) {
+      const dailyRecords = [...records.values()]
+        .filter((record) => rollStats(record).totalKg >= 1000)
+        .sort((a, b) => a.date.localeCompare(b.date));
+      if (!dailyRecords.length) throw new Error("No valid production records found.");
+      return {
+        source,
+        syncedAt: new Date().toISOString(),
+        selectedDate: dailyRecords.at(-1).date,
+        dailyRecords
+      };
+    }
+
+    function createParsedRecord(date) {
+      const base = clone(defaultData.dailyRecords[defaultData.dailyRecords.length - 1]);
+      return {
+        ...base,
+        date,
+        dayRollsKg: [],
+        nightRollsKg: [],
+        progress: 0,
+        orderNo: `PO-${date.replaceAll("-", "").slice(2)}-001`,
+        customer: "",
+        material: "",
+        downtime: { changeover: 0, production: 0, equipment: 0, maintenance: 0 },
+        productionBreakdown: { goodKg: 0, rejectKg: 0, flakesKg: 0, purgingKg: 0, lossKg: 0, totalKg: 0 }
+      };
+    }
+
+    function ensureParsedRecord(records, date) {
+      if (!records.has(date)) records.set(date, createParsedRecord(date));
+      return records.get(date);
+    }
+
+    function mergeRecordMaps(target, source) {
+      for (const [date, incoming] of source.entries()) {
+        const record = ensureParsedRecord(target, date);
+        Object.assign(record, incoming, {
+          dayRollsKg: incoming.dayRollsKg?.length ? incoming.dayRollsKg : record.dayRollsKg,
+          nightRollsKg: incoming.nightRollsKg?.length ? incoming.nightRollsKg : record.nightRollsKg,
+          downtime: { ...(record.downtime || {}), ...(incoming.downtime || {}) },
+          productionBreakdown: addBreakdown(record.productionBreakdown, incoming.productionBreakdown)
+        });
+      }
+    }
+
+    function addBreakdown(a = {}, b = {}) {
+      return {
+        goodKg: numberFrom(a.goodKg) + numberFrom(b.goodKg),
+        rejectKg: numberFrom(a.rejectKg) + numberFrom(b.rejectKg),
+        flakesKg: numberFrom(a.flakesKg) + numberFrom(b.flakesKg),
+        purgingKg: numberFrom(a.purgingKg) + numberFrom(b.purgingKg),
+        lossKg: numberFrom(a.lossKg) + numberFrom(b.lossKg),
+        totalKg: numberFrom(a.totalKg) + numberFrom(b.totalKg)
+      };
+    }
+
+    async function buildPayloadFromFile(file) {
+      const name = file.name || "uploaded-data";
+      const lower = name.toLowerCase();
+      if (lower.endsWith(".json")) {
+        const payload = JSON.parse(await file.text());
+        payload.source = payload.source || `网页上传 / Browser Upload (${name})`;
+        return payload;
+      }
+      if (lower.endsWith(".csv")) {
+        const month = inferMonthFromName(name);
+        const records = parseTotalProductionRows(parseCsv(await file.text()), month);
+        return payloadFromRecords(records, `CSV网页上传 / CSV Upload (${name})`);
+      }
+      if (lower.endsWith(".xlsx")) {
+        const workbook = await parseXlsxFile(file);
+        const month = inferMonthFromName(name);
+        const records = parseTotalProductionRows(workbook.sheets.get("总产量") || firstNonEmptySheet(workbook), month);
+        mergeRecordMaps(records, parseDailyWorksheets(workbook, month));
+        const downtimeRows = workbook.sheets.get("每小时产量") || [];
+        if (downtimeRows.length) mergeDowntimeRows(records, downtimeRows, month);
+        return payloadFromRecords(records, `Excel网页上传 / Excel Upload (${name})`);
+      }
+      throw new Error("Unsupported file type. Please upload .xlsx, .csv or dashboard-data.json.");
+    }
+
+    function parseTotalProductionRows(values, month) {
+      const records = new Map();
+      if (!values.length) return records;
+      const headerRowIndex = values.findIndex((row) => row.some((cell) => same(cell, "Date") || same(cell, "日期")));
+      if (headerRowIndex < 0) return records;
+      const header = values[headerRowIndex].map((cell) => String(cell || "").trim());
+      const columns = {
+        date: findColumn(header, ["Date", "日期"]),
+        shift: findColumn(header, ["Shift", "班次"]),
+        goodKg: findColumn(header, ["成品", "Good"]),
+        rejectKg: findColumn(header, ["不良品", "Reject"]),
+        flakesKg: findColumn(header, ["边料破碎", "Flakes"]),
+        purgingKg: findColumn(header, ["机头料", "换网", "Purging"]),
+        lossKg: findColumn(header, ["无形损耗", "Loss"]),
+        badProductKg: findColumn(header, ["不合格品Kg"]),
+        goodRolls: findColumn(header, ["合格品卷材"]),
+        badRolls: findColumn(header, ["不合格品卷材"]),
+        outputKg: findColumn(header, ["产量"]),
+        poNo: findColumn(header, ["PO No.", "PO"]),
+        customer: findColumn(header, ["Customer", "客户"]),
+        material: findColumn(header, ["Metal", "材料", "Material"])
+      };
+
+      for (const row of values.slice(headerRowIndex + 1)) {
+        const day = parseDay(row[columns.date]);
+        const shift = parseShiftValue(row[columns.shift]);
+        if (!day || !shift) continue;
+        const date = `${month}-${String(day).padStart(2, "0")}`;
+        const record = ensureParsedRecord(records, date);
+        const goodKg = numberFrom(row[columns.goodKg]);
+        const rejectKg = numberFrom(row[columns.rejectKg]) + numberFrom(row[columns.badProductKg]);
+        const flakesKg = numberFrom(row[columns.flakesKg]);
+        const purgingKg = numberFrom(row[columns.purgingKg]);
+        const lossKg = numberFrom(row[columns.lossKg]);
+        const componentKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
+        const outputKg = normalizeKg(componentKg || numberFrom(row[columns.outputKg]));
+        const rollCount = Math.max(1, Math.round(numberFrom(row[columns.goodRolls]) + numberFrom(row[columns.badRolls])));
+        const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
+        if (shift === "day") record.dayRollsKg = rolls;
+        if (shift === "night") record.nightRollsKg = rolls;
+        applyProductionFormula(record, { goodKg, rejectKg, flakesKg, purgingKg, lossKg, totalKg: outputKg });
+        record.progress = clamp(rollStats(record).totalKg / (record.targetOutput * 1000) * 100, 0, 100);
+        record.orderNo = text(row[columns.poNo]) || record.orderNo;
+        record.customer = text(row[columns.customer]) || record.customer;
+        record.material = text(row[columns.material]) || record.material;
+      }
+      return records;
+    }
+
+    function parseDailyWorksheets(workbook, fallbackMonth) {
+      const records = new Map();
+      for (const [sheetName, rows] of workbook.sheets.entries()) {
+        if (!/^\d{1,2}$/.test(String(sheetName).trim())) continue;
+        const fallbackDay = Number(sheetName);
+        const dateRows = rows
+          .map((row, index) => ({ row, index }))
+          .filter(({ row }) => row.some((cell) => includes(cell, "Date")) && row.some((cell) => includes(cell, "Shift")));
+        for (const { index } of dateRows) {
+          const parsed = parseDailyBlockRows(rows, index, fallbackMonth, fallbackDay);
+          if (!parsed) continue;
+          const record = ensureParsedRecord(records, parsed.date);
+          const existingBreakdown = record.productionBreakdown;
+          Object.assign(record, parsed.record);
+          if (parsed.shift === "day") record.dayRollsKg = parsed.rolls;
+          if (parsed.shift === "night") record.nightRollsKg = parsed.rolls;
+          record.downtime.changeover += parsed.downtime.changeover;
+          record.downtime.production += parsed.downtime.production;
+          record.downtime.equipment += parsed.downtime.equipment;
+          record.downtime.maintenance += parsed.downtime.maintenance;
+          record.productionBreakdown = addBreakdown(existingBreakdown, parsed.record.productionBreakdown);
+        }
+      }
+      for (const record of records.values()) {
+        const total = rollStats(record).totalKg;
+        record.progress = clamp(total / (record.targetOutput * 1000) * 100, 0, 100);
+        applyProductionFormula(record, record.productionBreakdown);
+      }
+      return records;
+    }
+
+    function parseDailyBlockRows(rows, dateRowIndex, fallbackMonth, fallbackDay) {
+      const dateRow = rows[dateRowIndex] || [];
+      const poRow = rows[dateRowIndex - 1] || [];
+      const customerRow = rows[dateRowIndex + 1] || [];
+      const shift = parseShiftValue(valueAfterLabel(dateRow, "Shift"));
+      if (!shift) return null;
+      const date = `${fallbackMonth}-${String(fallbackDay).padStart(2, "0")}`;
+      const outputRows = rows.slice(dateRowIndex + 3, dateRowIndex + 13);
+      const statsRows = rows.slice(dateRowIndex + 17, dateRowIndex + 24);
+      const goodKg = numberAfterLabelInRows(outputRows, "Goods");
+      const rejectKg = numberAfterLabelInRows(outputRows, "Reject");
+      const flakesKg = numberAfterLabelInRows(outputRows, "Flakes");
+      const purgingKg = numberAfterLabelInRows(outputRows, "Purging");
+      const lossKg = numberAfterLabelInRows(outputRows, "Loss");
+      const totalKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
+      const goodsRolls = numberAfterLabel(customerRow, "Goods Roll");
+      const rejectRolls = numberAfterLabel(customerRow, "Rej Roll");
+      const rollCount = Math.max(1, Math.round(goodsRolls + rejectRolls));
+      const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed") || 1400;
+      const productionBreakdown = { goodKg, rejectKg, flakesKg, purgingKg, lossKg, totalKg };
+      const record = {
+        lineSpeed,
+        goodRate: totalKg ? round(goodKg / totalKg * 100, 1) : 0,
+        scrapRate: totalKg ? round((totalKg - goodKg) / totalKg * 100, 1) : 0,
+        progress: clamp(totalKg / (46 * 1000) * 100, 0, 100),
+        orderNo: valueAfterLabel(poRow, "PO No") || "",
+        spec: valueAfterLabel(poRow, "Type") || "透明片材 / Clear Sheet",
+        customer: valueAfterLabel(customerRow, "Customer") || "",
+        productionBreakdown
+      };
+      return {
+        date,
+        shift,
+        rolls: totalKg > 0 ? distributeRolls(totalKg, rollCount) : [],
+        downtime: {
+          changeover: hoursToMinutes(numberAfterLabelInRows(statsRows, "Change Spec")),
+          production: hoursToMinutes(numberAfterLabelInRows(statsRows, "Production Abnormal")),
+          equipment: hoursToMinutes(numberAfterLabelInRows(statsRows, "Machinary abnormal") || numberAfterLabelInRows(statsRows, "Machinery abnormal")),
+          maintenance: 0
+        },
+        record
+      };
+    }
+
+    function applyProductionFormula(record, breakdown) {
+      const totalKg = numberFrom(breakdown?.totalKg);
+      const goodKg = numberFrom(breakdown?.goodKg);
+      if (totalKg > 0) {
+        record.goodRate = round(goodKg / totalKg * 100, 1);
+        record.scrapRate = round((totalKg - goodKg) / totalKg * 100, 1);
+      }
+      record.productionBreakdown = {
+        goodKg,
+        rejectKg: numberFrom(breakdown?.rejectKg),
+        flakesKg: numberFrom(breakdown?.flakesKg),
+        purgingKg: numberFrom(breakdown?.purgingKg),
+        lossKg: numberFrom(breakdown?.lossKg),
+        totalKg
+      };
+    }
+
+    function mergeDowntimeRows(records, values, month) {
+      const headerRowIndex = values.findIndex((row) => row.some((cell) => same(cell, "号") || same(cell, "日期") || same(cell, "Date")));
+      if (headerRowIndex < 0) return;
+      const header = values[headerRowIndex].map((cell) => String(cell || "").trim());
+      const columns = {
+        date: findColumn(header, ["号", "Date", "日期"]),
+        shift: findColumn(header, ["班组", "Shift"]),
+        changeover: findColumn(header, ["停机换款", "Changeover"]),
+        production: findColumn(header, ["生产异常", "Production"]),
+        equipment: findColumn(header, ["设备异常", "Equipment"]),
+        maintenance: findColumn(header, ["规划维保", "计划维保", "Maintenance"])
+      };
+      let lastDay = 0;
+      for (const row of values.slice(headerRowIndex + 1)) {
+        const explicitDay = parseDay(row[columns.date]);
+        if (explicitDay) lastDay = explicitDay;
+        if (!lastDay || !parseShiftValue(row[columns.shift])) continue;
+        const record = ensureParsedRecord(records, `${month}-${String(lastDay).padStart(2, "0")}`);
+        record.downtime.changeover += hoursToMinutes(row[columns.changeover]);
+        record.downtime.production += hoursToMinutes(row[columns.production]);
+        record.downtime.equipment += hoursToMinutes(row[columns.equipment]);
+        record.downtime.maintenance += hoursToMinutes(row[columns.maintenance]);
+      }
+    }
+
+    function findColumn(header, candidates) {
+      for (const candidate of candidates) {
+        const index = header.findIndex((name) => String(name).toLowerCase().includes(String(candidate).toLowerCase()));
+        if (index >= 0) return index;
+      }
+      return -1;
+    }
+
+    function parseDay(value) {
+      const match = String(value ?? "").match(/\d{1,2}/);
+      if (!match) return 0;
+      const day = Number(match[0]);
+      return day >= 1 && day <= 31 ? day : 0;
+    }
+
+    function parseShiftValue(value) {
+      const raw = String(value ?? "").toLowerCase();
+      if (/morning|白班|早班|\bd\b|day/.test(raw)) return "day";
+      if (/night|晚班|\bn\b/.test(raw)) return "night";
+      return "";
+    }
+
+    function same(value, expected) {
+      return String(value || "").trim().toLowerCase() === String(expected).trim().toLowerCase();
+    }
+
+    function normalizeKg(value) {
+      if (!value) return 0;
+      return value < 200 ? value * 1000 : value;
+    }
+
+    function distributeRolls(totalKg, count) {
+      if (!totalKg || !count) return [];
+      const base = Math.floor(totalKg / count);
+      const rolls = Array.from({ length: count }, (_, index) => base + ((index % 5) - 2));
+      let diff = Math.round(totalKg - rolls.reduce((sum, value) => sum + value, 0));
+      let index = 0;
+      while (diff !== 0 && rolls.length) {
+        const step = diff > 0 ? 1 : -1;
+        rolls[index % rolls.length] += step;
+        diff -= step;
+        index += 1;
+      }
+      return rolls.map((value) => Math.max(1, value));
+    }
+
+    function hoursToMinutes(value) {
+      const number = numberFrom(value);
+      return number ? Math.round(number * 60) : 0;
+    }
+
+    function valueAfterLabel(row, label) {
+      const index = row.findIndex((cell) => includes(cell, label));
+      if (index < 0) return "";
+      for (let cursor = index + 1; cursor < row.length; cursor += 1) {
+        const value = text(row[cursor]);
+        if (value) return value;
+      }
+      return "";
+    }
+
+    function numberAfterLabel(row, label) {
+      const index = row.findIndex((cell) => includes(cell, label));
+      if (index < 0) return 0;
+      for (let cursor = index + 1; cursor < row.length; cursor += 1) {
+        const value = numberFrom(row[cursor], NaN);
+        if (Number.isFinite(value)) return value;
+      }
+      return 0;
+    }
+
+    function numberAfterLabelInRows(rows, label) {
+      for (const row of rows) {
+        const value = numberAfterLabel(row || [], label);
+        if (value) return value;
+      }
+      return 0;
+    }
+
+    function inferMonthFromName(name) {
+      const direct = String(name).match(/(20\d{2})[-_ ]?(\d{1,2})|([A-Za-z]+)\s+(20\d{2})/);
+      if (direct?.[1]) return `${direct[1]}-${String(direct[2]).padStart(2, "0")}`;
+      if (direct?.[3]) return `${direct[4]}-${String(monthNameToNumber(direct[3])).padStart(2, "0")}`;
+      return monthKey(data.selectedDate || new Date().toISOString().slice(0, 10));
+    }
+
+    function monthNameToNumber(name) {
+      const names = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+      const index = names.findIndex((item) => name.toLowerCase().startsWith(item));
+      return index >= 0 ? index + 1 : new Date().getMonth() + 1;
+    }
+
+    function parseCsv(textValue) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let quoted = false;
+      for (let index = 0; index < textValue.length; index += 1) {
+        const char = textValue[index];
+        const next = textValue[index + 1];
+        if (quoted) {
+          if (char === "\"" && next === "\"") {
+            cell += "\"";
+            index += 1;
+          } else if (char === "\"") quoted = false;
+          else cell += char;
+          continue;
+        }
+        if (char === "\"") quoted = true;
+        else if (char === ",") {
+          row.push(cell);
+          cell = "";
+        } else if (char === "\n") {
+          row.push(cell);
+          rows.push(row);
+          row = [];
+          cell = "";
+        } else if (char !== "\r") cell += char;
+      }
+      row.push(cell);
+      rows.push(row);
+      return rows.filter((line) => line.some((value) => String(value).trim()));
+    }
+
+    async function parseXlsxFile(file) {
+      if (!("DecompressionStream" in window)) {
+        throw new Error("This browser cannot parse XLSX directly. Please upload dashboard-data.json or CSV.");
+      }
+      const zip = await readZipEntries(new Uint8Array(await file.arrayBuffer()));
+      const sharedStrings = parseSharedStrings(textEntry(zip, "xl/sharedStrings.xml"));
+      const rels = parseRelationships(textEntry(zip, "xl/_rels/workbook.xml.rels"));
+      const sheets = new Map();
+      for (const sheet of parseWorkbookSheets(textEntry(zip, "xl/workbook.xml"))) {
+        const target = rels.get(sheet.rId);
+        if (!target) continue;
+        const sheetPath = `xl/${target.replace(/^\/?xl\//, "").replace(/^\//, "")}`;
+        sheets.set(sheet.name, parseWorksheet(textEntry(zip, sheetPath), sharedStrings));
+      }
+      return { sheets };
+    }
+
+    async function readZipEntries(buffer) {
+      const entries = new Map();
+      const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+      const eocdOffset = findEndOfCentralDirectory(view);
+      if (eocdOffset < 0) throw new Error("Invalid XLSX file.");
+      const entryCount = view.getUint16(eocdOffset + 10, true);
+      let offset = view.getUint32(eocdOffset + 16, true);
+      for (let entryIndex = 0; entryIndex < entryCount; entryIndex += 1) {
+        if (view.getUint32(offset, true) !== 0x02014b50) throw new Error("Invalid XLSX central directory.");
+        const method = view.getUint16(offset + 10, true);
+        const compressedSize = view.getUint32(offset + 20, true);
+        const nameLength = view.getUint16(offset + 28, true);
+        const extraLength = view.getUint16(offset + 30, true);
+        const commentLength = view.getUint16(offset + 32, true);
+        const localHeaderOffset = view.getUint32(offset + 42, true);
+        const name = new TextDecoder().decode(buffer.slice(offset + 46, offset + 46 + nameLength));
+        const localNameLength = view.getUint16(localHeaderOffset + 26, true);
+        const localExtraLength = view.getUint16(localHeaderOffset + 28, true);
+        const dataStart = localHeaderOffset + 30 + localNameLength + localExtraLength;
+        const compressed = buffer.slice(dataStart, dataStart + compressedSize);
+        let data = compressed;
+        if (method === 8) data = await inflateRawBrowser(compressed);
+        if (method !== 0 && method !== 8) throw new Error(`Unsupported XLSX compression method ${method}.`);
+        entries.set(name, data);
+        offset += 46 + nameLength + extraLength + commentLength;
+      }
+      return entries;
+    }
+
+    async function inflateRawBrowser(bytes) {
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+      return new Uint8Array(await new Response(stream).arrayBuffer());
+    }
+
+    function findEndOfCentralDirectory(view) {
+      const minOffset = Math.max(0, view.byteLength - 0xffff - 22);
+      for (let offset = view.byteLength - 22; offset >= minOffset; offset -= 1) {
+        if (view.getUint32(offset, true) === 0x06054b50) return offset;
+      }
+      return -1;
+    }
+
+    function textEntry(zip, name) {
+      const entry = zip.get(name);
+      return entry ? new TextDecoder().decode(entry) : "";
+    }
+
+    function parseSharedStrings(xml) {
+      if (!xml) return [];
+      return [...xml.matchAll(/<si\b[^>]*>([\s\S]*?)<\/si>/g)].map((match) => {
+        return [...match[1].matchAll(/<t\b[^>]*>([\s\S]*?)<\/t>/g)].map((textMatch) => decodeXml(textMatch[1])).join("");
+      });
+    }
+
+    function parseRelationships(xml) {
+      const rels = new Map();
+      for (const match of xml.matchAll(/<Relationship\b([^>]*)\/?>/g)) {
+        const attrs = attrsOf(match[1]);
+        if (attrs.Id && attrs.Target) rels.set(attrs.Id, attrs.Target);
+      }
+      return rels;
+    }
+
+    function parseWorkbookSheets(xml) {
+      return [...xml.matchAll(/<sheet\b([^>]*)\/?>/g)]
+        .map((match) => {
+          const attrs = attrsOf(match[1]);
+          return { name: attrs.name, rId: attrs["r:id"] };
+        })
+        .filter((sheet) => sheet.name && sheet.rId);
+    }
+
+    function parseWorksheet(xml, sharedStrings) {
+      const rows = [];
+      for (const rowMatch of xml.matchAll(/<row\b([^>]*)>([\s\S]*?)<\/row>/g)) {
+        const rowAttrs = attrsOf(rowMatch[1]);
+        const rowIndex = numberFrom(rowAttrs.r, rows.length + 1) - 1;
+        rows[rowIndex] ||= [];
+        for (const cellMatch of rowMatch[2].matchAll(/<c\b([^>]*)>([\s\S]*?)<\/c>/g)) {
+          const attrs = attrsOf(cellMatch[1]);
+          rows[rowIndex][colIndexFromRef(attrs.r)] = cellValue(cellMatch[2], attrs.t, sharedStrings);
+        }
+      }
+      return rows.map((row) => row || []);
+    }
+
+    function cellValue(xml, type, sharedStrings) {
+      if (type === "inlineStr") {
+        return [...xml.matchAll(/<t\b[^>]*>([\s\S]*?)<\/t>/g)].map((match) => decodeXml(match[1])).join("");
+      }
+      const valueMatch = xml.match(/<v>([\s\S]*?)<\/v>/);
+      if (!valueMatch) return "";
+      const value = decodeXml(valueMatch[1]);
+      if (type === "s") return sharedStrings[Number(value)] || "";
+      return value;
+    }
+
+    function firstNonEmptySheet(workbook) {
+      for (const rows of workbook.sheets.values()) {
+        if (rows.some((row) => row.some((cell) => String(cell).trim()))) return rows;
+      }
+      return [];
+    }
+
+    function attrsOf(textValue) {
+      const attrs = {};
+      for (const match of textValue.matchAll(/([:\w-]+)="([^"]*)"/g)) attrs[match[1]] = decodeXml(match[2]);
+      return attrs;
+    }
+
+    function decodeXml(value) {
+      return String(value || "")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, "\"")
+        .replace(/&apos;/g, "'")
+        .replace(/&amp;/g, "&");
+    }
+
+    function colIndexFromRef(ref) {
+      const letters = String(ref || "A").match(/^[A-Z]+/i)?.[0].toUpperCase() || "A";
+      let number = 0;
+      for (const char of letters) number = number * 26 + char.charCodeAt(0) - 64;
+      return number - 1;
+    }
+
     function updateClock() {
       const now = new Date();
       el("timeNow").textContent = now.toLocaleTimeString("zh-CN", { hour12: false });
@@ -1448,6 +2028,14 @@
         const rollNo = Math.max(1, stats.count - 13 + index);
         return `<span class="roll-chip">R${rollNo} ${fmt.format(weight)} kg</span>`;
       }).join("");
+      const breakdown = record.productionBreakdown || {};
+      el("breakdownList").innerHTML = [
+        ["Good", breakdown.goodKg],
+        ["Reject", breakdown.rejectKg],
+        ["Flakes", breakdown.flakesKg],
+        ["Purging", breakdown.purgingKg],
+        ["Loss", breakdown.lossKg]
+      ].map(([label, value]) => `<span class="roll-chip">${label} ${fmt.format(Math.round(numberFrom(value)))} kg</span>`).join("");
       el("shiftRuleText").textContent = `${dayNumber(record.date)}号早班 Day 08-20 / ${dayNumber(record.date)}号晚班 Night 20-次日08`;
     }
 
@@ -1709,8 +2297,108 @@
         .filter((item, index, records) => records.findIndex((recordItem) => recordItem.date === item.date) === index)
         .sort((a, b) => a.date.localeCompare(b.date));
       dataSourceLabel = "手动数据 / Manual";
+      localOverride = true;
+      localStorage.setItem(`${storageKey}-local-override`, "1");
       saveData();
       render();
+    }
+
+    function dashboardPayload() {
+      return {
+        source: dataSourceLabel,
+        syncedAt: new Date().toISOString(),
+        selectedDate: data.selectedDate,
+        dailyRecords: data.dailyRecords
+      };
+    }
+
+    function downloadCurrentData() {
+      const blob = new Blob([`${JSON.stringify(dashboardPayload(), null, 2)}\n`], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `dashboard-data-${monthKey(data.selectedDate)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    async function handleUploadedFile(file) {
+      if (!file) return;
+      const payload = await buildPayloadFromFile(file);
+      const synced = normalizeSyncedData(payload);
+      if (!synced) throw new Error("Uploaded file did not contain dashboard records.");
+      data = synced;
+      dataSourceLabel = payload.source || "网页上传 / Browser Upload";
+      localOverride = true;
+      localStorage.setItem(`${storageKey}-local-override`, "1");
+      saveData();
+      render();
+    }
+
+    function applyPanelLayout(order = loadPanelLayout()) {
+      const grid = document.querySelector(".main-grid");
+      const panels = new Map([...grid.querySelectorAll("[data-panel-id]")].map((panel) => [panel.dataset.panelId, panel]));
+      order.forEach((id) => {
+        const panel = panels.get(id);
+        if (panel) grid.appendChild(panel);
+      });
+      defaultPanelOrder.forEach((id) => {
+        const panel = panels.get(id);
+        if (panel && panel.parentElement === grid) grid.appendChild(panel);
+      });
+    }
+
+    function loadPanelLayout() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(layoutKey));
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch {
+        return defaultPanelOrder;
+      }
+      return defaultPanelOrder;
+    }
+
+    function savePanelLayout() {
+      const order = [...document.querySelectorAll(".main-grid [data-panel-id]")].map((panel) => panel.dataset.panelId);
+      localStorage.setItem(layoutKey, JSON.stringify(order));
+    }
+
+    function setupPanelDrag() {
+      const grid = document.querySelector(".main-grid");
+      let dragged = null;
+      grid.querySelectorAll("[data-panel-id]").forEach((panel) => {
+        panel.addEventListener("dragstart", (event) => {
+          dragged = panel;
+          panel.classList.add("dragging");
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("text/plain", panel.dataset.panelId);
+        });
+        panel.addEventListener("dragend", () => {
+          panel.classList.remove("dragging");
+          grid.querySelectorAll(".drag-over").forEach((item) => item.classList.remove("drag-over"));
+          dragged = null;
+          savePanelLayout();
+          render();
+        });
+        panel.addEventListener("dragover", (event) => {
+          event.preventDefault();
+          if (panel !== dragged) panel.classList.add("drag-over");
+        });
+        panel.addEventListener("dragleave", () => panel.classList.remove("drag-over"));
+        panel.addEventListener("drop", (event) => {
+          event.preventDefault();
+          panel.classList.remove("drag-over");
+          if (!dragged || dragged === panel) return;
+          const panels = [...grid.querySelectorAll("[data-panel-id]")];
+          const draggedIndex = panels.indexOf(dragged);
+          const targetIndex = panels.indexOf(panel);
+          if (draggedIndex < targetIndex) panel.after(dragged);
+          else panel.before(dragged);
+          savePanelLayout();
+        });
+      });
     }
 
     function render() {
@@ -1742,11 +2430,31 @@
     });
     el("resetData").addEventListener("click", () => {
       data = clone(defaultData);
+      localOverride = true;
+      localStorage.setItem(`${storageKey}-local-override`, "1");
       saveData();
       fillForm();
       render();
     });
+    el("uploadData").addEventListener("click", () => el("dataFileInput").click());
+    el("dataFileInput").addEventListener("change", async (event) => {
+      try {
+        await handleUploadedFile(event.target.files?.[0]);
+        event.target.value = "";
+      } catch (error) {
+        alert(`数据更新失败 / Upload failed:\n${error.message}`);
+      }
+    });
+    el("downloadData").addEventListener("click", downloadCurrentData);
+    el("resetLayout").addEventListener("click", () => {
+      localStorage.removeItem(layoutKey);
+      applyPanelLayout(defaultPanelOrder);
+      savePanelLayout();
+      render();
+    });
 
+    applyPanelLayout();
+    setupPanelDrag();
     render();
     loadSyncedData();
     setInterval(updateClock, 1000);
