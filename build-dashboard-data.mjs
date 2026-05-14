@@ -9,9 +9,9 @@ const config = {
   month: process.env.DASHBOARD_MONTH || "",
   totalSheetTitle: process.env.TOTAL_SHEET_TITLE || "总产量",
   downtimeSheetTitle: process.env.DOWNTIME_SHEET_TITLE || "每小时产量",
-  dailyTarget: numberFrom(process.env.DAILY_TARGET_T, 46),
-  dayTarget: numberFrom(process.env.DAY_SHIFT_TARGET_T, 23),
-  nightTarget: numberFrom(process.env.NIGHT_SHIFT_TARGET_T, 23),
+  dailyTarget: numberFrom(process.env.DAILY_TARGET_T, 28),
+  dayTarget: numberFrom(process.env.DAY_SHIFT_TARGET_T, 14),
+  nightTarget: numberFrom(process.env.NIGHT_SHIFT_TARGET_T, 14),
   lineSpeed: numberFrom(process.env.DEFAULT_LINE_SPEED, 1400),
   speedSet: numberFrom(process.env.DEFAULT_SET_SPEED, 1500),
   goodTarget: numberFrom(process.env.DEFAULT_GOOD_TARGET, 88),
@@ -26,7 +26,7 @@ const defaults = {
   thickness: "0.80 mm",
   width: "820 mm",
   customer: "",
-  material: "",
+  material: "15%新料 / 85%回料",
   traction: "张力稳定 / Stable Tension"
 };
 
@@ -206,8 +206,7 @@ function parseTotalProduction(values, month) {
       };
     }
 
-    const totalKg = rollStats(record).totalKg;
-    record.progress = clamp(totalKg / (record.targetOutput * 1000) * 100, 0, 100);
+    record.progress = clamp(goodKg / (record.targetOutput * 1000) * 100, 0, 100);
     record.orderNo = text(row[columns.poNo]) || record.orderNo;
     record.customer = text(row[columns.customer]) || record.customer;
     record.material = text(row[columns.material]) || record.material;
@@ -270,7 +269,7 @@ function parseDailyWorksheets(workbook, fallbackMonth) {
     }
   }
   for (const record of records.values()) {
-    record.progress = clamp(rollStats(record).totalKg / (record.targetOutput * 1000) * 100, 0, 100);
+    record.progress = clamp(numberFrom(record.productionBreakdown?.goodKg) / (record.targetOutput * 1000) * 100, 0, 100);
     applyProductionFormula(record, record.productionBreakdown);
   }
   return records;
@@ -286,17 +285,20 @@ function parseDailyBlock(rows, dateRowIndex, fallbackMonth, fallbackDay) {
   const date = dateFromCell(valueAfterLabel(dateRow, "Date"), fallbackMonth, fallbackDay);
   const outputRows = rows.slice(dateRowIndex + 3, dateRowIndex + 13);
   const statsRows = rows.slice(dateRowIndex + 17, dateRowIndex + 24);
-  const goodsKg = numberAfterLabelInRows(outputRows, "Goods");
-  const rejectKg = numberAfterLabelInRows(outputRows, "Reject");
-  const flakesKg = numberAfterLabelInRows(outputRows, "Flakes");
-  const purgingKg = numberAfterLabelInRows(outputRows, "Purging");
-  const lossKg = numberAfterLabelInRows(outputRows, "Loss");
+  const goodsKg = numberAfterLabelInRows(outputRows, "Goods", 8, 13);
+  const rejectKg = numberAfterLabelInRows(outputRows, "Reject", 8, 13);
+  const flakesKg = numberAfterLabelInRows(outputRows, "Flakes", 8, 13);
+  const purgingKg = numberAfterLabelInRows(outputRows, "Purging", 8, 13);
+  const lossKg = numberAfterLabelInRows(outputRows, "Loss", 8, 13);
   const goodsRolls = numberAfterLabel(customerRow, "Goods Roll");
   const rejectRolls = numberAfterLabel(customerRow, "Rej Roll");
   const rollCount = Math.max(1, Math.round(goodsRolls + rejectRolls));
   const outputKg = goodsKg + rejectKg + flakesKg + purgingKg + lossKg;
   const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
-  const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed") || config.lineSpeed;
+  const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed", 14, 19) || config.lineSpeed;
+
+  const spec = valueAfterLabel(poRow, "Type") || defaults.spec;
+  const specSize = sizeFromSpec(spec);
 
   return {
     date,
@@ -313,9 +315,11 @@ function parseDailyBlock(rows, dateRowIndex, fallbackMonth, fallbackDay) {
       speedSet: config.speedSet,
       goodRate: outputKg ? round(goodsKg / outputKg * 100, 1) : config.goodTarget,
       scrapRate: outputKg ? round((outputKg - goodsKg) / outputKg * 100, 1) : 100 - config.goodTarget,
-      progress: clamp(outputKg / (config.dailyTarget * 1000) * 100, 0, 100),
+      progress: clamp(goodsKg / (config.dailyTarget * 1000) * 100, 0, 100),
       orderNo: valueAfterLabel(poRow, "PO No") || "",
-      spec: valueAfterLabel(poRow, "Type") || defaults.spec,
+      spec,
+      thickness: specSize.thickness || defaults.thickness,
+      width: specSize.width || defaults.width,
       customer: valueAfterLabel(customerRow, "Customer") || defaults.customer,
       material: defaults.material,
       traction: defaults.traction,
@@ -612,6 +616,36 @@ function includes(value, expected) {
   return String(value || "").toLowerCase().includes(String(expected).toLowerCase());
 }
 
+function sizeFromSpec(spec) {
+  const matches = [...String(spec || "").matchAll(/(\d+(?:\.\d+)?)\s*mm\s*[*x×]\s*(\d+(?:\.\d+)?)\s*mm/gi)];
+  const widths = [];
+  const thicknesses = [];
+  for (const match of matches) {
+    const width = normalizeDimension(match[1], "width");
+    const thickness = normalizeDimension(match[2], "thickness");
+    if (width && !widths.includes(width)) widths.push(width);
+    if (thickness && !thicknesses.includes(thickness)) thicknesses.push(thickness);
+  }
+  return {
+    width: widths.length ? `${widths.join(" / ")} mm` : "",
+    thickness: thicknesses.length ? `${thicknesses.join(" / ")} mm` : ""
+  };
+}
+
+function normalizeDimension(value, type) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (type === "thickness" && !raw.includes(".") && raw.length >= 3) {
+    return trimZeros(Number(raw) / 1000);
+  }
+  return trimZeros(Number(raw));
+}
+
+function trimZeros(value) {
+  if (!Number.isFinite(value)) return "";
+  return String(Number(value.toFixed(3)));
+}
+
 function valueAfterLabel(row, label) {
   const index = row.findIndex((cell) => includes(cell, label));
   if (index < 0) return "";
@@ -622,8 +656,12 @@ function valueAfterLabel(row, label) {
   return "";
 }
 
-function numberAfterLabel(row, label) {
-  const index = row.findIndex((cell) => includes(cell, label));
+function numberAfterLabel(row, label, startIndex = 0, endIndex = Infinity) {
+  const withinRange = (_cell, cellIndex) => cellIndex >= startIndex && cellIndex <= endIndex;
+  const exactIndex = row.findIndex((cell, cellIndex) => withinRange(cell, cellIndex) && same(cell, label));
+  const index = exactIndex >= 0
+    ? exactIndex
+    : row.findIndex((cell, cellIndex) => withinRange(cell, cellIndex) && includes(cell, label));
   if (index < 0) return 0;
   for (let cursor = index + 1; cursor < row.length; cursor += 1) {
     const value = numberFrom(row[cursor], NaN);
@@ -632,9 +670,9 @@ function numberAfterLabel(row, label) {
   return 0;
 }
 
-function numberAfterLabelInRows(rows, label) {
+function numberAfterLabelInRows(rows, label, startIndex = 0, endIndex = Infinity) {
   for (const row of rows) {
-    const value = numberAfterLabel(row || [], label);
+    const value = numberAfterLabel(row || [], label, startIndex, endIndex);
     if (value) return value;
   }
   return 0;
