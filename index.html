@@ -154,7 +154,7 @@
     .headline-meta {
       margin-top: 8px;
       color: var(--muted);
-      font-size: clamp(14px, 0.86vw, 17px);
+      font-size: clamp(28px, 1.72vw, 34px);
       white-space: nowrap;
     }
 
@@ -1225,7 +1225,7 @@
   </aside>
 
   <script>
-    const storageKey = "pet-sheet-dashboard-daily-monthly-v2";
+    const storageKey = "pet-sheet-dashboard-daily-monthly-v3";
     const layoutKey = "pet-sheet-dashboard-panel-layout-v1";
     const defaultPanelOrder = ["spec", "shift", "month", "downtime"];
     const clone = (value) => JSON.parse(JSON.stringify(value));
@@ -1704,7 +1704,7 @@
         const componentKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
         const outputKg = normalizeKg(componentKg || numberFrom(row[columns.outputKg]));
         const rollCount = Math.max(1, Math.round(numberFrom(row[columns.goodRolls]) + numberFrom(row[columns.badRolls])));
-        const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
+        const rolls = goodKg > 0 ? distributeRolls(goodKg, rollCount) : [];
         if (shift === "day") record.dayRollsKg = rolls;
         if (shift === "night") record.nightRollsKg = rolls;
         applyProductionFormula(record, { goodKg, rejectKg, flakesKg, purgingKg, lossKg, totalKg: outputKg });
@@ -1784,7 +1784,7 @@
       return {
         date,
         shift,
-        rolls: totalKg > 0 ? distributeRolls(totalKg, rollCount) : [],
+        rolls: goodKg > 0 ? distributeRolls(goodKg, rollCount) : [],
         downtime: {
           changeover: hoursToMinutes(numberAfterLabelInRows(statsRows, "Change Spec")),
           production: hoursToMinutes(numberAfterLabelInRows(statsRows, "Production Abnormal")),

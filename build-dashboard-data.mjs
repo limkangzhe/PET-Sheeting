@@ -188,7 +188,7 @@ function parseTotalProduction(values, month) {
     const componentKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
     const outputKg = normalizeKg(componentKg || numberFrom(row[columns.outputKg], 0));
     const rollCount = Math.max(1, Math.round(numberFrom(row[columns.goodRolls], 0) + numberFrom(row[columns.badRolls], 0)));
-    const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
+    const rolls = goodKg > 0 ? distributeRolls(goodKg, rollCount) : [];
 
     if (shift === "day") record.dayRollsKg = rolls;
     if (shift === "night") record.nightRollsKg = rolls;
@@ -294,7 +294,7 @@ function parseDailyBlock(rows, dateRowIndex, fallbackMonth, fallbackDay) {
   const rejectRolls = numberAfterLabel(customerRow, "Rej Roll");
   const rollCount = Math.max(1, Math.round(goodsRolls + rejectRolls));
   const outputKg = goodsKg + rejectKg + flakesKg + purgingKg + lossKg;
-  const rolls = outputKg > 0 ? distributeRolls(outputKg, rollCount) : [];
+  const rolls = goodsKg > 0 ? distributeRolls(goodsKg, rollCount) : [];
   const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed", 14, 19) || config.lineSpeed;
 
   const spec = valueAfterLabel(poRow, "Type") || defaults.spec;
