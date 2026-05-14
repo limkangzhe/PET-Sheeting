@@ -240,9 +240,9 @@
 
     .kpis {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: clamp(14px, 1vw, 20px);
-      min-height: 148px;
+      min-height: 136px;
     }
 
     .card {
@@ -266,8 +266,8 @@
     }
 
     .kpi {
-      min-height: 148px;
-      padding: 20px 22px 18px 28px;
+      min-height: 136px;
+      padding: 18px 18px 16px 24px;
       display: grid;
       grid-template-rows: auto 1fr auto;
       gap: 8px;
@@ -291,7 +291,7 @@
 
     .number {
       font-variant-numeric: tabular-nums;
-      font-size: clamp(40px, 3.9vw, 72px);
+      font-size: clamp(34px, 3.1vw, 60px);
       line-height: 0.96;
       font-weight: 850;
       white-space: nowrap;
@@ -334,7 +334,7 @@
     .main-grid {
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(360px, 0.86fr) minmax(520px, 1.32fr) minmax(380px, 0.96fr);
+      grid-template-columns: minmax(360px, 0.78fr) minmax(520px, 1.02fr) minmax(540px, 1.26fr);
       grid-template-rows: minmax(0, 1fr) minmax(0, 0.78fr);
       gap: clamp(14px, 1vw, 20px);
     }
@@ -459,8 +459,7 @@
       text-overflow: ellipsis;
     }
 
-    .roll-strip,
-    .shift-rule {
+    .roll-strip {
       margin-bottom: 12px;
       padding: 12px 13px;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -468,8 +467,7 @@
       background: rgba(255, 255, 255, 0.032);
     }
 
-    .roll-head,
-    .rule-row {
+    .roll-head {
       display: flex;
       justify-content: space-between;
       gap: 10px;
@@ -478,8 +476,8 @@
       font-weight: 750;
     }
 
-    .rule-row + .rule-row {
-      margin-top: 8px;
+    .roll-head-spaced {
+      margin-top: 10px;
     }
 
     .roll-list {
@@ -571,8 +569,8 @@
     }
 
     .month-card {
-      min-height: 92px;
-      padding: 13px;
+      min-height: 112px;
+      padding: 16px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.035);
@@ -589,7 +587,7 @@
       display: block;
       margin-top: 9px;
       color: var(--text);
-      font-size: clamp(24px, 1.8vw, 34px);
+      font-size: clamp(30px, 2.2vw, 42px);
       line-height: 1;
       font-variant-numeric: tabular-nums;
     }
@@ -602,8 +600,8 @@
     }
 
     .quality-item {
-      min-height: 68px;
-      padding: 10px;
+      min-height: 84px;
+      padding: 13px 10px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.03);
@@ -612,7 +610,7 @@
 
     .quality-item strong {
       display: block;
-      font-size: clamp(18px, 1.2vw, 24px);
+      font-size: clamp(22px, 1.55vw, 30px);
       font-variant-numeric: tabular-nums;
     }
 
@@ -633,7 +631,7 @@
 
     .month-row {
       display: grid;
-      grid-template-columns: 146px 1fr 54px;
+      grid-template-columns: 170px 1fr 62px;
       align-items: center;
       gap: 10px;
       color: rgba(237, 246, 247, 0.88);
@@ -648,7 +646,7 @@
     }
 
     .bar-track {
-      height: 12px;
+      height: 14px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.08);
       overflow: hidden;
@@ -910,12 +908,30 @@
       </article>
 
       <article class="card kpi" style="--accent: var(--red)">
-        <div class="kpi-label"><span class="dual">废料率<small>Scrap Rate</small></span></div>
+        <div class="kpi-label"><span class="dual">废品<small>Reject</small></span></div>
         <div class="kpi-value">
-          <span class="number" id="scrapRate">0.0</span>
-          <span class="unit">%</span>
+          <span class="number" id="rejectOutput">0</span>
+          <span class="unit">kg</span>
         </div>
-        <div class="kpi-foot"><span id="scrapTargetText">控制 / Limit 0%</span><span class="trend" id="scrapTrend">--</span></div>
+        <div class="kpi-foot"><span id="rejectTons">0.0 t</span><span class="trend" id="rejectShare">0.0%</span></div>
+      </article>
+
+      <article class="card kpi" style="--accent: var(--amber)">
+        <div class="kpi-label"><span class="dual">边料<small>Flakes</small></span></div>
+        <div class="kpi-value">
+          <span class="number" id="flakesOutput">0</span>
+          <span class="unit">kg</span>
+        </div>
+        <div class="kpi-foot"><span id="flakesTons">0.0 t</span><span class="trend" id="flakesShare">0.0%</span></div>
+      </article>
+
+      <article class="card kpi" style="--accent: var(--cyan)">
+        <div class="kpi-label"><span class="dual">机头料<small>Purging</small></span></div>
+        <div class="kpi-value">
+          <span class="number" id="purgingOutput">0</span>
+          <span class="unit">kg</span>
+        </div>
+        <div class="kpi-foot"><span id="purgingTons">0.0 t</span><span class="trend" id="purgingShare">0.0%</span></div>
       </article>
     </section>
 
@@ -953,18 +969,18 @@
           </div>
         </div>
 
-        <section class="shift-rule" aria-label="Shift time rule">
-          <div class="rule-row"><span>早班 / Day Shift</span><strong>08:00 - 20:00</strong></div>
-          <div class="rule-row"><span>晚班 / Night Shift</span><strong>20:00 - 次日 08:00 / Next Day 08:00</strong></div>
-        </section>
-
         <section class="roll-strip" aria-label="Roll weight summary">
           <div class="roll-head">
-            <span>卷重汇总 / Roll Weight Summary</span>
-            <span id="rollAverage">平均 / Avg 0 kg</span>
+            <span>早班卷重 / Day Shift Rolls</span>
+            <span id="dayRollSummary">0 卷 / 0 kg / Avg 0 kg</span>
           </div>
-          <div class="roll-list" id="rollList"></div>
-          <div class="roll-head" style="margin-top: 10px;">
+          <div class="roll-list" id="dayRollList"></div>
+          <div class="roll-head roll-head-spaced">
+            <span>晚班卷重 / Night Shift Rolls</span>
+            <span id="nightRollSummary">0 卷 / 0 kg / Avg 0 kg</span>
+          </div>
+          <div class="roll-list" id="nightRollList"></div>
+          <div class="roll-head roll-head-spaced">
             <span>产出组成 / Output Mix</span>
             <span>Good + Reject + Flakes + Purging + Loss</span>
           </div>
@@ -1014,7 +1030,7 @@
       <article class="card panel shift-panel" data-panel-id="shift" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">早晚班产量对比<small>Shift Output</small></span></div>
-          <div class="panel-tag" id="shiftRuleText">早班 Day 08-20 / 晚班 Night 20-08</div>
+          <div class="panel-tag" id="shiftRuleText">早班 / Day · 晚班 / Night</div>
         </div>
         <div class="chart-shell">
           <canvas id="shiftChart" aria-label="Shift output chart"></canvas>
@@ -1097,6 +1113,33 @@
             <div class="field">
               <label for="scrapLimitInput">废料率上限 % / Scrap Limit</label>
               <input id="scrapLimitInput" type="number" step="0.1">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h3>产出组成 / Output Mix</h3>
+          <p class="form-note">总产出 = Good + Reject + Flakes + Purging + Loss；正品率会按 Good / 总产出自动重算。</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="goodKgInput">Good 正品 kg / Good</label>
+              <input id="goodKgInput" type="number" step="1">
+            </div>
+            <div class="field">
+              <label for="rejectKgInput">Reject 废品 kg / Reject</label>
+              <input id="rejectKgInput" type="number" step="1">
+            </div>
+            <div class="field">
+              <label for="flakesKgInput">Flakes 边料 kg / Flakes</label>
+              <input id="flakesKgInput" type="number" step="1">
+            </div>
+            <div class="field">
+              <label for="purgingKgInput">Purging 机头料 kg / Purging</label>
+              <input id="purgingKgInput" type="number" step="1">
+            </div>
+            <div class="field">
+              <label for="lossKgInput">Loss 无形损耗 kg / Loss</label>
+              <input id="lossKgInput" type="number" step="1">
             </div>
           </div>
         </section>
@@ -1417,6 +1460,39 @@
       };
     }
 
+    function getBreakdown(record) {
+      const stats = rollStats(record);
+      const breakdown = record.productionBreakdown || {};
+      const values = {
+        goodKg: numberFrom(breakdown.goodKg, NaN),
+        rejectKg: numberFrom(breakdown.rejectKg, NaN),
+        flakesKg: numberFrom(breakdown.flakesKg, NaN),
+        purgingKg: numberFrom(breakdown.purgingKg, NaN),
+        lossKg: numberFrom(breakdown.lossKg, NaN)
+      };
+      const hasParts = Object.values(values).some((value) => Number.isFinite(value));
+      const partsTotal = Object.values(values).reduce((sum, value) => sum + (Number.isFinite(value) ? value : 0), 0);
+      const totalKg = numberFrom(breakdown.totalKg, NaN);
+      const resolvedTotal = Number.isFinite(totalKg) && totalKg > 0 ? totalKg : (partsTotal || stats.totalKg);
+      const resolvedGood = Number.isFinite(values.goodKg) ? values.goodKg : Math.round(resolvedTotal * asNumber(record.goodRate) / 100);
+      return {
+        goodKg: resolvedGood,
+        rejectKg: Number.isFinite(values.rejectKg) ? values.rejectKg : (hasParts ? 0 : Math.max(0, resolvedTotal - resolvedGood)),
+        flakesKg: Number.isFinite(values.flakesKg) ? values.flakesKg : 0,
+        purgingKg: Number.isFinite(values.purgingKg) ? values.purgingKg : 0,
+        lossKg: Number.isFinite(values.lossKg) ? values.lossKg : 0,
+        totalKg: resolvedTotal
+      };
+    }
+
+    function kgText(value) {
+      return `${fmt.format(Math.round(numberFrom(value)))} kg`;
+    }
+
+    function shareText(value, total) {
+      return total > 0 ? `${(numberFrom(value) / total * 100).toFixed(1)}%` : "0.0%";
+    }
+
     function monthlyStats() {
       const key = monthKey(data.selectedDate);
       const records = data.dailyRecords.filter((record) => monthKey(record.date) === key).sort((a, b) => a.date.localeCompare(b.date));
@@ -1435,14 +1511,16 @@
 
       records.forEach((record) => {
         const stats = rollStats(record);
-        totals.totalKg += stats.totalKg;
+        const breakdown = getBreakdown(record);
+        const outputKg = breakdown.totalKg || stats.totalKg;
+        totals.totalKg += outputKg;
         totals.rollCount += stats.count;
         totals.dayKg += stats.dayKg;
         totals.nightKg += stats.nightKg;
         totals.lineSpeedSum += asNumber(record.lineSpeed);
-        totals.goodWeighted += asNumber(record.goodRate) * stats.totalKg;
-        totals.scrapWeighted += asNumber(record.scrapRate) * stats.totalKg;
-        totals.weightForRate += stats.totalKg;
+        totals.goodWeighted += breakdown.goodKg;
+        totals.scrapWeighted += Math.max(0, outputKg - breakdown.goodKg);
+        totals.weightForRate += outputKg;
         downtimeCategories.forEach((category) => {
           totals.downtime[category.key] += asNumber(record.downtime?.[category.key]);
         });
@@ -1454,8 +1532,8 @@
       totals.nightTons = totals.nightKg / 1000;
       totals.avgDailyTons = totals.days ? totals.tons / totals.days : 0;
       totals.avgLineSpeed = totals.days ? totals.lineSpeedSum / totals.days : 0;
-      totals.avgGoodRate = totals.weightForRate ? totals.goodWeighted / totals.weightForRate : 0;
-      totals.avgScrapRate = totals.weightForRate ? totals.scrapWeighted / totals.weightForRate : 0;
+      totals.avgGoodRate = totals.weightForRate ? totals.goodWeighted / totals.weightForRate * 100 : 0;
+      totals.avgScrapRate = totals.weightForRate ? totals.scrapWeighted / totals.weightForRate * 100 : 0;
       return totals;
     }
 
@@ -1630,16 +1708,16 @@
       const date = `${fallbackMonth}-${String(fallbackDay).padStart(2, "0")}`;
       const outputRows = rows.slice(dateRowIndex + 3, dateRowIndex + 13);
       const statsRows = rows.slice(dateRowIndex + 17, dateRowIndex + 24);
-      const goodKg = numberAfterLabelInRows(outputRows, "Goods");
-      const rejectKg = numberAfterLabelInRows(outputRows, "Reject");
-      const flakesKg = numberAfterLabelInRows(outputRows, "Flakes");
-      const purgingKg = numberAfterLabelInRows(outputRows, "Purging");
-      const lossKg = numberAfterLabelInRows(outputRows, "Loss");
+      const goodKg = numberAfterLabelInRows(outputRows, "Goods", 8, 13);
+      const rejectKg = numberAfterLabelInRows(outputRows, "Reject", 8, 13);
+      const flakesKg = numberAfterLabelInRows(outputRows, "Flakes", 8, 13);
+      const purgingKg = numberAfterLabelInRows(outputRows, "Purging", 8, 13);
+      const lossKg = numberAfterLabelInRows(outputRows, "Loss", 8, 13);
       const totalKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
       const goodsRolls = numberAfterLabel(customerRow, "Goods Roll");
       const rejectRolls = numberAfterLabel(customerRow, "Rej Roll");
       const rollCount = Math.max(1, Math.round(goodsRolls + rejectRolls));
-      const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed") || 1400;
+      const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed", 14, 19) || 1400;
       const productionBreakdown = { goodKg, rejectKg, flakesKg, purgingKg, lossKg, totalKg };
       const record = {
         lineSpeed,
@@ -1768,8 +1846,12 @@
       return "";
     }
 
-    function numberAfterLabel(row, label) {
-      const index = row.findIndex((cell) => includes(cell, label));
+    function numberAfterLabel(row, label, startIndex = 0, endIndex = Infinity) {
+      const withinRange = (_cell, cellIndex) => cellIndex >= startIndex && cellIndex <= endIndex;
+      const exactIndex = row.findIndex((cell, cellIndex) => withinRange(cell, cellIndex) && same(cell, label));
+      const index = exactIndex >= 0
+        ? exactIndex
+        : row.findIndex((cell, cellIndex) => withinRange(cell, cellIndex) && includes(cell, label));
       if (index < 0) return 0;
       for (let cursor = index + 1; cursor < row.length; cursor += 1) {
         const value = numberFrom(row[cursor], NaN);
@@ -1778,9 +1860,9 @@
       return 0;
     }
 
-    function numberAfterLabelInRows(rows, label) {
+    function numberAfterLabelInRows(rows, label, startIndex = 0, endIndex = Infinity) {
       for (const row of rows) {
-        const value = numberAfterLabel(row || [], label);
+        const value = numberAfterLabel(row || [], label, startIndex, endIndex);
         if (value) return value;
       }
       return 0;
@@ -1987,11 +2069,13 @@
 
     function updateKpis(record) {
       const stats = rollStats(record);
-      const targetPct = record.targetOutput ? stats.tons / record.targetOutput * 100 : 0;
+      const breakdown = getBreakdown(record);
+      const outputKg = breakdown.totalKg || stats.totalKg;
+      const targetPct = record.targetOutput ? outputKg / 1000 / record.targetOutput * 100 : 0;
       const speedGap = record.speedSet ? (record.lineSpeed - record.speedSet) / record.speedSet * 100 : 0;
 
-      el("outputToday").textContent = stats.tons.toFixed(1);
-      el("rollSummary").textContent = `${stats.count} 卷 / ${fmt.format(Math.round(stats.totalKg))} kg`;
+      el("outputToday").textContent = (outputKg / 1000).toFixed(1);
+      el("rollSummary").textContent = `${stats.count} 卷 / ${fmt.format(Math.round(outputKg))} kg`;
       el("outputTrend").textContent = `${targetPct.toFixed(1)}%`;
       el("lineSpeed").textContent = fmt.format(Math.round(record.lineSpeed));
       el("speedSetText").textContent = `设定 / Set ${fmt.format(Math.round(record.speedSet))} kg/h`;
@@ -1999,14 +2083,25 @@
       el("goodRate").textContent = asNumber(record.goodRate).toFixed(1);
       el("goodTargetText").textContent = `目标 / Target ${asNumber(record.goodTarget).toFixed(1)}%`;
       el("goodTrend").textContent = record.goodRate >= record.goodTarget ? "达标 / OK" : "关注 / Check";
-      el("scrapRate").textContent = asNumber(record.scrapRate).toFixed(1);
-      el("scrapTargetText").textContent = `控制 / Limit ${asNumber(record.scrapLimit).toFixed(1)}%`;
-      el("scrapTrend").textContent = record.scrapRate <= record.scrapLimit ? "受控 / OK" : "偏高 / High";
+      el("rejectOutput").textContent = fmt.format(Math.round(breakdown.rejectKg));
+      el("rejectTons").textContent = `${(breakdown.rejectKg / 1000).toFixed(1)} t`;
+      el("rejectShare").textContent = shareText(breakdown.rejectKg, outputKg);
+      el("flakesOutput").textContent = fmt.format(Math.round(breakdown.flakesKg));
+      el("flakesTons").textContent = `${(breakdown.flakesKg / 1000).toFixed(1)} t`;
+      el("flakesShare").textContent = shareText(breakdown.flakesKg, outputKg);
+      el("purgingOutput").textContent = fmt.format(Math.round(breakdown.purgingKg));
+      el("purgingTons").textContent = `${(breakdown.purgingKg / 1000).toFixed(1)} t`;
+      el("purgingShare").textContent = shareText(breakdown.purgingKg, outputKg);
     }
 
     function updateProductionInfo(record) {
       const progress = clamp(asNumber(record.progress), 0, 100);
       const stats = rollStats(record);
+      const dayCount = (record.dayRollsKg || []).length;
+      const nightCount = (record.nightRollsKg || []).length;
+      const dayAvg = dayCount ? stats.dayKg / dayCount : 0;
+      const nightAvg = nightCount ? stats.nightKg / nightCount : 0;
+      const breakdown = getBreakdown(record);
       el("selectedDayText").textContent = `${record.date} 日数据 / Daily`;
       el("selectedMonthText").textContent = `${monthKey(record.date)} 月数据 / Monthly`;
       el("dataSourceText").textContent = dataSourceLabel;
@@ -2023,20 +2118,26 @@
       el("customerNow").textContent = record.customer;
       el("materialNow").textContent = record.material;
       el("tractionNow").textContent = record.traction;
-      el("rollAverage").textContent = `平均 / Avg ${stats.avg.toFixed(0)} kg`;
-      el("rollList").innerHTML = allRolls(record).slice(-14).map((weight, index) => {
-        const rollNo = Math.max(1, stats.count - 13 + index);
-        return `<span class="roll-chip">R${rollNo} ${fmt.format(weight)} kg</span>`;
-      }).join("");
-      const breakdown = record.productionBreakdown || {};
+      el("dayRollSummary").textContent = `${dayCount} 卷 / ${kgText(stats.dayKg)} / Avg ${dayAvg.toFixed(0)} kg`;
+      el("nightRollSummary").textContent = `${nightCount} 卷 / ${kgText(stats.nightKg)} / Avg ${nightAvg.toFixed(0)} kg`;
+      el("dayRollList").innerHTML = [
+        ["Output", stats.dayKg],
+        ["Rolls", dayCount],
+        ["Avg", dayAvg]
+      ].map(([label, value]) => `<span class="roll-chip">${label} ${label === "Rolls" ? fmt.format(value) : kgText(value)}</span>`).join("");
+      el("nightRollList").innerHTML = [
+        ["Output", stats.nightKg],
+        ["Rolls", nightCount],
+        ["Avg", nightAvg]
+      ].map(([label, value]) => `<span class="roll-chip">${label} ${label === "Rolls" ? fmt.format(value) : kgText(value)}</span>`).join("");
       el("breakdownList").innerHTML = [
         ["Good", breakdown.goodKg],
         ["Reject", breakdown.rejectKg],
         ["Flakes", breakdown.flakesKg],
         ["Purging", breakdown.purgingKg],
         ["Loss", breakdown.lossKg]
-      ].map(([label, value]) => `<span class="roll-chip">${label} ${fmt.format(Math.round(numberFrom(value)))} kg</span>`).join("");
-      el("shiftRuleText").textContent = `${dayNumber(record.date)}号早班 Day 08-20 / ${dayNumber(record.date)}号晚班 Night 20-次日08`;
+      ].map(([label, value]) => `<span class="roll-chip">${label} ${kgText(value)}</span>`).join("");
+      el("shiftRuleText").textContent = "早班 / Day · 晚班 / Night";
     }
 
     function updateMonthPanel() {
@@ -2173,8 +2274,8 @@
       ctx.clearRect(0, 0, width, height);
       const stats = rollStats(record);
       const shifts = [
-        { zh: "早班", en: "Day", actual: stats.dayTons, target: asNumber(record.dayTarget), time: "08:00-20:00" },
-        { zh: "晚班", en: "Night", actual: stats.nightTons, target: asNumber(record.nightTarget), time: "20:00-08:00" }
+        { zh: "早班", en: "Day", actual: stats.dayTons, target: asNumber(record.dayTarget) },
+        { zh: "晚班", en: "Night", actual: stats.nightTons, target: asNumber(record.nightTarget) }
       ];
       const pad = { left: 58, right: 38, top: 18, bottom: 46 };
       const chartW = width - pad.left - pad.right;
@@ -2221,9 +2322,6 @@
         ctx.fillStyle = "rgba(237, 246, 247, 0.86)";
         ctx.font = "800 16px Microsoft YaHei, Arial";
         ctx.fillText(`${shift.zh} / ${shift.en}`, x + groupW * 0.28, base + 24);
-        ctx.fillStyle = "rgba(143, 164, 170, 0.95)";
-        ctx.font = "650 11px Microsoft YaHei, Arial";
-        ctx.fillText(shift.time, x + groupW * 0.28, base + 39);
       });
     }
 
@@ -2241,6 +2339,12 @@
       el("goodTargetInput").value = record.goodTarget;
       el("scrapRateInput").value = record.scrapRate;
       el("scrapLimitInput").value = record.scrapLimit;
+      const breakdown = getBreakdown(record);
+      el("goodKgInput").value = Math.round(breakdown.goodKg);
+      el("rejectKgInput").value = Math.round(breakdown.rejectKg);
+      el("flakesKgInput").value = Math.round(breakdown.flakesKg);
+      el("purgingKgInput").value = Math.round(breakdown.purgingKg);
+      el("lossKgInput").value = Math.round(breakdown.lossKg);
       el("lineNameInput").value = record.lineName;
       el("runStateInput").value = record.runState;
       el("batchStatusInput").value = record.batchStatus;
@@ -2292,6 +2396,19 @@
           equipment: asNumber(el("downtimeEquipmentInput").value, 0),
           maintenance: asNumber(el("downtimeMaintenanceInput").value, 0)
         }
+      });
+      const goodKg = asNumber(el("goodKgInput").value, 0);
+      const rejectKg = asNumber(el("rejectKgInput").value, 0);
+      const flakesKg = asNumber(el("flakesKgInput").value, 0);
+      const purgingKg = asNumber(el("purgingKgInput").value, 0);
+      const lossKg = asNumber(el("lossKgInput").value, 0);
+      applyProductionFormula(record, {
+        goodKg,
+        rejectKg,
+        flakesKg,
+        purgingKg,
+        lossKg,
+        totalKg: goodKg + rejectKg + flakesKg + purgingKg + lossKg
       });
       data.dailyRecords = data.dailyRecords
         .filter((item, index, records) => records.findIndex((recordItem) => recordItem.date === item.date) === index)
