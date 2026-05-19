@@ -271,6 +271,8 @@
       display: grid;
       grid-template-rows: auto 1fr auto;
       gap: 8px;
+      resize: both;
+      overflow: auto;
     }
 
     .kpi-label,
@@ -343,6 +345,8 @@
       min-width: 0;
       min-height: 0;
       padding: clamp(16px, 1vw, 22px);
+      resize: both;
+      overflow: auto;
     }
 
     .panel-header {
@@ -594,9 +598,9 @@
 
     .quality-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .quality-item {
@@ -620,6 +624,14 @@
       color: var(--muted);
       font-size: 15px;
       white-space: nowrap;
+    }
+
+    .month-chart-shell {
+      width: 100%;
+      height: clamp(140px, 17vh, 230px);
+      min-height: 130px;
+      margin-bottom: 10px;
+      position: relative;
     }
 
     .month-list {
@@ -867,6 +879,7 @@
       <section class="clock-wrap" aria-label="Current time">
         <div class="top-actions">
           <button class="entry-button" id="uploadData" type="button">更新 Excel / Upload</button>
+          <button class="entry-button" id="syncSettings" type="button">云同步 / Sync</button>
           <button class="entry-button" id="downloadData" type="button">下载数据 / Download</button>
           <button class="entry-button" id="resetLayout" type="button">重置布局 / Layout</button>
           <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
@@ -1020,10 +1033,15 @@
 
         <section class="quality-grid" aria-label="Monthly quality summary">
           <div class="quality-item"><strong id="monthGood">0.0%</strong><span>月均正品率 / Good</span></div>
-          <div class="quality-item"><strong id="monthScrap">0.0%</strong><span>月均废料率 / Scrap</span></div>
+          <div class="quality-item"><strong id="monthReject">0.0%</strong><span>废品率 / Reject</span></div>
+          <div class="quality-item"><strong id="monthFlakes">0.0%</strong><span>边料率 / Flakes</span></div>
+          <div class="quality-item"><strong id="monthPurging">0.0%</strong><span>机头料率 / Purging</span></div>
           <div class="quality-item"><strong id="monthSpeed">0</strong><span>均线速 kg/h / Speed</span></div>
         </section>
 
+        <div class="month-chart-shell">
+          <canvas id="monthDailyChart" aria-label="Monthly daily output chart"></canvas>
+        </div>
         <section class="month-list" id="monthDowntimeList" aria-label="Monthly downtime categories"></section>
       </article>
 
@@ -1227,6 +1245,15 @@
   <script>
     const storageKey = "pet-sheet-dashboard-daily-monthly-v3";
     const layoutKey = "pet-sheet-dashboard-panel-layout-v1";
+    const syncKey = "pet-sheet-dashboard-github-sync-v1";
+    const remoteHoldKey = "pet-sheet-dashboard-remote-hold-until-v1";
+    const defaultSyncConfig = {
+      owner: "limkangzhe",
+      repo: "PET-Sheeting",
+      branch: "main",
+      path: "dashboard-data.json",
+      token: ""
+    };
     const defaultPanelOrder = ["spec", "shift", "month", "downtime"];
     const clone = (value) => JSON.parse(JSON.stringify(value));
     const fmt = new Intl.NumberFormat("zh-CN");
@@ -1363,6 +1390,7 @@
 
     async function loadSyncedData() {
       if (localOverride) return;
+      if (Number(localStorage.getItem(remoteHoldKey) || 0) > Date.now()) return;
       try {
         const response = await fetch(`dashboard-data.json?ts=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) return;
@@ -1554,6 +1582,7 @@
         goodWeighted: 0,
         scrapWeighted: 0,
         weightForRate: 0,
+        breakdown: { rejectKg: 0, flakesKg: 0, purgingKg: 0, lossKg: 0, totalKg: 0 },
         downtime: { changeover: 0, production: 0, equipment: 0, maintenance: 0 }
       };
 
@@ -1569,6 +1598,11 @@
         totals.goodWeighted += breakdown.goodKg;
         totals.scrapWeighted += Math.max(0, outputKg - breakdown.goodKg);
         totals.weightForRate += outputKg;
+        totals.breakdown.rejectKg += breakdown.rejectKg;
+        totals.breakdown.flakesKg += breakdown.flakesKg;
+        totals.breakdown.purgingKg += breakdown.purgingKg;
+        totals.breakdown.lossKg += breakdown.lossKg;
+        totals.breakdown.totalKg += outputKg;
         downtimeCategories.forEach((category) => {
           totals.downtime[category.key] += asNumber(record.downtime?.[category.key]);
         });
@@ -1582,6 +1616,9 @@
       totals.avgLineSpeed = totals.days ? totals.lineSpeedSum / totals.days : 0;
       totals.avgGoodRate = totals.weightForRate ? totals.goodWeighted / totals.weightForRate * 100 : 0;
       totals.avgScrapRate = totals.weightForRate ? totals.scrapWeighted / totals.weightForRate * 100 : 0;
+      totals.rejectRate = totals.breakdown.totalKg ? totals.breakdown.rejectKg / totals.breakdown.totalKg * 100 : 0;
+      totals.flakesRate = totals.breakdown.totalKg ? totals.breakdown.flakesKg / totals.breakdown.totalKg * 100 : 0;
+      totals.purgingRate = totals.breakdown.totalKg ? totals.breakdown.purgingKg / totals.breakdown.totalKg * 100 : 0;
       return totals;
     }
 
@@ -2203,8 +2240,11 @@
       el("monthDays").textContent = fmt.format(month.days);
       el("monthDailyAvg").textContent = `${month.avgDailyTons.toFixed(1)}t`;
       el("monthGood").textContent = `${month.avgGoodRate.toFixed(1)}%`;
-      el("monthScrap").textContent = `${month.avgScrapRate.toFixed(1)}%`;
+      el("monthReject").textContent = `${month.rejectRate.toFixed(1)}%`;
+      el("monthFlakes").textContent = `${month.flakesRate.toFixed(1)}%`;
+      el("monthPurging").textContent = `${month.purgingRate.toFixed(1)}%`;
       el("monthSpeed").textContent = fmt.format(Math.round(month.avgLineSpeed));
+      drawMonthDaily(month);
       el("monthDowntimeList").innerHTML = downtimeCategories.map((category) => {
         const value = month.downtime[category.key];
         const width = value / maxDowntime * 100;
@@ -2238,6 +2278,50 @@
         ctx.lineTo(left + width, y);
         ctx.stroke();
       }
+    }
+
+    function drawMonthDaily(month) {
+      const canvas = el("monthDailyChart");
+      const { ctx, width, height } = setupCanvas(canvas);
+      ctx.clearRect(0, 0, width, height);
+      const pad = { left: 52, right: 18, top: 14, bottom: 36 };
+      const chartW = width - pad.left - pad.right;
+      const chartH = height - pad.top - pad.bottom;
+      const values = month.records.map((record) => {
+        const breakdown = getBreakdown(record);
+        return { day: dayNumber(record.date), value: breakdown.goodKg / 1000 };
+      });
+      const max = Math.max(1, ...values.map((item) => item.value), asNumber(getRecord()?.targetOutput)) * 1.12;
+      const barGap = Math.max(3, Math.min(10, chartW / Math.max(1, values.length) * 0.22));
+      const barW = chartW / Math.max(1, values.length) - barGap;
+
+      drawGrid(ctx, pad.left, pad.top, chartW, chartH, 4);
+      ctx.fillStyle = "rgba(143, 164, 170, 0.92)";
+      ctx.font = "700 14px Microsoft YaHei, Arial";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      for (let i = 0; i <= 4; i += 1) {
+        const value = max * (4 - i) / 4;
+        const y = pad.top + chartH * i / 4;
+        ctx.fillText(value.toFixed(0), pad.left - 10, y);
+      }
+
+      values.forEach((item, index) => {
+        const x = pad.left + index * (chartW / Math.max(1, values.length)) + barGap / 2;
+        const barH = item.value / max * chartH;
+        const y = pad.top + chartH - barH;
+        const grad = ctx.createLinearGradient(0, y, 0, pad.top + chartH);
+        grad.addColorStop(0, "#58d68d");
+        grad.addColorStop(1, "rgba(88, 214, 141, 0.22)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, y, Math.max(4, barW), barH);
+        if (index % Math.ceil(values.length / 8 || 1) === 0) {
+          ctx.fillStyle = "rgba(237, 246, 247, 0.82)";
+          ctx.font = "700 13px Microsoft YaHei, Arial";
+          ctx.textAlign = "center";
+          ctx.fillText(String(item.day), x + barW / 2, pad.top + chartH + 22);
+        }
+      });
     }
 
     function drawPareto(record) {
@@ -2498,6 +2582,89 @@
       URL.revokeObjectURL(url);
     }
 
+    function loadSyncConfig() {
+      try {
+        return { ...defaultSyncConfig, ...(JSON.parse(localStorage.getItem(syncKey)) || {}) };
+      } catch {
+        return { ...defaultSyncConfig };
+      }
+    }
+
+    function saveSyncConfig(config) {
+      localStorage.setItem(syncKey, JSON.stringify(config));
+    }
+
+    function editSyncSettings() {
+      const current = loadSyncConfig();
+      const owner = prompt("GitHub owner / 用户名", current.owner);
+      if (owner === null) return null;
+      const repo = prompt("GitHub repo / 仓库名", current.repo);
+      if (repo === null) return null;
+      const branch = prompt("Branch / 分支", current.branch);
+      if (branch === null) return null;
+      const path = prompt("Data file path / 数据文件路径", current.path);
+      if (path === null) return null;
+      const token = prompt("GitHub Token（只保存在这台电脑浏览器里）", current.token ? "********" : "");
+      if (token === null) return null;
+      const config = {
+        owner: owner.trim() || defaultSyncConfig.owner,
+        repo: repo.trim() || defaultSyncConfig.repo,
+        branch: branch.trim() || defaultSyncConfig.branch,
+        path: path.trim() || defaultSyncConfig.path,
+        token: token === "********" ? current.token : token.trim()
+      };
+      saveSyncConfig(config);
+      alert("云同步设置已保存 / Sync settings saved.");
+      return config;
+    }
+
+    function utf8ToBase64(value) {
+      const bytes = new TextEncoder().encode(value);
+      let binary = "";
+      const chunkSize = 0x8000;
+      for (let index = 0; index < bytes.length; index += chunkSize) {
+        binary += String.fromCharCode(...bytes.slice(index, index + chunkSize));
+      }
+      return btoa(binary);
+    }
+
+    async function publishRemotePayload(payload) {
+      let config = loadSyncConfig();
+      if (!config.token) config = editSyncSettings();
+      if (!config?.token) return false;
+      const apiPath = encodeURIComponent(config.path).replace(/%2F/g, "/");
+      const url = `https://api.github.com/repos/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/contents/${apiPath}`;
+      const headers = {
+        Authorization: `Bearer ${config.token}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      };
+      let sha = "";
+      const current = await fetch(`${url}?ref=${encodeURIComponent(config.branch)}`, { headers });
+      if (current.ok) {
+        const body = await current.json();
+        sha = body.sha || "";
+      } else if (current.status !== 404) {
+        throw new Error(`GitHub read failed: ${current.status}`);
+      }
+      const content = `${JSON.stringify(payload, null, 2)}\n`;
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: `Sync PET dashboard data ${payload.selectedDate || ""}`.trim(),
+          content: utf8ToBase64(content),
+          branch: config.branch,
+          sha: sha || undefined
+        })
+      });
+      if (!response.ok) {
+        const detail = await response.text();
+        throw new Error(`GitHub write failed: ${response.status} ${detail.slice(0, 160)}`);
+      }
+      return true;
+    }
+
     async function handleUploadedFile(file) {
       if (!file) return;
       const payload = await buildPayloadFromFile(file);
@@ -2505,8 +2672,18 @@
       if (!synced) throw new Error("Uploaded file did not contain dashboard records.");
       data = synced;
       dataSourceLabel = payload.source || "网页上传 / Browser Upload";
-      localOverride = true;
-      localStorage.setItem(`${storageKey}-local-override`, "1");
+      let published = false;
+      try {
+        published = await publishRemotePayload(dashboardPayload());
+      } catch (error) {
+        alert(`GitHub 云同步失败，当前设备已更新，但其它设备暂时不会同步。\n${error.message}`);
+      }
+      localOverride = !published;
+      localStorage.setItem(`${storageKey}-local-override`, published ? "0" : "1");
+      if (published) {
+        dataSourceLabel = "GitHub云同步 / GitHub Sync";
+        localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+      }
       saveData();
       render();
     }
@@ -2575,6 +2752,21 @@
       });
     }
 
+    function setupPanelResizeObserver() {
+      if (!("ResizeObserver" in window)) return;
+      let resizeTimer = 0;
+      const observer = new ResizeObserver(() => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => {
+          const record = ensureRecord(data.selectedDate);
+          drawPareto(record);
+          drawShift(record);
+          drawMonthDaily(monthlyStats());
+        }, 120);
+      });
+      document.querySelectorAll(".card").forEach((card) => observer.observe(card));
+    }
+
     function render() {
       const record = ensureRecord(data.selectedDate);
       updateClock();
@@ -2620,6 +2812,7 @@
       }
     });
     el("downloadData").addEventListener("click", downloadCurrentData);
+    el("syncSettings").addEventListener("click", editSyncSettings);
     el("resetLayout").addEventListener("click", () => {
       localStorage.removeItem(layoutKey);
       applyPanelLayout(defaultPanelOrder);
@@ -2629,6 +2822,7 @@
 
     applyPanelLayout();
     setupPanelDrag();
+    setupPanelResizeObserver();
     render();
     loadSyncedData();
     setInterval(updateClock, 1000);
