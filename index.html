@@ -880,6 +880,7 @@
         <div class="top-actions">
           <button class="entry-button" id="uploadData" type="button">更新 Excel / Upload</button>
           <button class="entry-button" id="syncSettings" type="button">云同步 / Sync</button>
+          <button class="entry-button" id="pullRemote" type="button">立即同步 / Pull</button>
           <button class="entry-button" id="downloadData" type="button">下载数据 / Download</button>
           <button class="entry-button" id="resetLayout" type="button">重置布局 / Layout</button>
           <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
@@ -1243,7 +1244,7 @@
   </aside>
 
   <script>
-    const storageKey = "pet-sheet-dashboard-daily-monthly-v3";
+    const storageKey = "pet-sheet-dashboard-daily-monthly-v4";
     const layoutKey = "pet-sheet-dashboard-panel-layout-v1";
     const syncKey = "pet-sheet-dashboard-github-sync-v1";
     const remoteHoldKey = "pet-sheet-dashboard-remote-hold-until-v1";
@@ -1383,23 +1384,26 @@
     function normalizeSyncedData(payload) {
       if (!payload || !Array.isArray(payload.dailyRecords)) return null;
       return {
+        syncedAt: payload.syncedAt || "",
         selectedDate: payload.selectedDate || payload.dailyRecords[payload.dailyRecords.length - 1]?.date || defaultData.selectedDate,
         dailyRecords: payload.dailyRecords.map(normalizeRecordDefaults).sort((a, b) => a.date.localeCompare(b.date))
       };
     }
 
-    async function loadSyncedData() {
-      if (localOverride) return;
-      if (Number(localStorage.getItem(remoteHoldKey) || 0) > Date.now()) return;
+    async function loadSyncedData({ force = false } = {}) {
+      if (!force && Number(localStorage.getItem(remoteHoldKey) || 0) > Date.now()) return;
       try {
-        const response = await fetch(`dashboard-data.json?ts=${Date.now()}`, { cache: "no-store" });
-        if (!response.ok) return;
-        const payload = await response.json();
+        const payload = await fetchSyncedPayload();
         const synced = normalizeSyncedData(payload);
         if (!synced) return;
+        const localSyncedAt = Date.parse(data.syncedAt || "");
+        const remoteSyncedAt = Date.parse(synced.syncedAt || "");
+        if (!force && localOverride && localSyncedAt && remoteSyncedAt && remoteSyncedAt <= localSyncedAt) return;
         data = synced;
         dataSourceLabel = payload.source || "文件同步 / File Sync";
+        localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
+        saveData();
         render();
       } catch {
         dataSourceLabel = "手动数据 / Manual";
@@ -2562,9 +2566,11 @@
     }
 
     function dashboardPayload() {
+      const syncedAt = new Date().toISOString();
+      data.syncedAt = syncedAt;
       return {
         source: dataSourceLabel,
-        syncedAt: new Date().toISOString(),
+        syncedAt,
         selectedDate: data.selectedDate,
         dailyRecords: data.dailyRecords
       };
@@ -2592,6 +2598,40 @@
 
     function saveSyncConfig(config) {
       localStorage.setItem(syncKey, JSON.stringify(config));
+    }
+
+    function cleanDataPath(path) {
+      return (path || defaultSyncConfig.path).replace(/^\/+/, "");
+    }
+
+    function encodedDataPath(path) {
+      return cleanDataPath(path).split("/").map((part) => encodeURIComponent(part)).join("/");
+    }
+
+    function syncedDataUrls() {
+      const config = loadSyncConfig();
+      const path = cleanDataPath(config.path);
+      const repoPath = encodedDataPath(path);
+      const stamp = Date.now();
+      return [
+        `${repoPath}?ts=${stamp}`,
+        `https://raw.githubusercontent.com/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/${encodeURIComponent(config.branch)}/${repoPath}?ts=${stamp}`
+      ];
+    }
+
+    async function fetchSyncedPayload() {
+      let lastError = null;
+      for (const url of syncedDataUrls()) {
+        try {
+          const response = await fetch(url, { cache: "no-store" });
+          if (response.ok) return response.json();
+          lastError = new Error(`Data file read failed: ${response.status}`);
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      if (lastError) throw lastError;
+      return null;
     }
 
     function editSyncSettings() {
@@ -2671,6 +2711,7 @@
       const synced = normalizeSyncedData(payload);
       if (!synced) throw new Error("Uploaded file did not contain dashboard records.");
       data = synced;
+      data.syncedAt = payload.syncedAt || new Date().toISOString();
       dataSourceLabel = payload.source || "网页上传 / Browser Upload";
       let published = false;
       try {
@@ -2683,6 +2724,7 @@
       if (published) {
         dataSourceLabel = "GitHub云同步 / GitHub Sync";
         localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+        alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
       }
       saveData();
       render();
@@ -2813,6 +2855,7 @@
     });
     el("downloadData").addEventListener("click", downloadCurrentData);
     el("syncSettings").addEventListener("click", editSyncSettings);
+    el("pullRemote").addEventListener("click", () => loadSyncedData({ force: true }));
     el("resetLayout").addEventListener("click", () => {
       localStorage.removeItem(layoutKey);
       applyPanelLayout(defaultPanelOrder);
@@ -2826,7 +2869,7 @@
     render();
     loadSyncedData();
     setInterval(updateClock, 1000);
-    setInterval(loadSyncedData, 60000);
+    setInterval(() => loadSyncedData(), 60000);
     window.addEventListener("resize", render);
   </script>
 </body>
