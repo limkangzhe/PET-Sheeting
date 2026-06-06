@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (June 2026 (2).xlsx)",
-  "syncedAt": "2026-06-05T00:00:38.699Z",
-  "selectedDate": "2026-06-04",
+  "source": "Excel网页上传 / Excel Upload (June 2026 (3).xlsx)",
+  "syncedAt": "2026-06-06T00:07:22.323Z",
+  "selectedDate": "2026-06-05",
   "dailyRecords": [
     {
       "date": "2026-06-01",
@@ -63,8 +63,8 @@
         "rejectKg": 341,
         "flakesKg": 2123,
         "purgingKg": 0,
-        "lossKg": 260,
-        "totalKg": 27261
+        "lossKg": 272,
+        "totalKg": 27273
       }
     },
     {
@@ -99,9 +99,9 @@
       "targetOutput": 28,
       "lineSpeed": 1250,
       "speedSet": 1500,
-      "goodRate": 90.1,
+      "goodRate": 90,
       "goodTarget": 88,
-      "scrapRate": 9.9,
+      "scrapRate": 10,
       "scrapLimit": 3,
       "progress": 82.98928571428571,
       "dayTarget": 14,
@@ -127,8 +127,8 @@
         "rejectKg": 467,
         "flakesKg": 1568,
         "purgingKg": 280,
-        "lossKg": 250,
-        "totalKg": 25802
+        "lossKg": 257,
+        "totalKg": 25809
       }
     },
     {
@@ -188,8 +188,8 @@
         "rejectKg": 765,
         "flakesKg": 2053,
         "purgingKg": 0,
-        "lossKg": 220,
-        "totalKg": 22379
+        "lossKg": 223,
+        "totalKg": 22382
       }
     },
     {
@@ -226,9 +226,9 @@
       "targetOutput": 28,
       "lineSpeed": 1150,
       "speedSet": 1500,
-      "goodRate": 93.4,
+      "goodRate": 93.3,
       "goodTarget": 88,
-      "scrapRate": 6.6,
+      "scrapRate": 6.7,
       "scrapLimit": 3,
       "progress": 87.40714285714286,
       "dayTarget": 14,
@@ -254,8 +254,71 @@
         "rejectKg": 0,
         "flakesKg": 1482,
         "purgingKg": 0,
-        "lossKg": 250,
-        "totalKg": 26206
+        "lossKg": 262,
+        "totalKg": 26218
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "dayRollsKg": [
+        947,
+        948,
+        949,
+        950,
+        951,
+        947,
+        948,
+        949,
+        950,
+        951,
+        947,
+        947
+      ],
+      "nightRollsKg": [
+        843,
+        844,
+        845,
+        846,
+        847,
+        843,
+        843,
+        844,
+        845,
+        846
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1150,
+      "speedSet": 1500,
+      "goodRate": 88.7,
+      "goodTarget": 88,
+      "scrapRate": 11.3,
+      "scrapLimit": 3,
+      "progress": 70.82142857142857,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 1140.0MM*0.300MM/RS8001 666.8MM*0.381MM/RS8001 463.5MM*0.381MM",
+      "thickness": "0.3 / 0.381 mm",
+      "width": "1140 / 666.8 / 463.5 mm",
+      "orderNo": "RSZIB26003/RSTEG26003/RSTEG26002",
+      "customer": "ZIBZA/TEGUS",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 60,
+        "production": 30,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 19830,
+        "rejectKg": 886,
+        "flakesKg": 1432,
+        "purgingKg": 0,
+        "lossKg": 210,
+        "totalKg": 22358
       }
     }
   ]
