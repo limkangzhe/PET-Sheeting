@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (June 2026 (13).xlsx)",
-  "syncedAt": "2026-06-17T00:00:18.418Z",
-  "selectedDate": "2026-06-16",
+  "source": "Excel网页上传 / Excel Upload (June 2026 (14).xlsx)",
+  "syncedAt": "2026-06-18T00:02:40.813Z",
+  "selectedDate": "2026-06-19",
   "dailyRecords": [
     {
       "date": "2026-06-01",
@@ -1175,8 +1175,8 @@
         "rejectKg": 1393,
         "flakesKg": 1966,
         "purgingKg": 0,
-        "lossKg": 300,
-        "totalKg": 29239
+        "lossKg": 292,
+        "totalKg": 29231
       }
     },
     {
@@ -1267,9 +1267,9 @@
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 89.4,
+      "goodRate": 89.5,
       "goodTarget": 88,
-      "scrapRate": 10.6,
+      "scrapRate": 10.5,
       "scrapLimit": 3,
       "progress": 89.075,
       "dayTarget": 14,
@@ -1295,8 +1295,8 @@
         "rejectKg": 873,
         "flakesKg": 1457,
         "purgingKg": 322,
-        "lossKg": 290,
-        "totalKg": 27883
+        "lossKg": 277,
+        "totalKg": 27870
       }
     },
     {
@@ -1396,9 +1396,9 @@
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 92,
+      "goodRate": 91.9,
       "goodTarget": 88,
-      "scrapRate": 8,
+      "scrapRate": 8.1,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -1424,8 +1424,8 @@
         "rejectKg": 699,
         "flakesKg": 1548,
         "purgingKg": 150,
-        "lossKg": 290,
-        "totalKg": 33613
+        "lossKg": 335,
+        "totalKg": 33658
       }
     },
     {
@@ -1522,9 +1522,9 @@
       "targetOutput": 28,
       "lineSpeed": 1550,
       "speedSet": 1500,
-      "goodRate": 89.9,
+      "goodRate": 89.8,
       "goodTarget": 88,
-      "scrapRate": 10.1,
+      "scrapRate": 10.2,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -1550,8 +1550,8 @@
         "rejectKg": 604,
         "flakesKg": 2373,
         "purgingKg": 0,
-        "lossKg": 320,
-        "totalKg": 32500
+        "lossKg": 328,
+        "totalKg": 32508
       }
     },
     {
@@ -1639,9 +1639,9 @@
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 92.7,
+      "goodRate": 92.6,
       "goodTarget": 88,
-      "scrapRate": 7.3,
+      "scrapRate": 7.4,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -1657,7 +1657,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 30,
+        "changeover": 0,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1667,8 +1667,113 @@
         "rejectKg": 180,
         "flakesKg": 1469,
         "purgingKg": 404,
-        "lossKg": 300,
-        "totalKg": 32229
+        "lossKg": 321,
+        "totalKg": 32250
+      }
+    },
+    {
+      "date": "2026-06-17",
+      "dayRollsKg": [
+        405,
+        406,
+        407,
+        408,
+        409,
+        405,
+        406,
+        407,
+        408,
+        409,
+        405,
+        406,
+        407,
+        408,
+        409,
+        405,
+        405,
+        406,
+        407,
+        408,
+        404,
+        405
+      ],
+      "nightRollsKg": [],
+      "targetOutput": 28,
+      "lineSpeed": 1500,
+      "speedSet": 1500,
+      "goodRate": 87.3,
+      "goodTarget": 88,
+      "scrapRate": 12.7,
+      "scrapLimit": 3,
+      "progress": 75.50714285714287,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS5001 698.5*0.318MM",
+      "thickness": "0.80 mm",
+      "width": "820 mm",
+      "orderNo": "RSVPE26001",
+      "customer": "VPECA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 240,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 21142,
+        "rejectKg": 1217,
+        "flakesKg": 1405,
+        "purgingKg": 200,
+        "lossKg": 260,
+        "totalKg": 24224
+      }
+    },
+    {
+      "date": "2026-06-19",
+      "dayRollsKg": [
+        12197
+      ],
+      "nightRollsKg": [
+        1
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1400,
+      "speedSet": 1500,
+      "goodRate": 89.5,
+      "goodTarget": 88,
+      "scrapRate": 10.5,
+      "scrapLimit": 3,
+      "progress": 43.56428571428572,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "透明片材 / Clear Sheet",
+      "thickness": "0.80 mm",
+      "width": "820 mm",
+      "orderNo": "Type（规格）",
+      "customer": "Team",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 12198,
+        "rejectKg": 2,
+        "flakesKg": 1408,
+        "purgingKg": 4,
+        "lossKg": 10,
+        "totalKg": 13622
       }
     }
   ]
