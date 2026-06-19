@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (June 2026 (16).xlsx)",
-  "syncedAt": "2026-06-19T00:11:29.641Z",
+  "source": "Excel网页上传 / Excel Upload (June 2026 (17).xlsx)",
+  "syncedAt": "2026-06-19T12:11:56.540Z",
   "selectedDate": "2026-06-19",
   "dailyRecords": [
     {
@@ -1850,7 +1850,28 @@
     {
       "date": "2026-06-19",
       "dayRollsKg": [
-        12197
+        722,
+        723,
+        724,
+        725,
+        726,
+        722,
+        723,
+        724,
+        725,
+        726,
+        722,
+        723,
+        723,
+        724,
+        725,
+        721,
+        722,
+        723,
+        724,
+        725,
+        721,
+        722
       ],
       "nightRollsKg": [
         1
@@ -1858,11 +1879,11 @@
       "targetOutput": 28,
       "lineSpeed": 1400,
       "speedSet": 1500,
-      "goodRate": 89.5,
+      "goodRate": 94.2,
       "goodTarget": 88,
-      "scrapRate": 10.5,
+      "scrapRate": 5.8,
       "scrapLimit": 3,
-      "progress": 43.56428571428572,
+      "progress": 56.84285714285714,
       "dayTarget": 14,
       "nightTarget": 14,
       "lineName": "PET-A01 主线 / PET-A01 Main Line",
@@ -1882,12 +1903,12 @@
         "maintenance": 0
       },
       "productionBreakdown": {
-        "goodKg": 12198,
+        "goodKg": 15916,
         "rejectKg": 2,
-        "flakesKg": 1408,
+        "flakesKg": 853,
         "purgingKg": 4,
-        "lossKg": 10,
-        "totalKg": 13622
+        "lossKg": 125,
+        "totalKg": 16900
       }
     }
   ]
