@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (June 2026 (24).xlsx)",
-  "syncedAt": "2026-06-23T23:36:25.732Z",
+  "source": "Excel网页上传 / Excel Upload (June 2026 (26).xlsx)",
+  "syncedAt": "2026-06-24T00:08:27.161Z",
   "selectedDate": "2026-06-23",
   "dailyRecords": [
     {
@@ -2363,9 +2363,9 @@
       "targetOutput": 28,
       "lineSpeed": 1600,
       "speedSet": 1500,
-      "goodRate": 94.2,
+      "goodRate": 92,
       "goodTarget": 88,
-      "scrapRate": 5.8,
+      "scrapRate": 8,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -2389,10 +2389,10 @@
       "productionBreakdown": {
         "goodKg": 30412,
         "rejectKg": 637,
-        "flakesKg": 697,
+        "flakesKg": 1386,
         "purgingKg": 286,
-        "lossKg": 260,
-        "totalKg": 32292
+        "lossKg": 321,
+        "totalKg": 33042
       }
     }
   ]
