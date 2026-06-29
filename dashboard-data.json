@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (June 2026 (30).xlsx)",
-  "syncedAt": "2026-06-28T12:27:48.909Z",
+  "source": "Excel网页上传 / Excel Upload (June 2026 (31).xlsx)",
+  "syncedAt": "2026-06-29T00:03:42.624Z",
   "selectedDate": "2026-06-28",
   "dailyRecords": [
     {
@@ -2792,41 +2792,60 @@
         706
       ],
       "nightRollsKg": [
-        1
+        699,
+        700,
+        701,
+        702,
+        703,
+        699,
+        700,
+        701,
+        702,
+        703,
+        699,
+        700,
+        701,
+        702,
+        703,
+        699,
+        700,
+        701,
+        702,
+        703
       ],
       "targetOutput": 28,
-      "lineSpeed": 1400,
+      "lineSpeed": 1600,
       "speedSet": 1500,
-      "goodRate": 81.7,
+      "goodRate": 87.1,
       "goodTarget": 88,
-      "scrapRate": 18.3,
+      "scrapRate": 12.9,
       "scrapLimit": 3,
-      "progress": 35.285714285714285,
+      "progress": 85.35357142857143,
       "dayTarget": 14,
       "nightTarget": 14,
       "lineName": "PET-A01 主线 / PET-A01 Main Line",
       "runState": "RUN",
       "batchStatus": "批次进行中 / Batch Running",
-      "spec": "透明片材 / Clear Sheet",
-      "thickness": "0.80 mm",
-      "width": "820 mm",
-      "orderNo": "Type（规格）",
-      "customer": "Team",
+      "spec": "RS0001 730.0MM*0.350MM",
+      "thickness": "0.35 mm",
+      "width": "730 mm",
+      "orderNo": "RSVCP 26005",
+      "customer": "VCPAU",
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
         "changeover": 60,
-        "production": 0,
+        "production": 60,
         "equipment": 0,
         "maintenance": 0
       },
       "productionBreakdown": {
-        "goodKg": 9880,
-        "rejectKg": 1370,
-        "flakesKg": 738,
-        "purgingKg": 4,
-        "lossKg": 105,
-        "totalKg": 12097
+        "goodKg": 23899,
+        "rejectKg": 1571,
+        "flakesKg": 1526,
+        "purgingKg": 203,
+        "lossKg": 250,
+        "totalKg": 27449
       }
     }
   ]
