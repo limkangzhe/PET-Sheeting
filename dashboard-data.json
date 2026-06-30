@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (June 2026 (31).xlsx)",
-  "syncedAt": "2026-06-29T00:03:42.624Z",
-  "selectedDate": "2026-06-28",
+  "source": "Excel网页上传 / Excel Upload (June 2026 (32).xlsx)",
+  "syncedAt": "2026-06-30T00:04:04.642Z",
+  "selectedDate": "2026-06-29",
   "dailyRecords": [
     {
       "date": "2026-06-01",
@@ -2759,8 +2759,8 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
-        "production": 60,
+        "changeover": 60,
+        "production": 0,
         "equipment": 0,
         "maintenance": 0
       },
@@ -2846,6 +2846,91 @@
         "purgingKg": 203,
         "lossKg": 250,
         "totalKg": 27449
+      }
+    },
+    {
+      "date": "2026-06-29",
+      "dayRollsKg": [
+        713,
+        714,
+        715,
+        716,
+        716,
+        712,
+        713,
+        714,
+        715,
+        716,
+        712,
+        713,
+        714,
+        715,
+        716,
+        712,
+        713,
+        714,
+        715,
+        716,
+        712,
+        713
+      ],
+      "nightRollsKg": [
+        707,
+        708,
+        709,
+        710,
+        711,
+        707,
+        708,
+        709,
+        710,
+        711,
+        707,
+        707,
+        708,
+        709,
+        710,
+        706,
+        707,
+        708,
+        709,
+        710,
+        706,
+        707
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1600,
+      "speedSet": 1500,
+      "goodRate": 90.6,
+      "goodTarget": 88,
+      "scrapRate": 9.4,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 730.0MM*0.500/RS8001 710.0MM*0.370MM",
+      "thickness": "0.37 mm",
+      "width": "710 mm",
+      "orderNo": "RSVCP 26005/RSTRM26002",
+      "customer": "VCPAU/TRMTR",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 31293,
+        "rejectKg": 546,
+        "flakesKg": 2428,
+        "purgingKg": 0,
+        "lossKg": 260,
+        "totalKg": 34527
       }
     }
   ]
