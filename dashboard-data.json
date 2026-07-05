@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (3).xlsx)",
-  "syncedAt": "2026-07-04T00:03:59.749Z",
-  "selectedDate": "2026-07-03",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (4).xlsx)",
+  "syncedAt": "2026-07-05T00:24:22.482Z",
+  "selectedDate": "2026-07-04",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -316,6 +316,85 @@
         "purgingKg": 0,
         "lossKg": 125,
         "totalKg": 27722
+      }
+    },
+    {
+      "date": "2026-07-04",
+      "dayRollsKg": [
+        847,
+        848,
+        848,
+        849,
+        850,
+        846,
+        847,
+        848,
+        849,
+        850,
+        846,
+        847,
+        848,
+        849,
+        850,
+        846,
+        847,
+        848,
+        849,
+        850
+      ],
+      "nightRollsKg": [
+        887,
+        888,
+        889,
+        890,
+        891,
+        887,
+        888,
+        888,
+        889,
+        890,
+        886,
+        887,
+        888,
+        889,
+        890,
+        886,
+        887,
+        888
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1600,
+      "speedSet": 1500,
+      "goodRate": 94.4,
+      "goodTarget": 88,
+      "scrapRate": 5.6,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS4001 736.6MM*0.368MM",
+      "thickness": "0.368 mm",
+      "width": "736.6 mm",
+      "orderNo": "RSMED26009",
+      "customer": "MEDCA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 32950,
+        "rejectKg": 136,
+        "flakesKg": 1486,
+        "purgingKg": 0,
+        "lossKg": 330,
+        "totalKg": 34902
       }
     }
   ]
