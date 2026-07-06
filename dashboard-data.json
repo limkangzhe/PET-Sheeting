@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (4).xlsx)",
-  "syncedAt": "2026-07-05T00:24:22.482Z",
-  "selectedDate": "2026-07-04",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (5).xlsx)",
+  "syncedAt": "2026-07-06T00:06:13.598Z",
+  "selectedDate": "2026-07-05",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -395,6 +395,79 @@
         "purgingKg": 0,
         "lossKg": 330,
         "totalKg": 34902
+      }
+    },
+    {
+      "date": "2026-07-05",
+      "dayRollsKg": [
+        847,
+        848,
+        849,
+        850,
+        851,
+        847,
+        848,
+        849,
+        850,
+        851,
+        846,
+        847,
+        848,
+        849,
+        850,
+        846,
+        847,
+        848
+      ],
+      "nightRollsKg": [
+        922,
+        923,
+        924,
+        925,
+        926,
+        922,
+        923,
+        924,
+        925,
+        926,
+        921,
+        922,
+        923,
+        924
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1500,
+      "speedSet": 1500,
+      "goodRate": 91.3,
+      "goodTarget": 88,
+      "scrapRate": 8.7,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS8001 740.0MM*0.450MM/RS8001 1136.6MM*0.432MM",
+      "thickness": "0.45 / 0.432 mm",
+      "width": "740 / 1136.6 mm",
+      "orderNo": "RSAPX26003/RSARC26011",
+      "customer": "TRMTR/ARC",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 60,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 28201,
+        "rejectKg": 147,
+        "flakesKg": 2192,
+        "purgingKg": 231,
+        "lossKg": 105,
+        "totalKg": 30876
       }
     }
   ]
