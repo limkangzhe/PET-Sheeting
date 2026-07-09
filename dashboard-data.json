@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (8).xlsx)",
-  "syncedAt": "2026-07-07T23:51:21.589Z",
-  "selectedDate": "2026-07-07",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (9).xlsx)",
+  "syncedAt": "2026-07-09T00:11:44.375Z",
+  "selectedDate": "2026-07-08",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -604,6 +604,85 @@
         "purgingKg": 0,
         "lossKg": 300,
         "totalKg": 31786
+      }
+    },
+    {
+      "date": "2026-07-08",
+      "dayRollsKg": [
+        806,
+        807,
+        808,
+        809,
+        809,
+        805,
+        806,
+        807,
+        808,
+        809,
+        805,
+        806,
+        807,
+        808,
+        809,
+        805,
+        806,
+        807
+      ],
+      "nightRollsKg": [
+        703,
+        704,
+        705,
+        706,
+        707,
+        702,
+        703,
+        704,
+        705,
+        706,
+        702,
+        703,
+        704,
+        705,
+        706,
+        702,
+        703,
+        704,
+        705,
+        706
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1600,
+      "speedSet": 1500,
+      "goodRate": 89,
+      "goodTarget": 88,
+      "scrapRate": 11,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS8001 640.0MM*0.475/RS8001 660.0MM*0.483MM",
+      "thickness": "0.483 mm",
+      "width": "660 mm",
+      "orderNo": "RSAPX26003/RSGLB26005",
+      "customer": "TRMTR/GLBCA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 150,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 28612,
+        "rejectKg": 1373,
+        "flakesKg": 1679,
+        "purgingKg": 189,
+        "lossKg": 310,
+        "totalKg": 32163
       }
     }
   ]
