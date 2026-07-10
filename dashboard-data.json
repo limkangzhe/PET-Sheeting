@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (12).xlsx)",
-  "syncedAt": "2026-07-10T23:31:04.813Z",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (13).xlsx)",
+  "syncedAt": "2026-07-10T23:33:24.046Z",
   "selectedDate": "2026-07-10",
   "dailyRecords": [
     {
@@ -757,6 +757,22 @@
     {
       "date": "2026-07-10",
       "dayRollsKg": [
+        1198,
+        1199,
+        1200,
+        1201,
+        1202,
+        1198,
+        1198,
+        1199,
+        1200,
+        1201,
+        1197,
+        1198,
+        1199,
+        1200
+      ],
+      "nightRollsKg": [
         1215,
         1216,
         1217,
@@ -769,7 +785,6 @@
         1218,
         1214
       ],
-      "nightRollsKg": [],
       "targetOutput": 28,
       "lineSpeed": 1550,
       "speedSet": 1500,
