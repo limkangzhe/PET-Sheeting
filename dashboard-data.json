@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026.xlsx)",
-  "syncedAt": "2026-07-12T00:14:28.594Z",
-  "selectedDate": "2026-07-11",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (16).xlsx)",
+  "syncedAt": "2026-07-12T12:32:08.924Z",
+  "selectedDate": "2026-07-12",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -884,6 +884,61 @@
         "purgingKg": 0,
         "lossKg": 320,
         "totalKg": 32864
+      }
+    },
+    {
+      "date": "2026-07-12",
+      "dayRollsKg": [
+        1213,
+        1214,
+        1215,
+        1216,
+        1217,
+        1212,
+        1213,
+        1214,
+        1215,
+        1216,
+        1212,
+        1213,
+        1214
+      ],
+      "nightRollsKg": [
+        1
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1400,
+      "speedSet": 1500,
+      "goodRate": 92.1,
+      "goodTarget": 88,
+      "scrapRate": 7.9,
+      "scrapLimit": 3,
+      "progress": 56.375,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "透明片材 / Clear Sheet",
+      "thickness": "0.80 mm",
+      "width": "820 mm",
+      "orderNo": "Type（规格）",
+      "customer": "Team",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 15785,
+        "rejectKg": 2,
+        "flakesKg": 849,
+        "purgingKg": 404,
+        "lossKg": 105,
+        "totalKg": 17145
       }
     }
   ]
