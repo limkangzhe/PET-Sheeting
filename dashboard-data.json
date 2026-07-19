@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (26).xlsx)",
-  "syncedAt": "2026-07-19T00:18:14.433Z",
-  "selectedDate": "2026-07-18",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (27).xlsx)",
+  "syncedAt": "2026-07-19T23:51:40.592Z",
+  "selectedDate": "2026-07-19",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -1344,6 +1344,72 @@
         "purgingKg": 0,
         "lossKg": 300,
         "totalKg": 30799
+      }
+    },
+    {
+      "date": "2026-07-19",
+      "dayRollsKg": [
+        1010,
+        1011,
+        1012,
+        1013,
+        1014,
+        1010,
+        1011,
+        1012,
+        1013,
+        1014,
+        1009,
+        1010
+      ],
+      "nightRollsKg": [
+        1102,
+        1103,
+        1104,
+        1104,
+        1105,
+        1101,
+        1102,
+        1103,
+        1104,
+        1105,
+        1101,
+        1102,
+        1103
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1400,
+      "speedSet": 1500,
+      "goodRate": 88.4,
+      "goodTarget": 88,
+      "scrapRate": 11.6,
+      "scrapLimit": 3,
+      "progress": 94.56428571428572,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 1140.0MM*0.300MM/RS0001 1085.8MM*0.368MM",
+      "thickness": "0.3 / 0.368 mm",
+      "width": "1140 / 1085.8 mm",
+      "orderNo": "RSZIB26007/RSHPS26002",
+      "customer": "ZIBZA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 60,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 26478,
+        "rejectKg": 364,
+        "flakesKg": 2878,
+        "purgingKg": 0,
+        "lossKg": 230,
+        "totalKg": 29950
       }
     }
   ]
