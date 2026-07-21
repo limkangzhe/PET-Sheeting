@@ -173,9 +173,9 @@
     if (!file || !/\.jpe?g$/i.test(file.name || "")) {
       throw new Error(`Thickness trend requires JPG: ${file?.name || "unknown"}`);
     }
-    const maxWidth = Number(options.maxWidth) || 1600;
-    const maxHeight = Number(options.maxHeight) || 1280;
-    const quality = Number(options.quality) || 0.72;
+    const maxWidth = Math.min(1600, Number(options.maxWidth) || 1600);
+    const maxHeight = Math.min(1280, Number(options.maxHeight) || 1280);
+    const quality = Math.min(0.72, Number(options.quality) || 0.72);
     const bitmap = await createImageBitmap(file);
     const scale = Math.min(1, maxWidth / bitmap.width, maxHeight / bitmap.height);
     const width = Math.max(1, Math.round(bitmap.width * scale));

@@ -60,3 +60,66 @@ test("exposes browser file import functions", () => {
   assert.equal(typeof quality.extractVisionPdf, "function");
   assert.equal(typeof quality.compressThicknessImage, "function");
 });
+
+test("extracts vision PDF pages with the local worker", async () => {
+  const pdfjs = {
+    GlobalWorkerOptions: {},
+    getDocument: ({ data }) => {
+      assert.ok(data instanceof ArrayBuffer);
+      return {
+        promise: Promise.resolve({
+          numPages: fixture.length,
+          getPage: async (pageNumber) => ({
+            getTextContent: async () => ({ items: fixture[pageNumber - 1].tokens.map((str) => ({ str })) })
+          })
+        })
+      };
+    }
+  };
+  const file = { name: "vision-report.pdf", arrayBuffer: async () => new ArrayBuffer(0) };
+
+  const result = await quality.extractVisionPdf(file, pdfjs);
+
+  assert.equal(pdfjs.GlobalWorkerOptions.workerSrc, "vendor/pdf.worker.min.js");
+  assert.equal(result["2026-07-19"].totalDefects, 794);
+});
+
+test("compresses oversized thickness images within hard limits", async () => {
+  const originalCreateImageBitmap = global.createImageBitmap;
+  const originalDocument = global.document;
+  const canvas = {
+    width: 0,
+    height: 0,
+    getContext: () => ({
+      fillStyle: "",
+      fillRect() {},
+      drawImage() {}
+    }),
+    toDataURL: (...args) => {
+      canvas.toDataURLArgs = args;
+      return "data:image/jpeg;base64,compressed";
+    }
+  };
+  const bitmap = { width: 4000, height: 2000, closeCalled: false, close() { this.closeCalled = true; } };
+  global.createImageBitmap = async () => bitmap;
+  global.document = { createElement: () => canvas };
+
+  try {
+    const result = await quality.compressThicknessImage(
+      { name: "thickness.jpg" },
+      { maxWidth: 4000, maxHeight: 4000, quality: 1 }
+    );
+
+    assert.equal(canvas.width, 1600);
+    assert.equal(canvas.height, 800);
+    assert.equal(canvas.width / canvas.height, bitmap.width / bitmap.height);
+    assert.deepEqual(canvas.toDataURLArgs, ["image/jpeg", 0.72]);
+    assert.equal(bitmap.closeCalled, true);
+    assert.equal(result.sourceFile, "thickness.jpg");
+  } finally {
+    if (originalCreateImageBitmap === undefined) delete global.createImageBitmap;
+    else global.createImageBitmap = originalCreateImageBitmap;
+    if (originalDocument === undefined) delete global.document;
+    else global.document = originalDocument;
+  }
+});
