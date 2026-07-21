@@ -7,12 +7,13 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #071014;
-      --panel: #101a20;
-      --panel-2: #15232a;
+      --bg: #10252d;
+      --bg-deep: #0b1c22;
+      --panel: #17323b;
+      --panel-strong: #1d3a44;
       --border: #2b444c;
-      --text: #edf6f7;
-      --muted: #91a8ae;
+      --text: #f2fbfc;
+      --muted: #a8c0c6;
       --cyan: #35d2e6;
       --green: #58d68d;
       --amber: #ffbd45;
@@ -31,7 +32,7 @@
       min-height: 100%;
       margin: 0;
       background:
-        linear-gradient(180deg, rgba(12, 25, 31, 0.88), rgba(4, 10, 13, 0.97)),
+        linear-gradient(180deg, rgba(22, 53, 63, 0.88), rgba(11, 28, 34, 0.97)),
         repeating-linear-gradient(90deg, transparent 0 74px, rgba(255, 255, 255, 0.025) 75px),
         var(--bg);
       color: var(--text);
@@ -337,7 +338,7 @@
       min-height: 0;
       display: grid;
       grid-template-columns: minmax(390px, 0.86fr) minmax(540px, 1.12fr) minmax(460px, 1fr);
-      grid-template-rows: minmax(0, 1fr) minmax(0, 0.78fr);
+      grid-template-rows: repeat(4, minmax(0, 1fr));
       gap: clamp(12px, 0.85vw, 18px);
     }
 
@@ -383,7 +384,7 @@
     }
 
     .spec-panel {
-      grid-row: span 2;
+      grid-row: span 4;
       --accent: var(--cyan);
       display: grid;
       grid-template-rows: auto auto auto 1fr;
@@ -552,10 +553,12 @@
 
     .pareto-panel {
       --accent: var(--amber);
+      grid-row: span 2;
     }
 
     .shift-panel {
       --accent: var(--blue);
+      grid-row: span 2;
     }
 
     .month-panel {
@@ -563,6 +566,159 @@
       --accent: var(--green);
       display: grid;
       grid-template-rows: auto auto auto 1fr;
+    }
+
+    .vision-panel,
+    .thickness-panel {
+      grid-row: span 1;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+      padding: clamp(14px, 0.9vw, 18px);
+    }
+
+    .vision-panel {
+      --accent: var(--cyan);
+    }
+
+    .thickness-panel {
+      --accent: var(--blue);
+    }
+
+    .vision-panel .panel-header,
+    .thickness-panel .panel-header {
+      margin-bottom: 0;
+    }
+
+    .vision-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+      min-height: 0;
+    }
+
+    .vision-summary > div {
+      min-width: 0;
+      padding: 0 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .vision-summary > div:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .vision-summary > div:last-child {
+      padding-right: 0;
+    }
+
+    .vision-summary strong,
+    .vision-summary span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .vision-summary strong {
+      color: var(--text);
+      font-size: clamp(22px, 1.45vw, 30px);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .vision-summary span {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: clamp(13px, 0.82vw, 15px);
+      font-weight: 700;
+    }
+
+    .vision-bars {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .vision-bar {
+      min-width: 0;
+    }
+
+    .vision-bar-label,
+    .vision-bar-value {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .vision-bar-label {
+      color: var(--muted);
+      font-size: clamp(13px, 0.82vw, 15px);
+      font-weight: 700;
+    }
+
+    .vision-bar-value {
+      margin-top: 4px;
+      color: var(--text);
+      font-size: clamp(15px, 0.95vw, 18px);
+      font-variant-numeric: tabular-nums;
+      font-weight: 850;
+    }
+
+    .vision-bar-track {
+      height: 8px;
+      margin-top: 7px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .vision-bar-fill {
+      height: 100%;
+      min-width: 3px;
+      background: var(--cyan);
+    }
+
+    .vision-empty {
+      grid-column: 1 / -1;
+      align-self: center;
+      color: var(--muted);
+      font-size: clamp(13px, 0.82vw, 15px);
+      font-weight: 700;
+    }
+
+    .thickness-image-button {
+      width: 100%;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(110, 168, 255, 0.4);
+      border-radius: 6px;
+      background: rgba(110, 168, 255, 0.08);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .thickness-image-button:hover:not(:disabled) {
+      border-color: rgba(110, 168, 255, 0.78);
+      background: rgba(110, 168, 255, 0.14);
+    }
+
+    .thickness-image-button:disabled {
+      cursor: not-allowed;
+    }
+
+    .thickness-image-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thickness-empty {
+      font-size: clamp(13px, 0.82vw, 15px);
+      font-weight: 700;
     }
 
     .month-cards {
@@ -691,6 +847,46 @@
       color: rgba(143, 164, 170, 0.72);
       font-size: 12px;
       pointer-events: none;
+    }
+
+    .thickness-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      place-items: center;
+      padding: clamp(28px, 4vw, 72px);
+      background: rgba(3, 12, 16, 0.9);
+    }
+
+    .thickness-lightbox.open {
+      display: grid;
+    }
+
+    .thickness-lightbox img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(242, 251, 252, 0.42);
+      border-radius: 6px;
+      background: rgba(23, 50, 59, 0.92);
+      color: var(--text);
+      font-size: 32px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .lightbox-close:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
     }
 
     .entry-overlay {
@@ -1221,6 +1417,19 @@
         <section class="month-list" id="monthDowntimeList" aria-label="Monthly downtime categories"></section>
       </article>
 
+      <article class="card panel vision-panel" data-panel-id="vision" draggable="true">
+        <div class="panel-header"><div class="panel-title"><span class="dual">&#35270;&#35273;&#26816;&#27979;<small>Visual Inspection</small></span></div><div class="panel-tag" id="visionDate">&#26410;&#23548;&#20837; / No data</div></div>
+        <div>
+          <div class="vision-summary"><div><strong id="visionTotal">--</strong><span>&#32570;&#38519; / Defects</span></div><div><strong id="visionDensity">--</strong><span>&#32508;&#21512;&#23494;&#24230; / Density</span></div><div><strong id="visionOrders">--</strong><span>&#24037;&#21333; / Orders</span></div></div>
+          <div class="vision-bars" id="visionBars"><span class="vision-empty">&#26410;&#23548;&#20837; / No data</span></div>
+        </div>
+      </article>
+
+      <article class="card panel thickness-panel" data-panel-id="thickness" draggable="true">
+        <div class="panel-header"><div class="panel-title"><span class="dual">&#21402;&#24230;&#36235;&#21183;<small>Thickness Trend</small></span></div><div class="panel-tag" id="thicknessDate">&#26410;&#23548;&#20837; / No data</div></div>
+        <button class="thickness-image-button" id="thicknessImage" type="button" disabled aria-label="Open full thickness trend image"><img id="thicknessThumb" alt="24-hour thickness trend report" hidden><span class="thickness-empty" id="thicknessEmpty">&#26410;&#23548;&#20837; / No data</span></button>
+      </article>
+
       <article class="card panel shift-panel" data-panel-id="shift" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">早晚班产量对比<small>Shift Output</small></span></div>
@@ -1232,6 +1441,11 @@
       </article>
     </section>
   </main>
+
+  <div class="thickness-lightbox" id="thicknessLightbox" aria-hidden="true">
+    <button class="lightbox-close" id="thicknessClose" type="button" aria-label="&#20851;&#38381;&#21402;&#24230;&#36235;&#21183;&#22270;">&times;</button>
+    <img id="thicknessFullImage" alt="24-hour thickness trend report">
+  </div>
 
   <div class="mini-footer" id="dataSourceFooter">PET Sheet MES Dashboard / Daily Input · Monthly Auto Summary</div>
 
@@ -1441,7 +1655,7 @@
   <script src="quality-import.js"></script>
   <script>
     const storageKey = "pet-sheet-dashboard-daily-monthly-v4";
-    const layoutKey = "pet-sheet-dashboard-panel-layout-v1";
+    const layoutKey = "pet-sheet-dashboard-panel-layout-v2";
     const syncKey = "pet-sheet-dashboard-github-sync-v1";
     const remoteHoldKey = "pet-sheet-dashboard-remote-hold-until-v1";
     const defaultSyncConfig = {
@@ -1451,7 +1665,7 @@
       path: "dashboard-data.json",
       token: ""
     };
-    const defaultPanelOrder = ["spec", "shift", "month", "downtime"];
+    const defaultPanelOrder = ["spec", "shift", "month", "downtime", "vision", "thickness"];
     const clone = (value) => JSON.parse(JSON.stringify(value));
     const fmt = new Intl.NumberFormat("zh-CN");
     const el = (id) => document.getElementById(id);
@@ -2711,6 +2925,62 @@
       }).join("");
     }
 
+    function closeThicknessLightbox() {
+      el("thicknessLightbox").classList.remove("open");
+      el("thicknessLightbox").setAttribute("aria-hidden", "true");
+      el("thicknessFullImage").removeAttribute("src");
+    }
+
+    function openThicknessLightbox() {
+      const imageDataUrl = data.thicknessByDate?.[data.selectedDate]?.imageDataUrl;
+      if (!imageDataUrl) {
+        closeThicknessLightbox();
+        return;
+      }
+      el("thicknessFullImage").src = imageDataUrl;
+      el("thicknessLightbox").classList.add("open");
+      el("thicknessLightbox").setAttribute("aria-hidden", "false");
+    }
+
+    function updateQualityPanels() {
+      const noDataText = "\u672a\u5bfc\u5165 / No data";
+      const quality = data.qualityByDate?.[data.selectedDate];
+      const thickness = data.thicknessByDate?.[data.selectedDate];
+      const defects = Array.isArray(quality?.topDefects) ? quality.topDefects : (quality?.defects || []);
+      const rankedDefects = defects
+        .map((defect) => ({ ...defect, count: Number(defect?.count) }))
+        .filter((defect) => Number.isFinite(defect.count))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 3);
+      const totalDefects = Number(quality?.totalDefects);
+      const density = quality?.overallDensity == null ? null : Number(quality?.overallDensity);
+      const workOrders = Number(quality?.workOrderCount);
+      const highestCount = Math.max(1, ...rankedDefects.map((defect) => defect.count));
+      const hasThicknessImage = Boolean(thickness?.imageDataUrl);
+
+      el("visionDate").textContent = quality ? data.selectedDate : noDataText;
+      el("visionTotal").textContent = Number.isFinite(totalDefects) ? fmt.format(Math.round(totalDefects)) : "--";
+      el("visionDensity").textContent = Number.isFinite(density) ? density.toFixed(3) : "--";
+      el("visionOrders").textContent = Number.isFinite(workOrders) ? fmt.format(Math.round(workOrders)) : "--";
+      el("visionBars").innerHTML = rankedDefects.length ? rankedDefects.map((defect) => `
+        <div class="vision-bar">
+          <span class="vision-bar-label">${safeText(defect.name || "\u7f3a\u9677")}</span>
+          <strong class="vision-bar-value">${fmt.format(Math.round(defect.count))}</strong>
+          <div class="vision-bar-track"><div class="vision-bar-fill" style="width: ${defect.count / highestCount * 100}%"></div></div>
+        </div>
+      `).join("") : `<span class="vision-empty">${noDataText}</span>`;
+
+      el("thicknessDate").textContent = hasThicknessImage ? data.selectedDate : noDataText;
+      el("thicknessImage").disabled = !hasThicknessImage;
+      el("thicknessThumb").hidden = !hasThicknessImage;
+      el("thicknessEmpty").hidden = hasThicknessImage;
+      if (hasThicknessImage) el("thicknessThumb").src = thickness.imageDataUrl;
+      else {
+        el("thicknessThumb").removeAttribute("src");
+        closeThicknessLightbox();
+      }
+    }
+
     function setupCanvas(canvas) {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
@@ -3279,6 +3549,7 @@
       updateKpis(record);
       updateProductionInfo(record);
       updateMonthPanel();
+      updateQualityPanels();
       drawPareto(record);
       drawShift(record);
     }
@@ -3288,6 +3559,14 @@
       el("entryOverlay").classList.add("open");
     });
     el("entryClose").addEventListener("click", () => el("entryOverlay").classList.remove("open"));
+    el("thicknessImage").addEventListener("click", openThicknessLightbox);
+    el("thicknessClose").addEventListener("click", closeThicknessLightbox);
+    el("thicknessLightbox").addEventListener("click", (event) => {
+      if (event.target === el("thicknessLightbox")) closeThicknessLightbox();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeThicknessLightbox();
+    });
     el("entryOverlay").addEventListener("click", (event) => {
       if (event.target === el("entryOverlay")) el("entryOverlay").classList.remove("open");
     });

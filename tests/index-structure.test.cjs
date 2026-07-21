@@ -69,3 +69,17 @@ test("confirmed imports lock controls and only clean up their own generation", (
   assert.match(lockBody, /正在同步 \/ Syncing/);
   assert.match(html, /if \(importState\.confirming\) return;[\s\S]*clearSelectedImports\(\)/);
 });
+
+test("registers compact quality panels and thickness lightbox", () => {
+  for (const value of [
+    'data-panel-id="vision"', 'data-panel-id="thickness"',
+    'id="visionTotal"', 'id="visionDensity"', 'id="visionBars"',
+    'id="thicknessImage"', 'id="thicknessLightbox"'
+  ]) assert.match(html, new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(html, /defaultPanelOrder\s*=\s*\[[^\]]*"vision"[^\]]*"thickness"/s);
+});
+
+test("renders absent visual density as no data", () => {
+  const body = functionBody("updateQualityPanels");
+  assert.match(body, /quality\?\.overallDensity\s*==\s*null\s*\?\s*null\s*:\s*Number\(quality\?\.overallDensity\)/);
+});
