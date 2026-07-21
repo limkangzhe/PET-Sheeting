@@ -6,6 +6,7 @@ const quality = require("../quality-import.js");
 test("maps timestamps to the 08:00 production day", () => {
   assert.equal(quality.productionDateFor("2026/7/20 7:59:59"), "2026-07-19");
   assert.equal(quality.productionDateFor("2026/7/20 8:00:00"), "2026-07-20");
+  assert.equal(quality.productionDateFor("2026/2/31 8:00:00"), "");
 });
 
 test("detects supported dates in thickness filenames", () => {
@@ -23,6 +24,7 @@ test("parses split report sections and aggregates by production day", () => {
   assert.equal(day.topDefects[0].count, 286);
   assert.equal(day.topDefects[1].name, "N-Crystal Point-G1");
   assert.equal(day.topDefects[1].count, 205);
+  assert.ok(Math.abs(day.topDefects[0].density - 286 / ((1.186 * 564.58) + (1.186 * 2333.43))) < 0.000001);
   assert.ok(Math.abs(day.overallDensity - 794 / ((1.186 * 564.58) + (1.186 * 2333.43))) < 0.000001);
 });
 

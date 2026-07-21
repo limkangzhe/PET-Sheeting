@@ -14,7 +14,11 @@
     if (!match) return null;
     const [, year, month, day, hour, minute, second = "0"] = match;
     const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second));
-    return Number.isNaN(date.getTime()) ? null : date;
+    if (Number.isNaN(date.getTime())) return null;
+    if (date.getFullYear() !== Number(year) || date.getMonth() !== Number(month) - 1 ||
+        date.getDate() !== Number(day) || date.getHours() !== Number(hour) ||
+        date.getMinutes() !== Number(minute) || date.getSeconds() !== Number(second)) return null;
+    return date;
   }
 
   function dateKey(date) {
@@ -119,6 +123,9 @@
       }
       day.overallDensity = area > 0 ? day.totalDefects / area : null;
       day.defects = [...totals.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+      day.defects.forEach((defect) => {
+        defect.density = area > 0 ? defect.count / area : null;
+      });
       day.topDefects = day.defects.slice(0, 3);
     }
     return days;
