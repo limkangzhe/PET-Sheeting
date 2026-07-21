@@ -2050,15 +2050,7 @@
         const localSyncedAt = Date.parse(data.syncedAt || "");
         const remoteSyncedAt = Date.parse(synced.syncedAt || "");
         if (!force && localOverride && localSyncedAt && remoteSyncedAt && remoteSyncedAt <= localSyncedAt) return;
-        data = PetQualityImport.mergeDashboardSources(data, {
-          production: {
-            dailyRecords: synced.dailyRecords,
-            selectedDate: synced.selectedDate
-          },
-          qualityByDate: synced.qualityByDate,
-          thicknessByDate: synced.thicknessByDate
-        });
-        data.syncedAt = synced.syncedAt;
+        data = { ...data, ...synced };
         dataSourceLabel = payload.source || "文件同步 / File Sync";
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");

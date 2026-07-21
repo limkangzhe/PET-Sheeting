@@ -180,6 +180,13 @@ test("keeps pending local data on automatic pulls and confirms forced pulls", ()
   assert.match(body, /localOverride\s*&&\s*localSyncedAt\s*&&\s*remoteSyncedAt\s*&&\s*remoteSyncedAt\s*<=\s*localSyncedAt/);
 });
 
+test("remote pulls replace all synchronized maps instead of retaining local-only entries", () => {
+  const start = html.indexOf("async function loadSyncedData");
+  const body = html.slice(start, html.indexOf("\n    function saveData", start));
+  assert.doesNotMatch(body, /mergeDashboardSources/);
+  assert.match(body, /data\s*=\s*\{\s*\.\.\.data,\s*\.\.\.synced\s*\};/s);
+});
+
 test("serializes retry completion against newer dashboard sync operations", () => {
   const retryBody = functionBody("retryPendingSync");
   const syncStateBody = functionBody("setSyncState");
