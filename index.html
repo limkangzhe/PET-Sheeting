@@ -2418,6 +2418,7 @@
         try {
           await publishCurrentData();
           if (operationToken !== importState.token || !isCurrentSyncOperation(syncOperationToken)) return;
+          if (!applyPublishedState(syncOperationToken)) return;
           localOverride = false;
           localStorage.setItem(`${storageKey}-local-override`, "0");
           setSyncState("synced");
@@ -3547,8 +3548,13 @@
 
     async function publishCurrentData() {
       await publishRemotePayload(dashboardPayload());
+    }
+
+    function applyPublishedState(operationToken) {
+      if (!isCurrentSyncOperation(operationToken)) return false;
       dataSourceLabel = "GitHub云同步 / GitHub Sync";
       localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+      return true;
     }
 
     async function retryPendingSync() {
@@ -3558,7 +3564,7 @@
       setSyncState("syncing");
       try {
         await publishCurrentData();
-        if (!isCurrentSyncOperation(operationToken)) return;
+        if (!applyPublishedState(operationToken)) return;
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
         setSyncState("synced");
@@ -3598,7 +3604,7 @@
       setSyncState("syncing");
       try {
         await publishCurrentData();
-        if (!isCurrentSyncOperation(operationToken)) return;
+        if (!applyPublishedState(operationToken)) return;
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
         setSyncState("synced");

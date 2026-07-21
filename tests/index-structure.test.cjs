@@ -132,17 +132,25 @@ test("keeps pending local data on automatic pulls and confirms forced pulls", ()
 test("serializes retry completion against newer dashboard sync operations", () => {
   const retryBody = functionBody("retryPendingSync");
   const syncStateBody = functionBody("setSyncState");
+  const publishBody = functionBody("publishCurrentData");
+  const publishedStateBody = functionBody("applyPublishedState");
   assert.match(html, /let syncOperation = 0;/);
   assert.match(html, /let retryInFlight = false;/);
+  assert.doesNotMatch(publishBody, /dataSourceLabel|remoteHoldKey/);
+  assert.match(publishedStateBody, /if\s*\(!isCurrentSyncOperation\(operationToken\)\)\s*return false/);
+  assert.match(publishedStateBody, /dataSourceLabel\s*=\s*"GitHub云同步 \/ GitHub Sync"/);
+  assert.match(publishedStateBody, /localStorage\.setItem\(remoteHoldKey/);
   assert.match(retryBody, /if\s*\(!localOverride\s*\|\|\s*importState\.confirming\s*\|\|\s*retryInFlight\)\s*return/);
   assert.match(retryBody, /const operationToken = beginSyncOperation\(\)/);
-  assert.match(retryBody, /await publishCurrentData\(\);\s*if\s*\(!isCurrentSyncOperation\(operationToken\)\)\s*return;\s*localOverride\s*=\s*false/);
+  assert.match(retryBody, /await publishCurrentData\(\);\s*if\s*\(!applyPublishedState\(operationToken\)\)\s*return;\s*localOverride\s*=\s*false/);
   assert.match(retryBody, /catch\s*\(error\)\s*\{\s*if\s*\(!isCurrentSyncOperation\(operationToken\)\)\s*return;\s*localOverride\s*=\s*true/);
   assert.match(retryBody, /finally\s*\{[\s\S]*retryInFlight\s*=\s*false[\s\S]*if\s*\(isCurrentSyncOperation\(operationToken\)\)\s*setSyncState\(syncState\)/);
   assert.match(syncStateBody, /state\s*===\s*"syncing"\s*\|\|\s*retryInFlight/);
   for (const name of ["confirmSelectedImports", "handleUploadedFile", "readForm"]) {
     assert.match(functionBody(name), /beginSyncOperation\(\)/);
   }
+  assert.match(functionBody("confirmSelectedImports"), /await publishCurrentData\(\);[\s\S]*applyPublishedState\(syncOperationToken\)/);
+  assert.match(functionBody("handleUploadedFile"), /await publishCurrentData\(\);\s*if\s*\(!applyPublishedState\(operationToken\)\)\s*return/);
   const pullStart = html.indexOf("async function loadSyncedData");
   const pullBody = html.slice(pullStart, html.indexOf("\n    function saveData", pullStart));
   assert.match(pullBody, /const operationToken = beginSyncOperation\(\)/);
