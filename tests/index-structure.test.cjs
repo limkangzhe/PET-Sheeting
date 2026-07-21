@@ -100,6 +100,32 @@ test("uses complete fixed slots for the six dashboard panels", () => {
   assert.match(dragBody, /panel\.dataset\.slot\s*=\s*draggedSlot/);
 });
 
+test("persists clamped panel sizes separately from fixed panel slots", () => {
+  const applyBody = functionBody("applyPanelLayout");
+  const loadBody = functionBody("loadPanelSizes");
+  const saveBody = functionBody("savePanelSizes");
+  const restoreBody = functionBody("restorePanelSizes");
+  const observerBody = functionBody("setupPanelResizeObserver");
+  const resetBody = html.slice(html.indexOf('el("resetLayout")'), html.indexOf("applyPanelLayout();"));
+
+  assert.match(html, /const panelSizeKey = "pet-sheet-dashboard-panel-sizes-v1"/);
+  assert.match(html, /const panelSizeVersion = 1/);
+  assert.match(loadBody, /saved\.version !== panelSizeVersion/);
+  assert.match(saveBody, /localStorage\.setItem\(panelSizeKey/);
+  assert.match(saveBody, /widthRatio/);
+  assert.match(saveBody, /heightRatio/);
+  assert.match(restoreBody, /Math\.min\(slot\.width/);
+  assert.match(restoreBody, /Math\.min\(slot\.height/);
+  assert.match(restoreBody, /panel\.style\.width/);
+  assert.match(restoreBody, /panel\.style\.height/);
+  assert.match(observerBody, /savePanelSizes\(\)/);
+  assert.doesNotMatch(observerBody, /getBoundingClientRect/);
+  assert.match(applyBody, /restorePanelSizes\(\)/);
+  assert.match(resetBody, /localStorage\.removeItem\(panelSizeKey\)/);
+  assert.match(resetBody, /resetPanelSizes\(\)/);
+  assert.doesNotMatch(resetBody, /savePanelLayout\(\)/);
+});
+
 test("keeps the thickness viewer modal and current when data changes", () => {
   assert.match(html, /id="thicknessLightbox"[^>]*role="dialog"[^>]*aria-modal="true"[^>]*aria-labelledby="thicknessLightboxTitle"/);
   const openBody = functionBody("openThicknessLightbox");

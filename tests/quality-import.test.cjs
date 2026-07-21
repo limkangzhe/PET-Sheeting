@@ -28,6 +28,37 @@ test("parses split report sections and aggregates by production day", () => {
   assert.ok(Math.abs(day.overallDensity - 794 / ((1.186 * 564.58) + (1.186 * 2333.43))) < 0.000001);
 });
 
+test("parses Unicode vision report headers with fixture-equivalent aggregation", () => {
+  const unicodeFixture = structuredClone(fixture);
+  const aliases = new Map([
+    [fixture[1].tokens[0], "\u7f3a\u9677\u79cd\u7c7b"],
+    [fixture[1].tokens[2], "\u7f3a\u9677\u6570\u91cf"],
+    [fixture[1].tokens[3], "\u5bc6\u5ea6"],
+    [fixture[2].tokens.at(-5), "\u603b\u8ba1"]
+  ]);
+  unicodeFixture.forEach((page) => {
+    page.tokens = page.tokens.map((token) => aliases.get(token) || token);
+  });
+
+  const expected = quality.parseVisionPages(fixture, "fixture.pdf")["2026-07-19"];
+  const actual = quality.parseVisionPages(unicodeFixture, "Report(1).pdf")["2026-07-19"];
+
+  assert.deepEqual(
+    {
+      workOrderCount: actual.workOrderCount,
+      totalDefects: actual.totalDefects,
+      overallDensity: actual.overallDensity,
+      topDefects: actual.topDefects
+    },
+    {
+      workOrderCount: expected.workOrderCount,
+      totalDefects: expected.totalDefects,
+      overallDensity: expected.overallDensity,
+      topDefects: expected.topDefects
+    }
+  );
+});
+
 test("replaces one imported source without clearing production or the other source", () => {
   const current = {
     selectedDate: "2026-07-19",

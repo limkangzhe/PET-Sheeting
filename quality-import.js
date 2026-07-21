@@ -8,6 +8,13 @@
   const isNumber = (value) => /^-?\d+(?:\.\d+)?$/.test(clean(value));
   const isOrderId = (value) => /^--\d+$/.test(clean(value));
   const pad = (value) => String(value).padStart(2, "0");
+  const visionHeaderAliases = {
+    defectType: ["\u7f3a\u9677\u79cd\u7c7b", "\u00e7\u00bc\u00ba\u00e9\u2122\u00b7\u00e7\u00a7\u008d\u00e7\u00b1\u00bb"],
+    defectQuantity: ["\u7f3a\u9677\u6570\u91cf", "\u00e7\u00bc\u00ba\u00e9\u2122\u00b7\u00e6\u2022\u00b0\u00e9\u2021\u008f"],
+    density: ["\u5bc6\u5ea6", "\u00e5\u00af\u2020\u00e5\u00ba\u00a6"],
+    total: ["\u603b\u8ba1", "\u00e6\u20ac\u00bb\u00e8\u00ae\u00a1"]
+  };
+  const isVisionHeader = (value, header) => visionHeaderAliases[header].includes(value);
 
   function parseTimestamp(value) {
     const match = clean(value).match(/^(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
@@ -64,15 +71,15 @@
       const tokens = (page.tokens || []).map(clean).filter(Boolean);
       let index = 0;
       while (index < tokens.length) {
-        if (tokens[index] !== "ç¼ºé™·ç§ç±»") { index += 1; continue; }
+        if (!isVisionHeader(tokens[index], "defectType")) { index += 1; continue; }
         let cursor = index + 1;
         const ids = [];
-        while (isOrderId(tokens[cursor]) && tokens[cursor + 1] === "ç¼ºé™·æ•°é‡" && tokens[cursor + 2] === "å¯†åº¦") {
+        while (isOrderId(tokens[cursor]) && isVisionHeader(tokens[cursor + 1], "defectQuantity") && isVisionHeader(tokens[cursor + 2], "density")) {
           ids.push(tokens[cursor]);
           cursor += 3;
         }
         if (!ids.length) { index += 1; continue; }
-        while (cursor < tokens.length && tokens[cursor] !== "ç¼ºé™·ç§ç±»") {
+        while (cursor < tokens.length && !isVisionHeader(tokens[cursor], "defectType")) {
           const name = tokens[cursor];
           const values = tokens.slice(cursor + 1, cursor + 1 + ids.length * 2);
           if (values.length !== ids.length * 2 || !values.every(isNumber)) { cursor += 1; continue; }
@@ -81,7 +88,7 @@
             if (!order) return;
             const count = Number(values[orderIndex * 2]);
             const density = Number(values[orderIndex * 2 + 1]);
-            if (name === "æ€»è®¡") {
+            if (isVisionHeader(name, "total")) {
               order.totalCount = count;
               order.totalDensity = density;
             } else {
