@@ -51,3 +51,21 @@ test("production JSON parsing carries normalized quality and thickness maps into
   assert.match(confirmBody, /parsed\.production\.qualityByDate/);
   assert.match(confirmBody, /parsed\.production\.thicknessByDate/);
 });
+
+test("confirmed imports lock controls and only clean up their own generation", () => {
+  const confirmBody = functionBody("confirmSelectedImports");
+  const lockBody = functionBody("setImportControlsLocked");
+  assert.match(html, /const importState = \{ parsed: null, token: 0, confirming: false \};/);
+  assert.match(confirmBody, /if \(importState\.confirming\) return;/);
+  assert.match(confirmBody, /importState\.confirming = true;/);
+  assert.match(confirmBody, /setImportControlsLocked\(true\)/);
+  assert.match(confirmBody, /const operationToken = importState\.token;/);
+  assert.match(confirmBody, /if \(operationToken !== importState\.token\) return;/);
+  assert.match(confirmBody, /finally\s*\{[\s\S]*importState\.confirming = false;[\s\S]*setImportControlsLocked\(false\)/);
+  for (const id of ["productionFileInput", "visionFileInput", "thicknessFileInput", "confirmImport", "clearImport", "cancelImport"]) {
+    assert.match(lockBody, new RegExp(`"${id}"`));
+  }
+  assert.match(lockBody, /\.disabled = locked/);
+  assert.match(lockBody, /正在同步 \/ Syncing/);
+  assert.match(html, /if \(importState\.confirming\) return;[\s\S]*clearSelectedImports\(\)/);
+});

@@ -1918,7 +1918,22 @@
       throw new Error("Unsupported file type. Please upload .xlsx, .csv or dashboard-data.json.");
     }
 
-    const importState = { parsed: null, token: 0 };
+    const importState = { parsed: null, token: 0, confirming: false };
+
+    function setImportControlsLocked(locked) {
+      const confirm = el("confirmImport");
+      for (const id of ["productionFileInput", "visionFileInput", "thicknessFileInput", "confirmImport", "clearImport", "cancelImport"]) {
+        el(id).disabled = locked;
+      }
+      if (locked) {
+        confirm.dataset.idleLabel = confirm.textContent;
+        confirm.textContent = "正在同步 / Syncing...";
+        return;
+      }
+      confirm.textContent = confirm.dataset.idleLabel || "确认导入 / Confirm";
+      delete confirm.dataset.idleLabel;
+      renderImportPreview();
+    }
 
     function importMessage(parsed, tone, title, detail) {
       parsed.messages.push({ tone, title, detail });
@@ -1990,6 +2005,7 @@
     }
 
     async function parseSelectedImports() {
+      if (importState.confirming) return;
       const token = ++importState.token;
       const files = {
         production: el("productionFileInput").files?.[0],
@@ -2062,8 +2078,9 @@
       renderImportPreview();
     }
 
-    function clearSelectedImports() {
-      importState.token += 1;
+    function clearSelectedImports({ preserveToken = false } = {}) {
+      if (importState.confirming && !preserveToken) return;
+      if (!preserveToken) importState.token += 1;
       importState.parsed = null;
       el("productionFileInput").value = "";
       el("visionFileInput").value = "";
@@ -2072,60 +2089,72 @@
     }
 
     async function confirmSelectedImports() {
+      if (importState.confirming) return;
       const parsed = importState.parsed;
       if (!parsed || parsed.errors.length || (parsed.thickness && !parsed.thicknessDate)) {
         renderImportPreview();
         return;
       }
-      const resolution = resolveImportDate(parsed);
-      const patch = {
-        qualityByDate: parsed.qualityByDate,
-        thicknessByDate: parsed.thicknessByDate,
-        selectedDate: resolution.selectedDate
-      };
-      if (parsed.production) {
-        patch.production = {
-          dailyRecords: parsed.production.dailyRecords,
-          selectedDate: parsed.production.selectedDate
-        };
-        patch.qualityByDate = {
-          ...parsed.production.qualityByDate,
-          ...patch.qualityByDate
-        };
-        patch.thicknessByDate = {
-          ...parsed.production.thicknessByDate,
-          ...patch.thicknessByDate
-        };
-      }
-      data = PetQualityImport.mergeDashboardSources(data, patch);
-      data.syncedAt = new Date().toISOString();
-      dataSourceLabel = parsed.production?.source || "质量数据导入 / Quality Import";
-      localOverride = true;
-      localStorage.setItem(`${storageKey}-local-override`, "1");
-      saveData();
-      render();
-      let published = false;
-      let publishError = "";
+      const operationToken = importState.token;
+      importState.confirming = true;
+      setImportControlsLocked(true);
       try {
-        published = await publishRemotePayload(dashboardPayload());
-      } catch (error) {
-        publishError = error.message || String(error);
-      }
-      if (published) {
-        localOverride = false;
-        localStorage.setItem(`${storageKey}-local-override`, "0");
-        dataSourceLabel = "GitHub云同步 / GitHub Sync";
-        localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
-        alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
-      } else {
+        const resolution = resolveImportDate(parsed);
+        const patch = {
+          qualityByDate: parsed.qualityByDate,
+          thicknessByDate: parsed.thicknessByDate,
+          selectedDate: resolution.selectedDate
+        };
+        if (parsed.production) {
+          patch.production = {
+            dailyRecords: parsed.production.dailyRecords,
+            selectedDate: parsed.production.selectedDate
+          };
+          patch.qualityByDate = {
+            ...parsed.production.qualityByDate,
+            ...patch.qualityByDate
+          };
+          patch.thicknessByDate = {
+            ...parsed.production.thicknessByDate,
+            ...patch.thicknessByDate
+          };
+        }
+        data = PetQualityImport.mergeDashboardSources(data, patch);
+        data.syncedAt = new Date().toISOString();
+        dataSourceLabel = parsed.production?.source || "质量数据导入 / Quality Import";
         localOverride = true;
         localStorage.setItem(`${storageKey}-local-override`, "1");
-        alert(`当前只更新了这台电脑，尚未写入 GitHub。其它设备尚未同步 / This device has been updated locally, but other devices are not synchronized.\n${publishError ? `原因 / Reason: ${publishError}\n` : ""}请先设置 GitHub Token 后重试导入 / Configure GitHub sync and import again.`);
+        saveData();
+        render();
+        let published = false;
+        let publishError = "";
+        try {
+          published = await publishRemotePayload(dashboardPayload());
+        } catch (error) {
+          publishError = error.message || String(error);
+        }
+        if (operationToken !== importState.token) return;
+        if (published) {
+          localOverride = false;
+          localStorage.setItem(`${storageKey}-local-override`, "0");
+          dataSourceLabel = "GitHub云同步 / GitHub Sync";
+          localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+          alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
+        } else {
+          localOverride = true;
+          localStorage.setItem(`${storageKey}-local-override`, "1");
+          alert(`当前只更新了这台电脑，尚未写入 GitHub。其它设备尚未同步 / This device has been updated locally, but other devices are not synchronized.\n${publishError ? `原因 / Reason: ${publishError}\n` : ""}请先设置 GitHub Token 后重试导入 / Configure GitHub sync and import again.`);
+        }
+        saveData();
+        render();
+        el("importOverlay").classList.remove("open");
+        clearSelectedImports({ preserveToken: true });
+      } finally {
+        if (operationToken === importState.token) {
+          importState.confirming = false;
+          setImportControlsLocked(false);
+        }
       }
-      saveData();
-      render();
-      el("importOverlay").classList.remove("open");
-      clearSelectedImports();
     }
 
     function parseTotalProductionRows(values, month) {
@@ -3280,15 +3309,18 @@
       render();
     });
     el("uploadData").addEventListener("click", () => {
+      if (importState.confirming) return;
       clearSelectedImports();
       el("importOverlay").classList.add("open");
     });
     el("cancelImport").addEventListener("click", () => {
+      if (importState.confirming) return;
       el("importOverlay").classList.remove("open");
       clearSelectedImports();
     });
     el("importOverlay").addEventListener("click", (event) => {
       if (event.target === el("importOverlay")) {
+        if (importState.confirming) return;
         el("importOverlay").classList.remove("open");
         clearSelectedImports();
       }
@@ -3298,6 +3330,7 @@
       el(id).addEventListener("change", parseSelectedImports);
     }
     el("importPreview").addEventListener("change", (event) => {
+      if (importState.confirming) return;
       if (event.target.dataset.importDate !== "thickness" || !importState.parsed) return;
       updateThicknessImportDate(importState.parsed, event.target.value);
       importState.parsed.selectedDate = resolveImportDate(importState.parsed).selectedDate;
