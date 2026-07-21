@@ -2614,8 +2614,8 @@
       const repoPath = encodedDataPath(path);
       const stamp = Date.now();
       return [
-        `${repoPath}?ts=${stamp}`,
-        `https://raw.githubusercontent.com/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/${encodeURIComponent(config.branch)}/${repoPath}?ts=${stamp}`
+        `https://raw.githubusercontent.com/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/${encodeURIComponent(config.branch)}/${repoPath}?ts=${stamp}`,
+        `${repoPath}?ts=${stamp}`
       ];
     }
 
@@ -2671,7 +2671,9 @@
     async function publishRemotePayload(payload) {
       let config = loadSyncConfig();
       if (!config.token) config = editSyncSettings();
-      if (!config?.token) return false;
+      if (!config?.token) {
+        throw new Error("没有设置 GitHub Token。请先点「云同步 / Sync」填入 Token，否则上传 Excel 只会更新当前电脑。");
+      }
       const apiPath = encodeURIComponent(config.path).replace(/%2F/g, "/");
       const url = `https://api.github.com/repos/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/contents/${apiPath}`;
       const headers = {
@@ -2714,10 +2716,11 @@
       data.syncedAt = payload.syncedAt || new Date().toISOString();
       dataSourceLabel = payload.source || "网页上传 / Browser Upload";
       let published = false;
+      let publishError = "";
       try {
         published = await publishRemotePayload(dashboardPayload());
       } catch (error) {
-        alert(`GitHub 云同步失败，当前设备已更新，但其它设备暂时不会同步。\n${error.message}`);
+        publishError = error.message;
       }
       localOverride = !published;
       localStorage.setItem(`${storageKey}-local-override`, published ? "0" : "1");
@@ -2725,6 +2728,8 @@
         dataSourceLabel = "GitHub云同步 / GitHub Sync";
         localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
         alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
+      } else {
+        alert(`当前只更新了这台电脑，没有写入 GitHub。其它设备不会同步。\n${publishError ? `原因：${publishError}\n` : ""}请先设置 GitHub Token 后再上传 Excel。`);
       }
       saveData();
       render();
