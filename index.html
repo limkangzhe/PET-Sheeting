@@ -1793,6 +1793,8 @@
     let dataSourceLabel = "手动数据 / Manual";
     let localOverride = localStorage.getItem(`${storageKey}-local-override`) === "1";
     let syncState = localOverride ? "pending" : "synced";
+    let syncOperation = 0;
+    let retryInFlight = false;
 
     function loadData() {
       try {
@@ -1852,7 +1854,7 @@
       const retry = el("retrySync");
       const pending = localOverride && state !== "synced";
       retry.hidden = !pending;
-      retry.disabled = state === "syncing";
+      retry.disabled = state === "syncing" || retryInFlight;
       retry.textContent = state === "syncing" ? "正在同步 / Syncing" : "待同步 / Retry";
       retry.title = detail || (pending
         ? "本机数据尚未同步到 GitHub / Local data has not been synchronized"
@@ -1860,14 +1862,26 @@
       retry.setAttribute("aria-label", retry.title);
     }
 
+    function beginSyncOperation() {
+      syncOperation += 1;
+      return syncOperation;
+    }
+
+    function isCurrentSyncOperation(operationToken) {
+      return operationToken === syncOperation;
+    }
+
     async function loadSyncedData({ force = false } = {}) {
       if (!force && Number(localStorage.getItem(remoteHoldKey) || 0) > Date.now()) return;
       if (!force && localOverride) return;
       if (force && localOverride && !confirm("本机有尚未同步的数据。继续将用 GitHub 数据替换本机数据 / Local unsynchronized data will be replaced by GitHub data. Continue?")) return;
+      const operationToken = beginSyncOperation();
+      if (force) setSyncState("syncing");
       try {
         const payload = await fetchSyncedPayload();
         const synced = normalizeSyncedData(payload);
         if (!synced) return;
+        if (!isCurrentSyncOperation(operationToken)) return;
         const localSyncedAt = Date.parse(data.syncedAt || "");
         const remoteSyncedAt = Date.parse(synced.syncedAt || "");
         if (!force && localOverride && localSyncedAt && remoteSyncedAt && remoteSyncedAt <= localSyncedAt) return;
@@ -1887,7 +1901,9 @@
         saveData();
         render();
       } catch {
+        if (!isCurrentSyncOperation(operationToken)) return;
         dataSourceLabel = "手动数据 / Manual";
+        if (localOverride) setSyncState("pending");
       }
     }
 
@@ -2367,6 +2383,7 @@
         return;
       }
       const operationToken = importState.token;
+      const syncOperationToken = beginSyncOperation();
       importState.confirming = true;
       setImportControlsLocked(true);
       try {
@@ -2400,13 +2417,13 @@
         setSyncState("syncing");
         try {
           await publishCurrentData();
-          if (operationToken !== importState.token) return;
+          if (operationToken !== importState.token || !isCurrentSyncOperation(syncOperationToken)) return;
           localOverride = false;
           localStorage.setItem(`${storageKey}-local-override`, "0");
           setSyncState("synced");
           alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
         } catch (error) {
-          if (operationToken !== importState.token) return;
+          if (operationToken !== importState.token || !isCurrentSyncOperation(syncOperationToken)) return;
           localOverride = true;
           localStorage.setItem(`${storageKey}-local-override`, "1");
           setSyncState("pending", error.message || String(error));
@@ -3313,6 +3330,7 @@
     }
 
     function readForm() {
+      beginSyncOperation();
       const date = el("recordDateInput").value || data.selectedDate;
       data.selectedDate = date;
       const record = ensureRecord(date);
@@ -3534,18 +3552,27 @@
     }
 
     async function retryPendingSync() {
-      if (!localOverride || importState.confirming) return;
+      if (!localOverride || importState.confirming || retryInFlight) return;
+      const operationToken = beginSyncOperation();
+      retryInFlight = true;
       setSyncState("syncing");
       try {
         await publishCurrentData();
+        if (!isCurrentSyncOperation(operationToken)) return;
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
         setSyncState("synced");
       } catch (error) {
+        if (!isCurrentSyncOperation(operationToken)) return;
         localOverride = true;
         localStorage.setItem(`${storageKey}-local-override`, "1");
         setSyncState("pending", error.message || String(error));
+      } finally {
+        retryInFlight = false;
+        if (isCurrentSyncOperation(operationToken)) setSyncState(syncState);
+        else el("retrySync").disabled = syncState === "syncing";
       }
+      if (!isCurrentSyncOperation(operationToken)) return;
       saveData();
       render();
     }
@@ -3555,6 +3582,7 @@
       const payload = await buildPayloadFromFile(file);
       const synced = normalizeSyncedData(payload);
       if (!synced) throw new Error("Uploaded file did not contain dashboard records.");
+      const operationToken = beginSyncOperation();
       data = PetQualityImport.mergeDashboardSources(data, {
         production: {
           dailyRecords: synced.dailyRecords,
@@ -3570,15 +3598,18 @@
       setSyncState("syncing");
       try {
         await publishCurrentData();
+        if (!isCurrentSyncOperation(operationToken)) return;
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
         setSyncState("synced");
         alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
       } catch (error) {
+        if (!isCurrentSyncOperation(operationToken)) return;
         localOverride = true;
         localStorage.setItem(`${storageKey}-local-override`, "1");
         setSyncState("pending", error.message || String(error));
       }
+      if (!isCurrentSyncOperation(operationToken)) return;
       saveData();
       render();
     }
@@ -3702,6 +3733,7 @@
       el("entryOverlay").classList.remove("open");
     });
     el("resetData").addEventListener("click", () => {
+      beginSyncOperation();
       data = clone(defaultData);
       localOverride = true;
       localStorage.setItem(`${storageKey}-local-override`, "1");

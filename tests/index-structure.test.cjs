@@ -60,7 +60,7 @@ test("confirmed imports lock controls and only clean up their own generation", (
   assert.match(confirmBody, /importState\.confirming = true;/);
   assert.match(confirmBody, /setImportControlsLocked\(true\)/);
   assert.match(confirmBody, /const operationToken = importState\.token;/);
-  assert.match(confirmBody, /if \(operationToken !== importState\.token\) return;/);
+  assert.match(confirmBody, /if \(operationToken !== importState\.token \|\| !isCurrentSyncOperation\(syncOperationToken\)\) return;/);
   assert.match(confirmBody, /finally\s*\{[\s\S]*importState\.confirming = false;[\s\S]*setImportControlsLocked\(false\)/);
   for (const id of ["productionFileInput", "visionFileInput", "thicknessFileInput", "confirmImport", "clearImport", "cancelImport"]) {
     assert.match(lockBody, new RegExp(`"${id}"`));
@@ -127,4 +127,24 @@ test("keeps pending local data on automatic pulls and confirms forced pulls", ()
   assert.match(body, /if\s*\(!force\s*&&\s*localOverride\)\s*return/);
   assert.match(body, /force\s*&&\s*localOverride\s*&&\s*!confirm\(/);
   assert.match(body, /localOverride\s*&&\s*localSyncedAt\s*&&\s*remoteSyncedAt\s*&&\s*remoteSyncedAt\s*<=\s*localSyncedAt/);
+});
+
+test("serializes retry completion against newer dashboard sync operations", () => {
+  const retryBody = functionBody("retryPendingSync");
+  const syncStateBody = functionBody("setSyncState");
+  assert.match(html, /let syncOperation = 0;/);
+  assert.match(html, /let retryInFlight = false;/);
+  assert.match(retryBody, /if\s*\(!localOverride\s*\|\|\s*importState\.confirming\s*\|\|\s*retryInFlight\)\s*return/);
+  assert.match(retryBody, /const operationToken = beginSyncOperation\(\)/);
+  assert.match(retryBody, /await publishCurrentData\(\);\s*if\s*\(!isCurrentSyncOperation\(operationToken\)\)\s*return;\s*localOverride\s*=\s*false/);
+  assert.match(retryBody, /catch\s*\(error\)\s*\{\s*if\s*\(!isCurrentSyncOperation\(operationToken\)\)\s*return;\s*localOverride\s*=\s*true/);
+  assert.match(retryBody, /finally\s*\{[\s\S]*retryInFlight\s*=\s*false[\s\S]*if\s*\(isCurrentSyncOperation\(operationToken\)\)\s*setSyncState\(syncState\)/);
+  assert.match(syncStateBody, /state\s*===\s*"syncing"\s*\|\|\s*retryInFlight/);
+  for (const name of ["confirmSelectedImports", "handleUploadedFile", "readForm"]) {
+    assert.match(functionBody(name), /beginSyncOperation\(\)/);
+  }
+  const pullStart = html.indexOf("async function loadSyncedData");
+  const pullBody = html.slice(pullStart, html.indexOf("\n    function saveData", pullStart));
+  assert.match(pullBody, /const operationToken = beginSyncOperation\(\)/);
+  assert.match(pullBody, /if\s*\(!isCurrentSyncOperation\(operationToken\)\)\s*return/);
 });
