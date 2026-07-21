@@ -142,6 +142,57 @@
     return Object.fromEntries(Object.entries(map).sort(([a], [b]) => a.localeCompare(b)).slice(-limit));
   }
 
+  function createPanelSizePersistence(storage, key, version) {
+    const observedSizes = new WeakMap();
+
+    function load() {
+      try {
+        const saved = JSON.parse(storage.getItem(key));
+        return saved && saved.version === version && saved.panels && typeof saved.panels === "object" ? saved.panels : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function save(measurements) {
+      const panels = {};
+      measurements.forEach(({ id, width, height, slot }) => {
+        if (!id || !Number.isFinite(width) || !Number.isFinite(height) || !slot || !Number.isFinite(slot.width) || !Number.isFinite(slot.height) || !slot.width || !slot.height) return;
+        if (width === slot.width && height === slot.height) return;
+        panels[id] = {
+          widthRatio: Math.min(1, Math.max(0, width / slot.width)),
+          heightRatio: Math.min(1, Math.max(0, height / slot.height))
+        };
+      });
+      storage.setItem(key, JSON.stringify({ version, panels }));
+      return panels;
+    }
+
+    function restore(size, slot, minimum) {
+      if (!size || !Number.isFinite(size.widthRatio) || !Number.isFinite(size.heightRatio) || !slot?.width || !slot?.height) return null;
+      return {
+        width: Math.min(slot.width, Math.max(Math.min(minimum.width, slot.width), slot.width * size.widthRatio)),
+        height: Math.min(slot.height, Math.max(Math.min(minimum.height, slot.height), slot.height * size.heightRatio))
+      };
+    }
+
+    function observe(panel, size) {
+      const prior = observedSizes.get(panel);
+      observedSizes.set(panel, size);
+      return Boolean(prior && (prior.width !== size.width || prior.height !== size.height));
+    }
+
+    function reset(panels = []) {
+      storage.removeItem(key);
+      panels.forEach((panel) => {
+        panel.style.removeProperty("width");
+        panel.style.removeProperty("height");
+      });
+    }
+
+    return { load, save, restore, observe, reset };
+  }
+
   function mergeDashboardSources(current, patch = {}) {
     const next = clone(current);
     if (patch.production) {
@@ -207,6 +258,7 @@
     detectDateFromFilename,
     parseVisionPages,
     trimThicknessHistory,
+    createPanelSizePersistence,
     mergeDashboardSources,
     extractVisionPdf,
     compressThicknessImage

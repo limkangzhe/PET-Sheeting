@@ -87,6 +87,46 @@ test("retains only the seven newest thickness days", () => {
   ]);
 });
 
+test("persists a one-pixel panel resize across reload and reset", () => {
+  const values = new Map();
+  let writes = 0;
+  const storage = {
+    getItem: (key) => values.get(key) || null,
+    setItem: (key, value) => { writes += 1; values.set(key, value); },
+    removeItem: (key) => values.delete(key)
+  };
+  const initial = quality.createPanelSizePersistence(storage, "panel-sizes", 1);
+  const observedPanel = {};
+  const inlinePanel = {
+    style: {
+      width: "999px",
+      height: "500px",
+      removeProperty(property) { this[property] = ""; }
+    }
+  };
+
+  assert.equal(initial.observe(observedPanel, { width: 1000, height: 500 }), false);
+  assert.equal(initial.observe(observedPanel, { width: 999, height: 500 }), true);
+  assert.equal(writes, 0);
+
+  initial.save([{ id: "spec", width: 999, height: 500, slot: { width: 1000, height: 500 } }]);
+  assert.deepEqual(JSON.parse(storage.getItem("panel-sizes")).panels.spec, { widthRatio: 0.999, heightRatio: 1 });
+
+  const reloaded = quality.createPanelSizePersistence(storage, "panel-sizes", 1);
+  assert.deepEqual(reloaded.restore(reloaded.load().spec, { width: 800, height: 400 }, { width: 180, height: 140 }), {
+    width: 799.2,
+    height: 400
+  });
+  const reloadedPanel = {};
+  assert.equal(reloaded.observe(reloadedPanel, { width: 800, height: 400 }), false);
+  assert.equal(reloaded.observe(reloadedPanel, { width: 800, height: 400 }), false);
+
+  reloaded.reset([inlinePanel]);
+  assert.equal(storage.getItem("panel-sizes"), null);
+  assert.equal(inlinePanel.style.width, "");
+  assert.equal(inlinePanel.style.height, "");
+});
+
 test("exposes browser file import functions", () => {
   assert.equal(typeof quality.extractVisionPdf, "function");
   assert.equal(typeof quality.compressThicknessImage, "function");

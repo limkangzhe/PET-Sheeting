@@ -891,8 +891,12 @@
     }
 
     .thickness-lightbox img {
-      width: 100%;
-      height: 100%;
+      width: auto;
+      height: auto;
+      min-width: 0;
+      min-height: 0;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
     }
 
@@ -1696,6 +1700,7 @@
     const layoutKey = "pet-sheet-dashboard-panel-layout-v3";
     const panelSizeKey = "pet-sheet-dashboard-panel-sizes-v1";
     const panelSizeVersion = 1;
+    const panelSizePersistence = PetQualityImport.createPanelSizePersistence(localStorage, panelSizeKey, panelSizeVersion);
     const syncKey = "pet-sheet-dashboard-github-sync-v1";
     const remoteHoldKey = "pet-sheet-dashboard-remote-hold-until-v1";
     const defaultSyncConfig = {
@@ -3659,13 +3664,7 @@
     }
 
     function loadPanelSizes() {
-      try {
-        const saved = JSON.parse(localStorage.getItem(panelSizeKey));
-        if (!saved || saved.version !== panelSizeVersion || !saved.panels || typeof saved.panels !== "object") return {};
-        return saved.panels;
-      } catch {
-        return {};
-      }
+      return panelSizePersistence.load();
     }
 
     function getPanelSlotSize(panel) {
@@ -3679,44 +3678,30 @@
       return { width: rect.width, height: rect.height };
     }
 
-    function resetPanelSizes() {
-      document.querySelectorAll(".main-grid [data-panel-id]").forEach((panel) => {
-        panel.style.removeProperty("width");
-        panel.style.removeProperty("height");
-      });
-    }
-
     function restorePanelSizes() {
       const sizes = loadPanelSizes();
       document.querySelectorAll(".main-grid [data-panel-id]").forEach((panel) => {
         const size = sizes[panel.dataset.panelId];
-        if (!size || !Number.isFinite(size.widthRatio) || !Number.isFinite(size.heightRatio)) {
+        const slot = getPanelSlotSize(panel);
+        const restored = panelSizePersistence.restore(size, slot, { width: 180, height: 140 });
+        if (!restored) {
           panel.style.removeProperty("width");
           panel.style.removeProperty("height");
           return;
         }
-        const slot = getPanelSlotSize(panel);
-        if (!slot.width || !slot.height) return;
-        const width = Math.min(slot.width, Math.max(Math.min(180, slot.width), slot.width * size.widthRatio));
-        const height = Math.min(slot.height, Math.max(Math.min(140, slot.height), slot.height * size.heightRatio));
-        panel.style.width = `${width}px`;
-        panel.style.height = `${height}px`;
+        panel.style.width = `${restored.width}px`;
+        panel.style.height = `${restored.height}px`;
       });
     }
 
     function savePanelSizes() {
-      const panels = {};
+      const measurements = [];
       document.querySelectorAll(".main-grid [data-panel-id]").forEach((panel) => {
         const slot = getPanelSlotSize(panel);
         const rect = panel.getBoundingClientRect();
-        if (!slot.width || !slot.height) return;
-        const widthRatio = Math.min(1, Math.max(0, rect.width / slot.width));
-        const heightRatio = Math.min(1, Math.max(0, rect.height / slot.height));
-        if (widthRatio < 0.995 || heightRatio < 0.995) {
-          panels[panel.dataset.panelId] = { widthRatio, heightRatio };
-        }
+        measurements.push({ id: panel.dataset.panelId, width: rect.width, height: rect.height, slot });
       });
-      localStorage.setItem(panelSizeKey, JSON.stringify({ version: panelSizeVersion, panels }));
+      panelSizePersistence.save(measurements);
     }
 
     function setupPanelDrag() {
@@ -3761,17 +3746,12 @@
       if (!("ResizeObserver" in window)) return;
       let resizeTimer = 0;
       let pendingPanelSizeChange = false;
-      const observedPanelSizes = new WeakMap();
       const observer = new ResizeObserver((entries) => {
         entries.forEach((entry) => {
           const panel = entry.target;
           if (!panel.dataset.panelId) return;
           const current = { width: entry.contentRect.width, height: entry.contentRect.height };
-          const prior = observedPanelSizes.get(panel);
-          observedPanelSizes.set(panel, current);
-          if (prior && (Math.abs(prior.width - current.width) > 1 || Math.abs(prior.height - current.height) > 1)) {
-            pendingPanelSizeChange = true;
-          }
+          if (panelSizePersistence.observe(panel, current)) pendingPanelSizeChange = true;
         });
         window.clearTimeout(resizeTimer);
         resizeTimer = window.setTimeout(() => {
@@ -3878,8 +3858,7 @@
     el("retrySync").addEventListener("click", retryPendingSync);
     el("resetLayout").addEventListener("click", () => {
       localStorage.removeItem(layoutKey);
-      localStorage.removeItem(panelSizeKey);
-      resetPanelSizes();
+      panelSizePersistence.reset(document.querySelectorAll(".main-grid [data-panel-id]"));
       applyPanelLayout(defaultPanelSlots);
       render();
     });

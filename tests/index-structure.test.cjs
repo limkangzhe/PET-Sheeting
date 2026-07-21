@@ -110,24 +110,23 @@ test("persists clamped panel sizes separately from fixed panel slots", () => {
 
   assert.match(html, /const panelSizeKey = "pet-sheet-dashboard-panel-sizes-v1"/);
   assert.match(html, /const panelSizeVersion = 1/);
-  assert.match(loadBody, /saved\.version !== panelSizeVersion/);
-  assert.match(saveBody, /localStorage\.setItem\(panelSizeKey/);
-  assert.match(saveBody, /widthRatio/);
-  assert.match(saveBody, /heightRatio/);
-  assert.match(restoreBody, /Math\.min\(slot\.width/);
-  assert.match(restoreBody, /Math\.min\(slot\.height/);
+  assert.match(html, /PetQualityImport\.createPanelSizePersistence\(localStorage, panelSizeKey, panelSizeVersion\)/);
+  assert.match(loadBody, /panelSizePersistence\.load\(\)/);
+  assert.match(saveBody, /panelSizePersistence\.save\(measurements\)/);
+  assert.match(restoreBody, /panelSizePersistence\.restore\(size, slot/);
   assert.match(restoreBody, /panel\.style\.width/);
   assert.match(restoreBody, /panel\.style\.height/);
   assert.match(observerBody, /savePanelSizes\(\)/);
   assert.doesNotMatch(observerBody, /getBoundingClientRect/);
+  assert.doesNotMatch(observerBody, /> 1/);
   assert.match(applyBody, /restorePanelSizes\(\)/);
-  assert.match(resetBody, /localStorage\.removeItem\(panelSizeKey\)/);
-  assert.match(resetBody, /resetPanelSizes\(\)/);
+  assert.match(resetBody, /panelSizePersistence\.reset/);
   assert.doesNotMatch(resetBody, /savePanelLayout\(\)/);
 });
 
 test("keeps the thickness viewer modal and current when data changes", () => {
   assert.match(html, /id="thicknessLightbox"[^>]*role="dialog"[^>]*aria-modal="true"[^>]*aria-labelledby="thicknessLightboxTitle"/);
+  assert.match(html, /\.thickness-lightbox img\s*\{[^}]*width:\s*auto;[^}]*height:\s*auto;[^}]*min-width:\s*0;[^}]*min-height:\s*0;[^}]*max-width:\s*100%;[^}]*max-height:\s*100%;[^}]*object-fit:\s*contain;/s);
   const openBody = functionBody("openThicknessLightbox");
   const closeBody = functionBody("closeThicknessLightbox");
   const updateBody = functionBody("updateQualityPanels");
