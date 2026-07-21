@@ -79,6 +79,32 @@ test("registers compact quality panels and thickness lightbox", () => {
   assert.match(html, /defaultPanelOrder\s*=\s*\[[^\]]*"vision"[^\]]*"thickness"/s);
 });
 
+test("keeps header actions in a dedicated non-overlapping row", () => {
+  assert.match(html, /\.topbar\s*\{[^}]*grid-template-rows:\s*auto auto;/s);
+  assert.match(html, /\.clock-wrap\s*\{[^}]*display:\s*contents;/s);
+  assert.match(html, /\.top-actions\s*\{[^}]*grid-column:\s*2\s*\/\s*4;[^}]*grid-row:\s*2;[^}]*flex-wrap:\s*nowrap;/s);
+  assert.match(html, /\.clock\s*\{[^}]*grid-column:\s*3;[^}]*grid-row:\s*1;/s);
+});
+
+test("fits charts and compact quality panels inside the default TV grid", () => {
+  assert.match(html, /\.chart-shell\s*\{[^}]*height:\s*calc\(100% - 62px\);[^}]*min-height:\s*0;/s);
+  assert.match(html, /\.month-panel\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.35fr\) minmax\(250px, 0\.65fr\);/s);
+  assert.match(html, /\.month-chart-shell\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*4;[^}]*height:\s*100%;[^}]*min-height:\s*0;/s);
+  assert.match(html, /\.month-list\s*\{[^}]*grid-column:\s*2;[^}]*grid-row:\s*4;/s);
+  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.vision-panel,[\s\S]*\.thickness-panel\s*\{[^}]*padding:\s*10px 12px;/s);
+  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-cards\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/s);
+  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-row\s*\{[^}]*grid-template-columns:\s*minmax\(92px, 0\.8fr\) minmax\(40px, 1fr\) 48px;/s);
+});
+
+test("uses compact canvas labels only when chart space is constrained", () => {
+  const paretoBody = functionBody("drawPareto");
+  const shiftBody = functionBody("drawShift");
+  assert.match(paretoBody, /const compact = width < 460 \|\| height < 190;/);
+  assert.match(paretoBody, /if \(!compact\) \{/);
+  assert.match(shiftBody, /const compact = width < 460 \|\| height < 190;/);
+  assert.match(shiftBody, /if \(!compact\) ctx\.fillText/);
+});
+
 test("renders absent visual density as no data", () => {
   const body = functionBody("updateQualityPanels");
   assert.match(body, /quality\?\.overallDensity\s*==\s*null\s*\?\s*null\s*:\s*Number\(quality\?\.overallDensity\)/);
