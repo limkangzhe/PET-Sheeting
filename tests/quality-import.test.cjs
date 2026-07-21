@@ -55,3 +55,8 @@ test("retains only the seven newest thickness days", () => {
     "2026-07-07", "2026-07-08", "2026-07-09"
   ]);
 });
+
+test("exposes browser file import functions", () => {
+  assert.equal(typeof quality.extractVisionPdf, "function");
+  assert.equal(typeof quality.compressThicknessImage, "function");
+});

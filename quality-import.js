@@ -147,5 +147,61 @@
     return next;
   }
 
-  return { productionDateFor, detectDateFromFilename, parseVisionPages, trimThicknessHistory, mergeDashboardSources };
+  async function extractVisionPdf(file, pdfjs) {
+    if (!file || !/\.pdf$/i.test(file.name || "")) {
+      throw new Error(`Unsupported vision file: ${file?.name || "unknown"}`);
+    }
+    if (!pdfjs?.getDocument) throw new Error("PDF parser is not loaded");
+    pdfjs.GlobalWorkerOptions.workerSrc = "vendor/pdf.worker.min.js";
+    const documentTask = pdfjs.getDocument({ data: await file.arrayBuffer() });
+    const pdf = await documentTask.promise;
+    const pages = [];
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const content = await page.getTextContent();
+      pages.push({
+        pageNumber,
+        tokens: content.items.map((item) => clean(item.str)).filter(Boolean)
+      });
+    }
+    const result = parseVisionPages(pages, file.name);
+    if (!Object.keys(result).length) throw new Error(`Unrecognized vision report: ${file.name}`);
+    return result;
+  }
+
+  async function compressThicknessImage(file, options = {}) {
+    if (!file || !/\.jpe?g$/i.test(file.name || "")) {
+      throw new Error(`Thickness trend requires JPG: ${file?.name || "unknown"}`);
+    }
+    const maxWidth = Number(options.maxWidth) || 1600;
+    const maxHeight = Number(options.maxHeight) || 1280;
+    const quality = Number(options.quality) || 0.72;
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxWidth / bitmap.width, maxHeight / bitmap.height);
+    const width = Math.max(1, Math.round(bitmap.width * scale));
+    const height = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext("2d", { alpha: false });
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, width, height);
+    context.drawImage(bitmap, 0, 0, width, height);
+    bitmap.close?.();
+    return {
+      sourceFile: file.name,
+      importedAt: new Date().toISOString(),
+      imageDataUrl: canvas.toDataURL("image/jpeg", quality)
+    };
+  }
+
+  return {
+    productionDateFor,
+    detectDateFromFilename,
+    parseVisionPages,
+    trimThicknessHistory,
+    mergeDashboardSources,
+    extractVisionPdf,
+    compressThicknessImage
+  };
 });
