@@ -840,6 +840,182 @@
       color: #ff8b8e;
     }
 
+    .import-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.56);
+    }
+
+    .import-overlay.open {
+      display: grid;
+    }
+
+    .import-dialog {
+      width: min(760px, 100%);
+      max-height: min(760px, calc(100vh - 48px));
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      border: 1px solid rgba(53, 210, 230, 0.32);
+      border-radius: 8px;
+      background: #0d171d;
+      box-shadow: var(--shadow);
+    }
+
+    .import-head,
+    .import-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .import-head h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .import-head h2 small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .import-slots {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 18px 20px 0;
+    }
+
+    .import-slot {
+      min-height: 124px;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      padding: 14px;
+      border: 1px dashed rgba(53, 210, 230, 0.38);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(53, 210, 230, 0.045);
+      cursor: pointer;
+    }
+
+    .import-slot:hover {
+      border-color: rgba(53, 210, 230, 0.72);
+      background: rgba(53, 210, 230, 0.1);
+    }
+
+    .import-slot strong {
+      font-size: 14px;
+    }
+
+    .import-slot span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .import-slot input {
+      width: 100%;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .import-preview {
+      min-height: 150px;
+      max-height: 310px;
+      margin: 18px 20px;
+      overflow: auto;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--muted);
+      background: #081116;
+      line-height: 1.45;
+    }
+
+    .import-preview-card {
+      display: grid;
+      gap: 5px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .import-preview-card:first-child {
+      padding-top: 0;
+    }
+
+    .import-preview-card:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .import-preview-card strong {
+      color: var(--text);
+    }
+
+    .import-preview-card.error strong,
+    .import-preview-card.error span {
+      color: #ff8b8e;
+    }
+
+    .import-preview-card.warning strong,
+    .import-preview-card.warning span {
+      color: var(--amber);
+    }
+
+    .import-date-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .import-date-field input {
+      min-width: 0;
+      height: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      padding: 0 8px;
+      color: var(--text);
+      background: #0d171d;
+    }
+
+    .import-actions {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 0;
+    }
+
+    .import-actions .panel-button:first-child {
+      margin-right: auto;
+    }
+
+    .panel-button:disabled {
+      border-color: rgba(255, 255, 255, 0.12);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.04);
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 720px) {
+      .import-slots {
+        grid-template-columns: 1fr;
+      }
+
+      .import-slot {
+        min-height: 96px;
+      }
+    }
+
     @keyframes pulse {
       0%,
       100% {
@@ -878,13 +1054,12 @@
 
       <section class="clock-wrap" aria-label="Current time">
         <div class="top-actions">
-          <button class="entry-button" id="uploadData" type="button">更新 Excel / Upload</button>
+          <button class="entry-button" id="uploadData" type="button">更新数据 / Upload</button>
           <button class="entry-button" id="syncSettings" type="button">云同步 / Sync</button>
           <button class="entry-button" id="pullRemote" type="button">立即同步 / Pull</button>
           <button class="entry-button" id="downloadData" type="button">下载数据 / Download</button>
           <button class="entry-button" id="resetLayout" type="button">重置布局 / Layout</button>
           <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
-          <input class="file-input" id="dataFileInput" type="file" accept=".xlsx,.csv,.json,application/json,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
         </div>
         <div class="clock">
           <div class="time" id="timeNow">--:--:--</div>
@@ -1059,6 +1234,25 @@
   </main>
 
   <div class="mini-footer" id="dataSourceFooter">PET Sheet MES Dashboard / Daily Input · Monthly Auto Summary</div>
+
+  <aside class="import-overlay" id="importOverlay" aria-label="Update dashboard data">
+    <section class="import-dialog" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+      <header class="import-head">
+        <h2 id="importTitle">更新看板数据 <small>Update Dashboard Data</small></h2>
+        <button class="panel-button" id="cancelImport" type="button">关闭 / Close</button>
+      </header>
+      <div class="import-slots">
+        <label class="import-slot" for="productionFileInput"><strong>生产日报 / Production</strong><span>Excel · CSV · JSON</span><input id="productionFileInput" type="file" accept=".xlsx,.csv,.json"></label>
+        <label class="import-slot" for="visionFileInput"><strong>视觉检测 / Vision</strong><span>PDF</span><input id="visionFileInput" type="file" accept=".pdf,application/pdf"></label>
+        <label class="import-slot" for="thicknessFileInput"><strong>厚度趋势 / Thickness</strong><span>JPG · JPEG</span><input id="thicknessFileInput" type="file" accept=".jpg,.jpeg,image/jpeg"></label>
+      </div>
+      <div class="import-preview" id="importPreview" aria-live="polite">请选择需要更新的文件 / Select files to update</div>
+      <footer class="import-actions">
+        <button class="panel-button" id="clearImport" type="button">清除 / Clear</button>
+        <button class="panel-button primary" id="confirmImport" type="button" disabled>确认导入 / Confirm</button>
+      </footer>
+    </section>
+  </aside>
 
   <aside class="entry-overlay" id="entryOverlay" aria-label="Manual data entry">
     <div class="entry-drawer">
@@ -1243,6 +1437,8 @@
     </div>
   </aside>
 
+  <script src="vendor/pdf.min.js"></script>
+  <script src="quality-import.js"></script>
   <script>
     const storageKey = "pet-sheet-dashboard-daily-monthly-v4";
     const layoutKey = "pet-sheet-dashboard-panel-layout-v1";
@@ -1320,6 +1516,8 @@
 
     const defaultData = {
       selectedDate: "2026-05-13",
+      qualityByDate: {},
+      thicknessByDate: {},
       dailyRecords: [
         makeRecord("2026-05-01", 24, 18840, 23, 18120, { goodRate: 89.4, lineSpeed: 1435, downtime: { changeover: 32, production: 16, equipment: 10, maintenance: 0 } }),
         makeRecord("2026-05-02", 25, 19650, 24, 19020, { goodRate: 88.9, lineSpeed: 1410, downtime: { changeover: 18, production: 22, equipment: 15, maintenance: 0 } }),
@@ -1347,7 +1545,9 @@
         if (saved && Array.isArray(saved.dailyRecords)) {
           return {
             ...saved,
-            dailyRecords: saved.dailyRecords.map(normalizeRecordDefaults)
+            dailyRecords: saved.dailyRecords.map(normalizeRecordDefaults),
+            qualityByDate: { ...(saved.qualityByDate || {}) },
+            thicknessByDate: PetQualityImport.trimThicknessHistory(saved.thicknessByDate || {}, 7)
           };
         }
       } catch {
@@ -1386,7 +1586,9 @@
       return {
         syncedAt: payload.syncedAt || "",
         selectedDate: payload.selectedDate || payload.dailyRecords[payload.dailyRecords.length - 1]?.date || defaultData.selectedDate,
-        dailyRecords: payload.dailyRecords.map(normalizeRecordDefaults).sort((a, b) => a.date.localeCompare(b.date))
+        dailyRecords: payload.dailyRecords.map(normalizeRecordDefaults).sort((a, b) => a.date.localeCompare(b.date)),
+        qualityByDate: { ...(payload.qualityByDate || {}) },
+        thicknessByDate: PetQualityImport.trimThicknessHistory(payload.thicknessByDate || {}, 7)
       };
     }
 
@@ -1399,7 +1601,15 @@
         const localSyncedAt = Date.parse(data.syncedAt || "");
         const remoteSyncedAt = Date.parse(synced.syncedAt || "");
         if (!force && localOverride && localSyncedAt && remoteSyncedAt && remoteSyncedAt <= localSyncedAt) return;
-        data = synced;
+        data = PetQualityImport.mergeDashboardSources(data, {
+          production: {
+            dailyRecords: synced.dailyRecords,
+            selectedDate: synced.selectedDate
+          },
+          qualityByDate: synced.qualityByDate,
+          thicknessByDate: synced.thicknessByDate
+        });
+        data.syncedAt = synced.syncedAt;
         dataSourceLabel = payload.source || "文件同步 / File Sync";
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
@@ -1706,6 +1916,186 @@
         return payloadFromRecords(records, `Excel网页上传 / Excel Upload (${name})`);
       }
       throw new Error("Unsupported file type. Please upload .xlsx, .csv or dashboard-data.json.");
+    }
+
+    const importState = { parsed: null, token: 0 };
+
+    function importMessage(parsed, tone, title, detail) {
+      parsed.messages.push({ tone, title, detail });
+    }
+
+    function resolveImportDate(parsed) {
+      const sourceDates = [];
+      const visionDates = Object.keys(parsed.qualityByDate || {}).sort();
+      const visionDate = visionDates.length === 1 ? visionDates[0] : "";
+      if (parsed.production?.selectedDate) sourceDates.push({ label: "生产日报 / Production", date: parsed.production.selectedDate });
+      if (visionDate) sourceDates.push({ label: "视觉检测 / Vision", date: visionDate });
+      if (parsed.thicknessDate) sourceDates.push({ label: "厚度趋势 / Thickness", date: parsed.thicknessDate });
+      const distinctDates = [...new Set(sourceDates.map((source) => source.date))];
+      let selectedDate = parsed.production?.selectedDate || data.selectedDate;
+      if (visionDate && parsed.thicknessDate && visionDate === parsed.thicknessDate) selectedDate = visionDate;
+      else if (visionDate) selectedDate = visionDate;
+      else if (parsed.thicknessDate) selectedDate = parsed.thicknessDate;
+      return { selectedDate, sourceDates, distinctDates, visionDates };
+    }
+
+    function updateThicknessImportDate(parsed, date) {
+      parsed.thicknessDate = date || "";
+      parsed.thicknessByDate = parsed.thickness && parsed.thicknessDate
+        ? { [parsed.thicknessDate]: parsed.thickness }
+        : {};
+    }
+
+    function renderImportPreview() {
+      const preview = el("importPreview");
+      const confirm = el("confirmImport");
+      const parsed = importState.parsed;
+      if (!parsed) {
+        preview.textContent = "请选择需要更新的文件 / Select files to update";
+        confirm.disabled = true;
+        return;
+      }
+      const resolution = resolveImportDate(parsed);
+      const cards = parsed.messages.map((message) => `
+        <div class="import-preview-card ${safeText(message.tone)}">
+          <strong>${safeText(message.title)}</strong>
+          <span>${safeText(message.detail)}</span>
+        </div>`);
+      if (parsed.thickness && !parsed.thicknessDate) {
+        cards.push(`
+          <div class="import-preview-card warning">
+            <strong>厚度趋势 / Thickness</strong>
+            <label class="import-date-field">未识别日期 / Date not detected
+              <input data-import-date="thickness" type="date" value="">
+            </label>
+          </div>`);
+      }
+      if (resolution.visionDates.length > 1) {
+        cards.push(`
+          <div class="import-preview-card warning">
+            <strong>视觉检测 / Vision</strong>
+            <span>检测到多个生产日 / Multiple production days: ${safeText(resolution.visionDates.join(", "))}</span>
+          </div>`);
+      }
+      if (resolution.distinctDates.length > 1) {
+        cards.push(`
+          <div class="import-preview-card warning">
+            <strong>日期冲突 / Date conflict</strong>
+            <span>${safeText(resolution.sourceDates.map((source) => `${source.label}: ${source.date}`).join("; "))}. 请确认后导入 / Confirm to import both dates.</span>
+          </div>`);
+      }
+      preview.innerHTML = cards.join("");
+      const hasSource = Boolean(parsed.production || Object.keys(parsed.qualityByDate).length || parsed.thickness);
+      confirm.disabled = Boolean(parsed.errors.length || !hasSource || (parsed.thickness && !parsed.thicknessDate));
+    }
+
+    async function parseSelectedImports() {
+      const token = ++importState.token;
+      const files = {
+        production: el("productionFileInput").files?.[0],
+        vision: el("visionFileInput").files?.[0],
+        thickness: el("thicknessFileInput").files?.[0]
+      };
+      if (!files.production && !files.vision && !files.thickness) {
+        importState.parsed = null;
+        renderImportPreview();
+        return;
+      }
+      el("confirmImport").disabled = true;
+      el("importPreview").textContent = "正在解析文件 / Parsing selected files";
+      const parsed = {
+        production: null,
+        qualityByDate: {},
+        thicknessByDate: {},
+        thickness: null,
+        thicknessDate: "",
+        selectedDate: "",
+        messages: [],
+        errors: []
+      };
+      if (files.production) {
+        try {
+          const payload = await buildPayloadFromFile(files.production);
+          const production = normalizeSyncedData(payload);
+          if (!production) throw new Error("Uploaded file did not contain dashboard records.");
+          parsed.production = {
+            dailyRecords: production.dailyRecords,
+            selectedDate: production.selectedDate,
+            source: payload.source
+          };
+          importMessage(parsed, "", "生产日报 / Production", `${files.production.name}: ${production.dailyRecords.length} daily records, selected ${production.selectedDate}`);
+        } catch (error) {
+          const detail = error.message || String(error);
+          parsed.errors.push(detail);
+          importMessage(parsed, "error", "生产日报解析失败 / Production failed", detail);
+        }
+      }
+      if (files.vision) {
+        try {
+          parsed.qualityByDate = await PetQualityImport.extractVisionPdf(files.vision, window.pdfjsLib);
+          const dates = Object.keys(parsed.qualityByDate).sort();
+          importMessage(parsed, "", "视觉检测 / Vision", `${files.vision.name}: ${dates.join(", ")}`);
+        } catch (error) {
+          const detail = error.message || String(error);
+          parsed.errors.push(detail);
+          importMessage(parsed, "error", "视觉检测解析失败 / Vision failed", detail);
+        }
+      }
+      if (files.thickness) {
+        try {
+          parsed.thickness = await PetQualityImport.compressThicknessImage(files.thickness);
+          updateThicknessImportDate(parsed, PetQualityImport.detectDateFromFilename(files.thickness.name));
+          importMessage(parsed, "", "厚度趋势 / Thickness", parsed.thicknessDate
+            ? `${files.thickness.name}: ${parsed.thicknessDate}`
+            : `${files.thickness.name}: 未识别日期 / Date not detected`);
+        } catch (error) {
+          const detail = error.message || String(error);
+          parsed.errors.push(detail);
+          importMessage(parsed, "error", "厚度趋势解析失败 / Thickness failed", detail);
+        }
+      }
+      if (token !== importState.token) return;
+      parsed.selectedDate = resolveImportDate(parsed).selectedDate;
+      importState.parsed = parsed;
+      renderImportPreview();
+    }
+
+    function clearSelectedImports() {
+      importState.token += 1;
+      importState.parsed = null;
+      el("productionFileInput").value = "";
+      el("visionFileInput").value = "";
+      el("thicknessFileInput").value = "";
+      renderImportPreview();
+    }
+
+    async function confirmSelectedImports() {
+      const parsed = importState.parsed;
+      if (!parsed || parsed.errors.length || (parsed.thickness && !parsed.thicknessDate)) {
+        renderImportPreview();
+        return;
+      }
+      const resolution = resolveImportDate(parsed);
+      const patch = {
+        qualityByDate: parsed.qualityByDate,
+        thicknessByDate: parsed.thicknessByDate,
+        selectedDate: resolution.selectedDate
+      };
+      if (parsed.production) {
+        patch.production = {
+          dailyRecords: parsed.production.dailyRecords,
+          selectedDate: parsed.production.selectedDate
+        };
+      }
+      data = PetQualityImport.mergeDashboardSources(data, patch);
+      data.syncedAt = new Date().toISOString();
+      dataSourceLabel = parsed.production?.source || "质量数据导入 / Quality Import";
+      localOverride = true;
+      localStorage.setItem(`${storageKey}-local-override`, "1");
+      saveData();
+      render();
+      el("importOverlay").classList.remove("open");
+      clearSelectedImports();
     }
 
     function parseTotalProductionRows(values, month) {
@@ -2567,12 +2957,17 @@
 
     function dashboardPayload() {
       const syncedAt = new Date().toISOString();
+      const optionalMaps = {
+        thicknessByDate: data.thicknessByDate || {}
+      };
       data.syncedAt = syncedAt;
       return {
         source: dataSourceLabel,
         syncedAt,
         selectedDate: data.selectedDate,
-        dailyRecords: data.dailyRecords
+        dailyRecords: data.dailyRecords,
+        qualityByDate: data.qualityByDate || {},
+        thicknessByDate: PetQualityImport.trimThicknessHistory(optionalMaps.thicknessByDate, 7)
       };
     }
 
@@ -2712,7 +3107,12 @@
       const payload = await buildPayloadFromFile(file);
       const synced = normalizeSyncedData(payload);
       if (!synced) throw new Error("Uploaded file did not contain dashboard records.");
-      data = synced;
+      data = PetQualityImport.mergeDashboardSources(data, {
+        production: {
+          dailyRecords: synced.dailyRecords,
+          selectedDate: synced.selectedDate
+        }
+      });
       data.syncedAt = payload.syncedAt || new Date().toISOString();
       dataSourceLabel = payload.source || "网页上传 / Browser Upload";
       let published = false;
@@ -2849,13 +3249,40 @@
       fillForm();
       render();
     });
-    el("uploadData").addEventListener("click", () => el("dataFileInput").click());
-    el("dataFileInput").addEventListener("change", async (event) => {
+    el("uploadData").addEventListener("click", () => {
+      clearSelectedImports();
+      el("importOverlay").classList.add("open");
+    });
+    el("cancelImport").addEventListener("click", () => {
+      el("importOverlay").classList.remove("open");
+      clearSelectedImports();
+    });
+    el("importOverlay").addEventListener("click", (event) => {
+      if (event.target === el("importOverlay")) {
+        el("importOverlay").classList.remove("open");
+        clearSelectedImports();
+      }
+    });
+    el("clearImport").addEventListener("click", clearSelectedImports);
+    for (const id of ["productionFileInput", "visionFileInput", "thicknessFileInput"]) {
+      el(id).addEventListener("change", parseSelectedImports);
+    }
+    el("importPreview").addEventListener("change", (event) => {
+      if (event.target.dataset.importDate !== "thickness" || !importState.parsed) return;
+      updateThicknessImportDate(importState.parsed, event.target.value);
+      importState.parsed.selectedDate = resolveImportDate(importState.parsed).selectedDate;
+      renderImportPreview();
+    });
+    el("confirmImport").addEventListener("click", async () => {
       try {
-        await handleUploadedFile(event.target.files?.[0]);
-        event.target.value = "";
+        await confirmSelectedImports();
       } catch (error) {
-        alert(`数据更新失败 / Upload failed:\n${error.message}`);
+        const parsed = importState.parsed;
+        if (!parsed) return;
+        const detail = error.message || String(error);
+        parsed.errors.push(detail);
+        importMessage(parsed, "error", "导入失败 / Import failed", detail);
+        renderImportPreview();
       }
     });
     el("downloadData").addEventListener("click", downloadCurrentData);
