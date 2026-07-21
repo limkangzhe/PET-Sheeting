@@ -226,6 +226,17 @@
       background: rgba(53, 210, 230, 0.16);
     }
 
+    .sync-retry {
+      border-color: rgba(255, 189, 69, 0.72);
+      background: rgba(255, 189, 69, 0.16);
+      color: var(--amber);
+    }
+
+    .sync-retry:hover {
+      border-color: var(--amber);
+      background: rgba(255, 189, 69, 0.24);
+    }
+
     .dual {
       display: inline-grid;
       gap: 2px;
@@ -1277,6 +1288,7 @@
           <button class="entry-button" id="uploadData" type="button">更新数据 / Upload</button>
           <button class="entry-button" id="syncSettings" type="button">云同步 / Sync</button>
           <button class="entry-button" id="pullRemote" type="button">立即同步 / Pull</button>
+          <button class="entry-button sync-retry" id="retrySync" type="button" hidden>待同步 / Retry</button>
           <button class="entry-button" id="downloadData" type="button">下载数据 / Download</button>
           <button class="entry-button" id="resetLayout" type="button">重置布局 / Layout</button>
           <button class="entry-button" id="entryToggle" type="button">数据录入 / Data Entry</button>
@@ -1780,6 +1792,7 @@
     let data = loadData();
     let dataSourceLabel = "手动数据 / Manual";
     let localOverride = localStorage.getItem(`${storageKey}-local-override`) === "1";
+    let syncState = localOverride ? "pending" : "synced";
 
     function loadData() {
       try {
@@ -1834,8 +1847,23 @@
       };
     }
 
+    function setSyncState(state, detail = "") {
+      syncState = state;
+      const retry = el("retrySync");
+      const pending = localOverride && state !== "synced";
+      retry.hidden = !pending;
+      retry.disabled = state === "syncing";
+      retry.textContent = state === "syncing" ? "正在同步 / Syncing" : "待同步 / Retry";
+      retry.title = detail || (pending
+        ? "本机数据尚未同步到 GitHub / Local data has not been synchronized"
+        : "数据已同步 / Data synchronized");
+      retry.setAttribute("aria-label", retry.title);
+    }
+
     async function loadSyncedData({ force = false } = {}) {
       if (!force && Number(localStorage.getItem(remoteHoldKey) || 0) > Date.now()) return;
+      if (!force && localOverride) return;
+      if (force && localOverride && !confirm("本机有尚未同步的数据。继续将用 GitHub 数据替换本机数据 / Local unsynchronized data will be replaced by GitHub data. Continue?")) return;
       try {
         const payload = await fetchSyncedPayload();
         const synced = normalizeSyncedData(payload);
@@ -1855,6 +1883,7 @@
         dataSourceLabel = payload.source || "文件同步 / File Sync";
         localOverride = false;
         localStorage.setItem(`${storageKey}-local-override`, "0");
+        setSyncState("synced");
         saveData();
         render();
       } catch {
@@ -2368,24 +2397,19 @@
         localStorage.setItem(`${storageKey}-local-override`, "1");
         saveData();
         render();
-        let published = false;
-        let publishError = "";
+        setSyncState("syncing");
         try {
-          published = await publishRemotePayload(dashboardPayload());
-        } catch (error) {
-          publishError = error.message || String(error);
-        }
-        if (operationToken !== importState.token) return;
-        if (published) {
+          await publishCurrentData();
+          if (operationToken !== importState.token) return;
           localOverride = false;
           localStorage.setItem(`${storageKey}-local-override`, "0");
-          dataSourceLabel = "GitHub云同步 / GitHub Sync";
-          localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+          setSyncState("synced");
           alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
-        } else {
+        } catch (error) {
+          if (operationToken !== importState.token) return;
           localOverride = true;
           localStorage.setItem(`${storageKey}-local-override`, "1");
-          alert(`当前只更新了这台电脑，尚未写入 GitHub。其它设备尚未同步 / This device has been updated locally, but other devices are not synchronized.\n${publishError ? `原因 / Reason: ${publishError}\n` : ""}请先设置 GitHub Token 后重试导入 / Configure GitHub sync and import again.`);
+          setSyncState("pending", error.message || String(error));
         }
         saveData();
         render();
@@ -3345,6 +3369,7 @@
       dataSourceLabel = "手动数据 / Manual";
       localOverride = true;
       localStorage.setItem(`${storageKey}-local-override`, "1");
+      setSyncState("pending");
       saveData();
       render();
     }
@@ -3476,7 +3501,7 @@
         const body = await current.json();
         sha = body.sha || "";
       } else if (current.status !== 404) {
-        throw new Error(`GitHub read failed: ${current.status}`);
+        throw new Error(githubStatusMessage(current.status));
       }
       const content = `${JSON.stringify(payload, null, 2)}\n`;
       const response = await fetch(url, {
@@ -3490,10 +3515,39 @@
         })
       });
       if (!response.ok) {
-        const detail = await response.text();
-        throw new Error(`GitHub write failed: ${response.status} ${detail.slice(0, 160)}`);
+        throw new Error(githubStatusMessage(response.status));
       }
       return true;
+    }
+
+    function githubStatusMessage(status) {
+      if (status === 401) return "GitHub Token 无效或已过期 / Token is invalid or expired";
+      if (status === 403) return "GitHub Token 没有 Contents 写入权限 / Token needs Contents read and write permission";
+      if (status === 404) return "仓库、分支或数据路径不存在 / Repository, branch, or data path was not found";
+      return `GitHub request failed: ${status}`;
+    }
+
+    async function publishCurrentData() {
+      await publishRemotePayload(dashboardPayload());
+      dataSourceLabel = "GitHub云同步 / GitHub Sync";
+      localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+    }
+
+    async function retryPendingSync() {
+      if (!localOverride || importState.confirming) return;
+      setSyncState("syncing");
+      try {
+        await publishCurrentData();
+        localOverride = false;
+        localStorage.setItem(`${storageKey}-local-override`, "0");
+        setSyncState("synced");
+      } catch (error) {
+        localOverride = true;
+        localStorage.setItem(`${storageKey}-local-override`, "1");
+        setSyncState("pending", error.message || String(error));
+      }
+      saveData();
+      render();
     }
 
     async function handleUploadedFile(file) {
@@ -3509,21 +3563,21 @@
       });
       data.syncedAt = payload.syncedAt || new Date().toISOString();
       dataSourceLabel = payload.source || "网页上传 / Browser Upload";
-      let published = false;
-      let publishError = "";
+      localOverride = true;
+      localStorage.setItem(`${storageKey}-local-override`, "1");
+      saveData();
+      render();
+      setSyncState("syncing");
       try {
-        published = await publishRemotePayload(dashboardPayload());
-      } catch (error) {
-        publishError = error.message;
-      }
-      localOverride = !published;
-      localStorage.setItem(`${storageKey}-local-override`, published ? "0" : "1");
-      if (published) {
-        dataSourceLabel = "GitHub云同步 / GitHub Sync";
-        localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+        await publishCurrentData();
+        localOverride = false;
+        localStorage.setItem(`${storageKey}-local-override`, "0");
+        setSyncState("synced");
         alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
-      } else {
-        alert(`当前只更新了这台电脑，没有写入 GitHub。其它设备不会同步。\n${publishError ? `原因：${publishError}\n` : ""}请先设置 GitHub Token 后再上传 Excel。`);
+      } catch (error) {
+        localOverride = true;
+        localStorage.setItem(`${storageKey}-local-override`, "1");
+        setSyncState("pending", error.message || String(error));
       }
       saveData();
       render();
@@ -3651,6 +3705,7 @@
       data = clone(defaultData);
       localOverride = true;
       localStorage.setItem(`${storageKey}-local-override`, "1");
+      setSyncState("pending");
       saveData();
       fillForm();
       render();
@@ -3698,6 +3753,7 @@
     el("downloadData").addEventListener("click", downloadCurrentData);
     el("syncSettings").addEventListener("click", editSyncSettings);
     el("pullRemote").addEventListener("click", () => loadSyncedData({ force: true }));
+    el("retrySync").addEventListener("click", retryPendingSync);
     el("resetLayout").addEventListener("click", () => {
       localStorage.removeItem(layoutKey);
       applyPanelLayout(defaultPanelSlots);
@@ -3708,6 +3764,7 @@
     applyPanelLayout();
     setupPanelDrag();
     setupPanelResizeObserver();
+    setSyncState(syncState);
     render();
     loadSyncedData();
     setInterval(updateClock, 1000);

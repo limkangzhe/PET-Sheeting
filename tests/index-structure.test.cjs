@@ -36,9 +36,9 @@ test("synchronized payload includes quality and thickness maps", () => {
 
 test("confirmed imports publish merged data and preserve local data on publish failure", () => {
   const body = functionBody("confirmSelectedImports");
-  assert.match(body, /await\s+publishRemotePayload\(dashboardPayload\(\)\)/);
-  assert.match(body, /if\s*\(published\)\s*\{[\s\S]*localOverride\s*=\s*false[\s\S]*remoteHoldKey/);
-  assert.match(body, /else\s*\{[\s\S]*localOverride\s*=\s*true[\s\S]*not synchronized/i);
+  assert.match(body, /await\s+publishCurrentData\(\)/);
+  assert.match(body, /try\s*\{[\s\S]*localOverride\s*=\s*false[\s\S]*setSyncState\("synced"\)/);
+  assert.match(body, /catch\s*\(error\)\s*\{[\s\S]*localOverride\s*=\s*true[\s\S]*setSyncState\("pending", error\.message/);
   assert.match(body, /saveData\(\);[\s\S]*render\(\);/);
 });
 
@@ -112,4 +112,19 @@ test("keeps the thickness viewer modal and current when data changes", () => {
   assert.match(updateBody, /lightbox\.classList\.contains\("open"\)/);
   assert.match(updateBody, /el\("thicknessFullImage"\)\.src\s*=\s*thickness\.imageDataUrl/);
   assert.match(html, /event\.key === "Tab"/);
+});
+
+test("exposes pending cloud state and retry without discarding local data", () => {
+  assert.match(html, /id="retrySync"/);
+  assert.match(html, /function retryPendingSync\s*\(/);
+  assert.match(html, /localOverride\s*&&/);
+  assert.match(html, /GitHub Token.*401|401.*GitHub Token/s);
+});
+
+test("keeps pending local data on automatic pulls and confirms forced pulls", () => {
+  const start = html.indexOf("async function loadSyncedData");
+  const body = html.slice(start, html.indexOf("\n    function saveData", start));
+  assert.match(body, /if\s*\(!force\s*&&\s*localOverride\)\s*return/);
+  assert.match(body, /force\s*&&\s*localOverride\s*&&\s*!confirm\(/);
+  assert.match(body, /localOverride\s*&&\s*localSyncedAt\s*&&\s*remoteSyncedAt\s*&&\s*remoteSyncedAt\s*<=\s*localSyncedAt/);
 });
