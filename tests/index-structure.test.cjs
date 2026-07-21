@@ -83,3 +83,33 @@ test("renders absent visual density as no data", () => {
   const body = functionBody("updateQualityPanels");
   assert.match(body, /quality\?\.overallDensity\s*==\s*null\s*\?\s*null\s*:\s*Number\(quality\?\.overallDensity\)/);
 });
+
+test("uses complete fixed slots for the six dashboard panels", () => {
+  assert.match(html, /grid-template-areas:\s*"spec shift month month"\s*"spec shift month month"\s*"spec downtime month month"\s*"spec downtime vision thickness"/s);
+  for (const id of ["spec", "shift", "downtime", "month", "vision", "thickness"]) {
+    assert.match(html, new RegExp(`data-panel-id="${id}"[^>]*data-slot="${id}"|data-slot="${id}"[^>]*data-panel-id="${id}"`));
+  }
+  const applyBody = functionBody("applyPanelLayout");
+  const loadBody = functionBody("loadPanelLayout");
+  const dragBody = functionBody("setupPanelDrag");
+  assert.match(html, /const layoutKey = "pet-sheet-dashboard-panel-layout-v3"/);
+  assert.match(applyBody, /panel\.dataset\.slot\s*=\s*normalized\[panel\.dataset\.panelId\]/);
+  assert.doesNotMatch(applyBody, /appendChild/);
+  assert.match(loadBody, /isValidPanelLayout\(saved\)/);
+  assert.match(dragBody, /dragged\.dataset\.slot\s*=\s*targetSlot/);
+  assert.match(dragBody, /panel\.dataset\.slot\s*=\s*draggedSlot/);
+});
+
+test("keeps the thickness viewer modal and current when data changes", () => {
+  assert.match(html, /id="thicknessLightbox"[^>]*role="dialog"[^>]*aria-modal="true"[^>]*aria-labelledby="thicknessLightboxTitle"/);
+  const openBody = functionBody("openThicknessLightbox");
+  const closeBody = functionBody("closeThicknessLightbox");
+  const updateBody = functionBody("updateQualityPanels");
+  assert.match(openBody, /lightboxReturnFocus\s*=\s*document\.activeElement/);
+  assert.match(openBody, /requestAnimationFrame\(\(\)\s*=>\s*el\("thicknessClose"\)\.focus\(\)\)/);
+  assert.match(closeBody, /el\("thicknessFullImage"\)\.removeAttribute\("src"\)/);
+  assert.match(closeBody, /lightboxReturnFocus\.focus\(\)/);
+  assert.match(updateBody, /lightbox\.classList\.contains\("open"\)/);
+  assert.match(updateBody, /el\("thicknessFullImage"\)\.src\s*=\s*thickness\.imageDataUrl/);
+  assert.match(html, /event\.key === "Tab"/);
+});

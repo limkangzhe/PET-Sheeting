@@ -337,18 +337,38 @@
     .main-grid {
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(390px, 0.86fr) minmax(540px, 1.12fr) minmax(460px, 1fr);
+      grid-template-columns: minmax(290px, 0.86fr) minmax(350px, 1fr) minmax(260px, 0.72fr) minmax(260px, 0.72fr);
       grid-template-rows: repeat(4, minmax(0, 1fr));
+      grid-template-areas:
+        "spec shift month month"
+        "spec shift month month"
+        "spec downtime month month"
+        "spec downtime vision thickness";
+      grid-auto-rows: 0;
       gap: clamp(12px, 0.85vw, 18px);
+      overflow: hidden;
     }
 
     .panel {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
       min-width: 0;
       min-height: 0;
       padding: clamp(16px, 1vw, 22px);
       resize: both;
       overflow: auto;
+      justify-self: stretch;
+      align-self: stretch;
     }
+
+    .panel[data-slot="spec"] { grid-area: spec; }
+    .panel[data-slot="shift"] { grid-area: shift; }
+    .panel[data-slot="downtime"] { grid-area: downtime; }
+    .panel[data-slot="month"] { grid-area: month; }
+    .panel[data-slot="vision"] { grid-area: vision; }
+    .panel[data-slot="thickness"] { grid-area: thickness; }
 
     .panel-header {
       display: flex;
@@ -384,7 +404,6 @@
     }
 
     .spec-panel {
-      grid-row: span 4;
       --accent: var(--cyan);
       display: grid;
       grid-template-rows: auto auto auto 1fr;
@@ -553,16 +572,13 @@
 
     .pareto-panel {
       --accent: var(--amber);
-      grid-row: span 2;
     }
 
     .shift-panel {
       --accent: var(--blue);
-      grid-row: span 2;
     }
 
     .month-panel {
-      grid-row: span 2;
       --accent: var(--green);
       display: grid;
       grid-template-rows: auto auto auto 1fr;
@@ -570,7 +586,6 @@
 
     .vision-panel,
     .thickness-panel {
-      grid-row: span 1;
       display: grid;
       grid-template-rows: auto 1fr;
       gap: 10px;
@@ -867,6 +882,15 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
     }
 
     .lightbox-close {
@@ -1321,7 +1345,7 @@
     </section>
 
     <section class="main-grid">
-      <article class="card panel spec-panel" data-panel-id="spec" draggable="true">
+      <article class="card panel spec-panel" data-panel-id="spec" data-slot="spec" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">日生产信息<small>Daily Production Info</small></span></div>
           <div class="panel-tag" id="batchStatus">批次进行中 / Batch Running</div>
@@ -1380,7 +1404,7 @@
         </div>
       </article>
 
-      <article class="card panel pareto-panel" data-panel-id="downtime" draggable="true">
+      <article class="card panel pareto-panel" data-panel-id="downtime" data-slot="downtime" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">日停机分类 Pareto<small>Daily Downtime Pareto</small></span></div>
           <div class="panel-tag">分钟 / min / 累计占比 Cumulative</div>
@@ -1390,7 +1414,7 @@
         </div>
       </article>
 
-      <article class="card panel month-panel" data-panel-id="month" draggable="true">
+      <article class="card panel month-panel" data-panel-id="month" data-slot="month" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">月数据自动统计<small>Monthly Auto Summary</small></span></div>
           <div class="panel-tag" id="monthTag">---- 月 / Month</div>
@@ -1417,7 +1441,7 @@
         <section class="month-list" id="monthDowntimeList" aria-label="Monthly downtime categories"></section>
       </article>
 
-      <article class="card panel vision-panel" data-panel-id="vision" draggable="true">
+      <article class="card panel vision-panel" data-panel-id="vision" data-slot="vision" draggable="true">
         <div class="panel-header"><div class="panel-title"><span class="dual">&#35270;&#35273;&#26816;&#27979;<small>Visual Inspection</small></span></div><div class="panel-tag" id="visionDate">&#26410;&#23548;&#20837; / No data</div></div>
         <div>
           <div class="vision-summary"><div><strong id="visionTotal">--</strong><span>&#32570;&#38519; / Defects</span></div><div><strong id="visionDensity">--</strong><span>&#32508;&#21512;&#23494;&#24230; / Density</span></div><div><strong id="visionOrders">--</strong><span>&#24037;&#21333; / Orders</span></div></div>
@@ -1425,12 +1449,12 @@
         </div>
       </article>
 
-      <article class="card panel thickness-panel" data-panel-id="thickness" draggable="true">
+      <article class="card panel thickness-panel" data-panel-id="thickness" data-slot="thickness" draggable="true">
         <div class="panel-header"><div class="panel-title"><span class="dual">&#21402;&#24230;&#36235;&#21183;<small>Thickness Trend</small></span></div><div class="panel-tag" id="thicknessDate">&#26410;&#23548;&#20837; / No data</div></div>
         <button class="thickness-image-button" id="thicknessImage" type="button" disabled aria-label="Open full thickness trend image"><img id="thicknessThumb" alt="24-hour thickness trend report" hidden><span class="thickness-empty" id="thicknessEmpty">&#26410;&#23548;&#20837; / No data</span></button>
       </article>
 
-      <article class="card panel shift-panel" data-panel-id="shift" draggable="true">
+      <article class="card panel shift-panel" data-panel-id="shift" data-slot="shift" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">早晚班产量对比<small>Shift Output</small></span></div>
           <div class="panel-tag" id="shiftRuleText">早班 / Day · 晚班 / Night</div>
@@ -1442,7 +1466,8 @@
     </section>
   </main>
 
-  <div class="thickness-lightbox" id="thicknessLightbox" aria-hidden="true">
+  <div class="thickness-lightbox" id="thicknessLightbox" role="dialog" aria-modal="true" aria-labelledby="thicknessLightboxTitle" aria-hidden="true">
+    <h2 class="sr-only" id="thicknessLightboxTitle">Thickness trend report</h2>
     <button class="lightbox-close" id="thicknessClose" type="button" aria-label="&#20851;&#38381;&#21402;&#24230;&#36235;&#21183;&#22270;">&times;</button>
     <img id="thicknessFullImage" alt="24-hour thickness trend report">
   </div>
@@ -1655,7 +1680,7 @@
   <script src="quality-import.js"></script>
   <script>
     const storageKey = "pet-sheet-dashboard-daily-monthly-v4";
-    const layoutKey = "pet-sheet-dashboard-panel-layout-v2";
+    const layoutKey = "pet-sheet-dashboard-panel-layout-v3";
     const syncKey = "pet-sheet-dashboard-github-sync-v1";
     const remoteHoldKey = "pet-sheet-dashboard-remote-hold-until-v1";
     const defaultSyncConfig = {
@@ -1666,9 +1691,12 @@
       token: ""
     };
     const defaultPanelOrder = ["spec", "shift", "month", "downtime", "vision", "thickness"];
+    const panelSlotIds = ["spec", "shift", "downtime", "month", "vision", "thickness"];
+    const defaultPanelSlots = Object.fromEntries(panelSlotIds.map((id) => [id, id]));
     const clone = (value) => JSON.parse(JSON.stringify(value));
     const fmt = new Intl.NumberFormat("zh-CN");
     const el = (id) => document.getElementById(id);
+    let lightboxReturnFocus = null;
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
     const downtimeCategories = [
@@ -2926,9 +2954,15 @@
     }
 
     function closeThicknessLightbox() {
-      el("thicknessLightbox").classList.remove("open");
-      el("thicknessLightbox").setAttribute("aria-hidden", "true");
+      const lightbox = el("thicknessLightbox");
+      const shouldRestoreFocus = lightbox.classList.contains("open");
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
       el("thicknessFullImage").removeAttribute("src");
+      if (shouldRestoreFocus && lightboxReturnFocus instanceof HTMLElement && document.contains(lightboxReturnFocus)) {
+        lightboxReturnFocus.focus();
+      }
+      lightboxReturnFocus = null;
     }
 
     function openThicknessLightbox() {
@@ -2937,9 +2971,36 @@
         closeThicknessLightbox();
         return;
       }
+      lightboxReturnFocus = document.activeElement;
       el("thicknessFullImage").src = imageDataUrl;
       el("thicknessLightbox").classList.add("open");
       el("thicknessLightbox").setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => el("thicknessClose").focus());
+    }
+
+    function handleThicknessLightboxKeydown(event) {
+      const lightbox = el("thicknessLightbox");
+      if (!lightbox.classList.contains("open")) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeThicknessLightbox();
+      }
+      if (event.key === "Tab") {
+        const focusable = [...lightbox.querySelectorAll("button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])")];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first || !last) {
+          event.preventDefault();
+          return;
+        }
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     }
 
     function updateQualityPanels() {
@@ -2957,6 +3018,7 @@
       const workOrders = Number(quality?.workOrderCount);
       const highestCount = Math.max(1, ...rankedDefects.map((defect) => defect.count));
       const hasThicknessImage = Boolean(thickness?.imageDataUrl);
+      const lightbox = el("thicknessLightbox");
 
       el("visionDate").textContent = quality ? data.selectedDate : noDataText;
       el("visionTotal").textContent = Number.isFinite(totalDefects) ? fmt.format(Math.round(totalDefects)) : "--";
@@ -2974,7 +3036,10 @@
       el("thicknessImage").disabled = !hasThicknessImage;
       el("thicknessThumb").hidden = !hasThicknessImage;
       el("thicknessEmpty").hidden = hasThicknessImage;
-      if (hasThicknessImage) el("thicknessThumb").src = thickness.imageDataUrl;
+      if (hasThicknessImage) {
+        el("thicknessThumb").src = thickness.imageDataUrl;
+        if (lightbox.classList.contains("open")) el("thicknessFullImage").src = thickness.imageDataUrl;
+      }
       else {
         el("thicknessThumb").removeAttribute("src");
         closeThicknessLightbox();
@@ -3464,32 +3529,38 @@
       render();
     }
 
-    function applyPanelLayout(order = loadPanelLayout()) {
+    function isValidPanelLayout(layout) {
+      if (!layout || Array.isArray(layout) || typeof layout !== "object") return false;
+      const slots = panelSlotIds.map((id) => layout[id]);
+      return slots.length === panelSlotIds.length
+        && slots.every((slot) => panelSlotIds.includes(slot))
+        && new Set(slots).size === panelSlotIds.length;
+    }
+
+    function applyPanelLayout(layout = loadPanelLayout()) {
       const grid = document.querySelector(".main-grid");
-      const panels = new Map([...grid.querySelectorAll("[data-panel-id]")].map((panel) => [panel.dataset.panelId, panel]));
-      order.forEach((id) => {
-        const panel = panels.get(id);
-        if (panel) grid.appendChild(panel);
-      });
-      defaultPanelOrder.forEach((id) => {
-        const panel = panels.get(id);
-        if (panel && panel.parentElement === grid) grid.appendChild(panel);
+      const normalized = isValidPanelLayout(layout) ? layout : defaultPanelSlots;
+      grid.querySelectorAll("[data-panel-id]").forEach((panel) => {
+        panel.dataset.slot = normalized[panel.dataset.panelId];
       });
     }
 
     function loadPanelLayout() {
       try {
         const saved = JSON.parse(localStorage.getItem(layoutKey));
-        if (Array.isArray(saved) && saved.length) return saved;
+        if (isValidPanelLayout(saved)) return saved;
       } catch {
-        return defaultPanelOrder;
+        return defaultPanelSlots;
       }
-      return defaultPanelOrder;
+      return defaultPanelSlots;
     }
 
     function savePanelLayout() {
-      const order = [...document.querySelectorAll(".main-grid [data-panel-id]")].map((panel) => panel.dataset.panelId);
-      localStorage.setItem(layoutKey, JSON.stringify(order));
+      const layout = [...document.querySelectorAll(".main-grid [data-panel-id]")].reduce((slots, panel) => {
+        slots[panel.dataset.panelId] = panel.dataset.slot;
+        return slots;
+      }, {});
+      if (isValidPanelLayout(layout)) localStorage.setItem(layoutKey, JSON.stringify(layout));
     }
 
     function setupPanelDrag() {
@@ -3518,11 +3589,10 @@
           event.preventDefault();
           panel.classList.remove("drag-over");
           if (!dragged || dragged === panel) return;
-          const panels = [...grid.querySelectorAll("[data-panel-id]")];
-          const draggedIndex = panels.indexOf(dragged);
-          const targetIndex = panels.indexOf(panel);
-          if (draggedIndex < targetIndex) panel.after(dragged);
-          else panel.before(dragged);
+          const draggedSlot = dragged.dataset.slot;
+          const targetSlot = panel.dataset.slot;
+          dragged.dataset.slot = targetSlot;
+          panel.dataset.slot = draggedSlot;
           savePanelLayout();
         });
       });
@@ -3564,9 +3634,7 @@
     el("thicknessLightbox").addEventListener("click", (event) => {
       if (event.target === el("thicknessLightbox")) closeThicknessLightbox();
     });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeThicknessLightbox();
-    });
+    document.addEventListener("keydown", handleThicknessLightboxKeydown);
     el("entryOverlay").addEventListener("click", (event) => {
       if (event.target === el("entryOverlay")) el("entryOverlay").classList.remove("open");
     });
@@ -3632,7 +3700,7 @@
     el("pullRemote").addEventListener("click", () => loadSyncedData({ force: true }));
     el("resetLayout").addEventListener("click", () => {
       localStorage.removeItem(layoutKey);
-      applyPanelLayout(defaultPanelOrder);
+      applyPanelLayout(defaultPanelSlots);
       savePanelLayout();
       render();
     });
