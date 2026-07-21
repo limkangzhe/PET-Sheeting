@@ -2021,6 +2021,8 @@
           parsed.production = {
             dailyRecords: production.dailyRecords,
             selectedDate: production.selectedDate,
+            qualityByDate: production.qualityByDate,
+            thicknessByDate: production.thicknessByDate,
             source: payload.source
           };
           importMessage(parsed, "", "生产日报 / Production", `${files.production.name}: ${production.dailyRecords.length} daily records, selected ${production.selectedDate}`);
@@ -2086,12 +2088,40 @@
           dailyRecords: parsed.production.dailyRecords,
           selectedDate: parsed.production.selectedDate
         };
+        patch.qualityByDate = {
+          ...parsed.production.qualityByDate,
+          ...patch.qualityByDate
+        };
+        patch.thicknessByDate = {
+          ...parsed.production.thicknessByDate,
+          ...patch.thicknessByDate
+        };
       }
       data = PetQualityImport.mergeDashboardSources(data, patch);
       data.syncedAt = new Date().toISOString();
       dataSourceLabel = parsed.production?.source || "质量数据导入 / Quality Import";
       localOverride = true;
       localStorage.setItem(`${storageKey}-local-override`, "1");
+      saveData();
+      render();
+      let published = false;
+      let publishError = "";
+      try {
+        published = await publishRemotePayload(dashboardPayload());
+      } catch (error) {
+        publishError = error.message || String(error);
+      }
+      if (published) {
+        localOverride = false;
+        localStorage.setItem(`${storageKey}-local-override`, "0");
+        dataSourceLabel = "GitHub云同步 / GitHub Sync";
+        localStorage.setItem(remoteHoldKey, String(Date.now() + 180000));
+        alert("已同步到 GitHub。其它设备等 GitHub Pages 更新后，刷新或点击「立即同步 / Pull」就会读到新数据。");
+      } else {
+        localOverride = true;
+        localStorage.setItem(`${storageKey}-local-override`, "1");
+        alert(`当前只更新了这台电脑，尚未写入 GitHub。其它设备尚未同步 / This device has been updated locally, but other devices are not synchronized.\n${publishError ? `原因 / Reason: ${publishError}\n` : ""}请先设置 GitHub Token 后重试导入 / Configure GitHub sync and import again.`);
+      }
       saveData();
       render();
       el("importOverlay").classList.remove("open");
