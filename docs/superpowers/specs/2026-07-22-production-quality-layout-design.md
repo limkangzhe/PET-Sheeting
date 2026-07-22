@@ -19,6 +19,8 @@ Rearrange the existing TV dashboard to match the approved production/quality lay
 
 ## Thickness Image Behavior
 
+- Accept common image files and PDF reports through the existing quality import dialog.
+- Render the first page of an imported PDF as the dashboard preview image.
 - Display the complete imported thickness report image with its original aspect ratio.
 - Use contained scaling so no edge, title, legend, axis, or time label is cropped.
 - Center the image inside a restrained dark report surface; unused space is acceptable when the image aspect ratio differs from the panel.
