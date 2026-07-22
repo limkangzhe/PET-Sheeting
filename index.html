@@ -1657,7 +1657,7 @@
       <div class="import-slots">
         <label class="import-slot" for="productionFileInput"><strong>生产日报 / Production</strong><span>Excel · CSV · JSON</span><input id="productionFileInput" type="file" accept=".xlsx,.csv,.json"></label>
         <label class="import-slot" for="visionFileInput"><strong>视觉检测 / Vision</strong><span>PDF</span><input id="visionFileInput" type="file" accept=".pdf,application/pdf"></label>
-        <label class="import-slot" for="thicknessFileInput"><strong>厚度趋势 / Thickness</strong><span>JPG · JPEG</span><input id="thicknessFileInput" type="file" accept=".jpg,.jpeg,image/jpeg"></label>
+        <label class="import-slot" for="thicknessFileInput"><strong>厚度趋势 / Thickness</strong><span>JPG · PNG · WebP · PDF</span><input id="thicknessFileInput" type="file" accept=".jpg,.jpeg,.png,.webp,.pdf,image/jpeg,image/png,image/webp,application/pdf"></label>
       </div>
       <div class="import-preview" id="importPreview" aria-live="polite">请选择需要更新的文件 / Select files to update</div>
       <footer class="import-actions">
@@ -2505,7 +2505,7 @@
       }
       if (files.thickness) {
         try {
-          parsed.thickness = await PetQualityImport.compressThicknessImage(files.thickness);
+          parsed.thickness = await PetQualityImport.importThicknessReport(files.thickness, window.pdfjsLib);
           updateThicknessImportDate(parsed, PetQualityImport.detectDateFromFilename(files.thickness.name));
           importMessage(parsed, "", "厚度趋势 / Thickness", parsed.thicknessDate
             ? `${files.thickness.name}: ${parsed.thicknessDate}`

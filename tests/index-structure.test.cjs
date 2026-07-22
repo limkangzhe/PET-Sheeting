@@ -29,6 +29,11 @@ test("provides a three-source import dialog and preview", () => {
   ]) assert.match(html, new RegExp(`id=["']${id}["']`));
 });
 
+test("accepts image and PDF thickness reports through the unified importer", () => {
+  assert.match(html, /id="thicknessFileInput"[^>]*accept="[^"]*\.jpg[^"]*\.png[^"]*\.webp[^"]*\.pdf[^"]*"/);
+  assert.match(html, /PetQualityImport\.importThicknessReport\(files\.thickness, window\.pdfjsLib\)/);
+});
+
 test("synchronized payload includes quality and thickness maps", () => {
   assert.match(html, /qualityByDate:\s*data\.qualityByDate/);
   assert.match(html, /thicknessByDate:\s*data\.thicknessByDate/);

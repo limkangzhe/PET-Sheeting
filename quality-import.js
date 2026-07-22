@@ -227,9 +227,17 @@
     return result;
   }
 
+  function thicknessRecord(sourceFile, canvas, quality = 0.72) {
+    return {
+      sourceFile,
+      importedAt: new Date().toISOString(),
+      imageDataUrl: canvas.toDataURL("image/jpeg", Math.min(0.72, Number(quality) || 0.72))
+    };
+  }
+
   async function compressThicknessImage(file, options = {}) {
-    if (!file || !/\.jpe?g$/i.test(file.name || "")) {
-      throw new Error(`Thickness trend requires JPG: ${file?.name || "unknown"}`);
+    if (!file || !/\.(?:jpe?g|png|webp)$/i.test(file.name || "")) {
+      throw new Error(`Thickness trend requires JPG, PNG or WebP: ${file?.name || "unknown"}`);
     }
     const maxWidth = Math.min(1600, Number(options.maxWidth) || 1600);
     const maxHeight = Math.min(1280, Number(options.maxHeight) || 1280);
@@ -246,11 +254,37 @@
     context.fillRect(0, 0, width, height);
     context.drawImage(bitmap, 0, 0, width, height);
     bitmap.close?.();
-    return {
-      sourceFile: file.name,
-      importedAt: new Date().toISOString(),
-      imageDataUrl: canvas.toDataURL("image/jpeg", quality)
-    };
+    return thicknessRecord(file.name, canvas, quality);
+  }
+
+  async function renderThicknessPdf(file, pdfjs, options = {}) {
+    if (!pdfjs?.getDocument) throw new Error("PDF parser is not loaded");
+    pdfjs.GlobalWorkerOptions.workerSrc = "vendor/pdf.worker.min.js";
+    const documentTask = pdfjs.getDocument({ data: await file.arrayBuffer() });
+    const pdf = await documentTask.promise;
+    const page = await pdf.getPage(1);
+    const baseViewport = page.getViewport({ scale: 1 });
+    const maxWidth = Math.min(1600, Number(options.maxWidth) || 1600);
+    const maxHeight = Math.min(1280, Number(options.maxHeight) || 1280);
+    const scale = Math.min(1.6, maxWidth / baseViewport.width, maxHeight / baseViewport.height);
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(viewport.width));
+    canvas.height = Math.max(1, Math.round(viewport.height));
+    const context = canvas.getContext("2d", { alpha: false });
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: context, viewport }).promise;
+    const record = thicknessRecord(file.name, canvas, options.quality);
+    pdf.cleanup?.();
+    return record;
+  }
+
+  async function importThicknessReport(file, pdfjs, options = {}) {
+    const name = file?.name || "";
+    if (/\.pdf$/i.test(name)) return renderThicknessPdf(file, pdfjs, options);
+    if (/\.(?:jpe?g|png|webp)$/i.test(name)) return compressThicknessImage(file, options);
+    throw new Error(`Unsupported thickness report: ${name || "unknown"}`);
   }
 
   return {
@@ -261,6 +295,7 @@
     createPanelSizePersistence,
     mergeDashboardSources,
     extractVisionPdf,
-    compressThicknessImage
+    compressThicknessImage,
+    importThicknessReport
   };
 });

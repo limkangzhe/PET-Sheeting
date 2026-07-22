@@ -194,3 +194,80 @@ test("compresses oversized thickness images within hard limits", async () => {
     else global.document = originalDocument;
   }
 });
+
+test("imports PNG thickness images through the unified report reader", async () => {
+  const originalCreateImageBitmap = global.createImageBitmap;
+  const originalDocument = global.document;
+  const canvas = {
+    width: 0,
+    height: 0,
+    getContext: () => ({ fillStyle: "", fillRect() {}, drawImage() {} }),
+    toDataURL: () => "data:image/jpeg;base64,png-preview"
+  };
+  global.createImageBitmap = async () => ({ width: 1200, height: 800, close() {} });
+  global.document = { createElement: () => canvas };
+
+  try {
+    const result = await quality.importThicknessReport({ name: "trend-20260719.png" }, null);
+    assert.equal(result.sourceFile, "trend-20260719.png");
+    assert.equal(result.imageDataUrl, "data:image/jpeg;base64,png-preview");
+  } finally {
+    if (originalCreateImageBitmap === undefined) delete global.createImageBitmap;
+    else global.createImageBitmap = originalCreateImageBitmap;
+    if (originalDocument === undefined) delete global.document;
+    else global.document = originalDocument;
+  }
+});
+
+test("renders only the first PDF page as a thickness preview", async () => {
+  const originalDocument = global.document;
+  const requestedPages = [];
+  const renderCalls = [];
+  const canvas = {
+    width: 0,
+    height: 0,
+    getContext: () => ({ fillStyle: "", fillRect() {} }),
+    toDataURL: (...args) => {
+      canvas.toDataURLArgs = args;
+      return "data:image/jpeg;base64,pdf-preview";
+    }
+  };
+  global.document = { createElement: () => canvas };
+  const pdfjs = {
+    GlobalWorkerOptions: {},
+    getDocument: ({ data }) => {
+      assert.ok(data instanceof ArrayBuffer);
+      return {
+        promise: Promise.resolve({
+          getPage: async (pageNumber) => {
+            requestedPages.push(pageNumber);
+            return {
+              getViewport: ({ scale }) => ({ width: 1000 * scale, height: 700 * scale }),
+              render: (options) => {
+                renderCalls.push(options);
+                return { promise: Promise.resolve() };
+              }
+            };
+          }
+        })
+      };
+    }
+  };
+
+  try {
+    const result = await quality.importThicknessReport({
+      name: "thickness-2026-07-19.pdf",
+      arrayBuffer: async () => new ArrayBuffer(0)
+    }, pdfjs);
+
+    assert.deepEqual(requestedPages, [1]);
+    assert.equal(renderCalls.length, 1);
+    assert.equal(pdfjs.GlobalWorkerOptions.workerSrc, "vendor/pdf.worker.min.js");
+    assert.equal(result.sourceFile, "thickness-2026-07-19.pdf");
+    assert.equal(result.imageDataUrl, "data:image/jpeg;base64,pdf-preview");
+    assert.deepEqual(canvas.toDataURLArgs, ["image/jpeg", 0.72]);
+  } finally {
+    if (originalDocument === undefined) delete global.document;
+    else global.document = originalDocument;
+  }
+});
