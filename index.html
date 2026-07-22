@@ -66,7 +66,7 @@
       min-height: 660px;
       padding: clamp(14px, 1.2vw, 24px);
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto 1fr;
       gap: clamp(12px, 0.9vw, 18px);
     }
 
@@ -292,6 +292,7 @@
     }
 
     .kpis {
+      grid-area: kpis;
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: clamp(14px, 1vw, 20px);
@@ -389,17 +390,51 @@
     .main-grid {
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(290px, 0.86fr) minmax(350px, 1fr) minmax(260px, 0.72fr) minmax(260px, 0.72fr);
-      grid-template-rows: repeat(4, minmax(0, 1fr));
+      grid-template-columns: minmax(250px, 1.05fr) minmax(320px, 1.15fr) minmax(320px, 1.15fr) minmax(420px, 1.45fr);
+      grid-template-rows: 40px repeat(9, minmax(0, 1fr));
       grid-template-areas:
-        "spec shift month month"
-        "spec shift month month"
-        "spec downtime month month"
-        "spec downtime vision thickness";
-      grid-auto-rows: 0;
-      gap: clamp(12px, 0.85vw, 18px);
+        "production production production quality"
+        "kpis kpis kpis vision"
+        "kpis kpis kpis vision"
+        "spec shift month vision"
+        "spec shift month vision"
+        "spec shift month thickness"
+        "spec downtime month thickness"
+        "spec downtime month thickness"
+        "spec downtime month thickness"
+        "spec downtime month thickness";
+      column-gap: clamp(10px, 0.72vw, 16px);
+      row-gap: clamp(7px, 0.48vw, 10px);
       overflow: hidden;
     }
+
+    .zone-heading {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--cyan);
+      font-size: clamp(20px, 1.25vw, 27px);
+      font-weight: 850;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .zone-heading::before,
+    .zone-heading::after {
+      height: 1px;
+      flex: 1 1 auto;
+      content: "";
+      background: linear-gradient(90deg, transparent, rgba(53, 210, 230, 0.72));
+    }
+
+    .zone-heading::after {
+      background: linear-gradient(90deg, rgba(53, 210, 230, 0.72), transparent);
+    }
+
+    .production-heading { grid-area: production; }
+    .quality-heading { grid-area: quality; }
 
     .panel {
       box-sizing: border-box;
@@ -634,9 +669,9 @@
     .month-panel {
       --accent: var(--green);
       display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.65fr);
-      grid-template-rows: auto auto auto minmax(0, 1fr);
-      column-gap: 16px;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto minmax(150px, 1fr) auto;
+      row-gap: 8px;
     }
 
     .month-panel > .panel-header,
@@ -698,7 +733,7 @@
 
     .vision-summary strong {
       color: var(--text);
-      font-size: clamp(22px, 1.45vw, 30px);
+      font-size: clamp(28px, 1.85vw, 40px);
       font-variant-numeric: tabular-nums;
       line-height: 1;
     }
@@ -712,9 +747,17 @@
 
     .vision-bars {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: 1fr;
+      align-content: start;
+      gap: 14px;
       min-height: 0;
+    }
+
+    .vision-panel > div {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 18px;
     }
 
     .vision-bar {
@@ -731,20 +774,20 @@
 
     .vision-bar-label {
       color: var(--muted);
-      font-size: clamp(13px, 0.82vw, 15px);
+      font-size: clamp(14px, 0.9vw, 17px);
       font-weight: 700;
     }
 
     .vision-bar-value {
       margin-top: 4px;
       color: var(--text);
-      font-size: clamp(15px, 0.95vw, 18px);
+      font-size: clamp(17px, 1.05vw, 21px);
       font-variant-numeric: tabular-nums;
       font-weight: 850;
     }
 
     .vision-bar-track {
-      height: 8px;
+      height: 10px;
       margin-top: 7px;
       overflow: hidden;
       background: rgba(255, 255, 255, 0.1);
@@ -789,7 +832,7 @@
     .thickness-image-button img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .thickness-empty {
@@ -869,8 +912,8 @@
     }
 
     .month-list {
-      grid-column: 2;
-      grid-row: 4;
+      grid-column: 1;
+      grid-row: 5;
       min-height: 0;
       display: grid;
       align-content: start;
@@ -971,50 +1014,54 @@
 
       .vision-panel,
       .thickness-panel {
-        padding: 10px 12px;
-        gap: 4px;
+        padding: 14px 16px;
+        gap: 8px;
       }
 
       .vision-panel .panel-title,
       .thickness-panel .panel-title {
-        font-size: 17px;
+        font-size: 20px;
       }
 
       .vision-panel .panel-title::before,
       .thickness-panel .panel-title::before {
-        width: 6px;
-        height: 18px;
+        width: 7px;
+        height: 22px;
       }
 
       .vision-summary > div {
-        padding: 0 6px;
+        padding: 0 8px;
       }
 
       .vision-summary strong {
-        font-size: 22px;
+        font-size: 32px;
       }
 
       .vision-summary span {
         margin-top: 2px;
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .vision-bars {
-        gap: 6px;
+        gap: 12px;
+      }
+
+      .vision-panel > div {
+        gap: 14px;
       }
 
       .vision-bar-label {
-        font-size: 11px;
-      }
-
-      .vision-bar-value {
-        margin-top: 2px;
         font-size: 14px;
       }
 
-      .vision-bar-track {
-        height: 5px;
+      .vision-bar-value {
         margin-top: 3px;
+        font-size: 17px;
+      }
+
+      .vision-bar-track {
+        height: 8px;
+        margin-top: 5px;
       }
     }
 
@@ -1462,7 +1509,11 @@
       </section>
     </header>
 
-    <section class="kpis" aria-label="Daily production KPIs">
+    <section class="main-grid" aria-label="Production and quality dashboard">
+      <div class="zone-heading production-heading">生产 / Production</div>
+      <div class="zone-heading quality-heading">质量 / Quality</div>
+
+      <section class="kpis" aria-label="Daily production KPIs">
       <article class="card kpi" style="--accent: var(--green)">
         <div class="kpi-label"><span class="dual">日产量<small>Daily Output</small></span></div>
         <div class="kpi-value">
@@ -1516,9 +1567,8 @@
         </div>
         <div class="kpi-foot"><span id="purgingTons">0.0 t</span><span class="trend" id="purgingShare">0.0%</span></div>
       </article>
-    </section>
+      </section>
 
-    <section class="main-grid">
       <article class="card panel spec-panel" data-panel-id="spec" data-slot="spec" draggable="true">
         <div class="panel-header">
           <div class="panel-title"><span class="dual">日生产信息<small>Daily Production Info</small></span></div>

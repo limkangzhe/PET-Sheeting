@@ -91,14 +91,25 @@ test("keeps header actions in a dedicated non-overlapping row", () => {
   assert.match(html, /\.clock\s*\{[^}]*grid-column:\s*3;[^}]*grid-row:\s*1;/s);
 });
 
-test("fits charts and compact quality panels inside the default TV grid", () => {
+test("fits charts and quality panels inside the default TV grid", () => {
   assert.match(html, /\.chart-shell\s*\{[^}]*height:\s*calc\(100% - 62px\);[^}]*min-height:\s*0;/s);
-  assert.match(html, /\.month-panel\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.35fr\) minmax\(250px, 0\.65fr\);/s);
+  assert.match(html, /\.month-panel\s*\{[^}]*grid-template-columns:\s*1fr;[^}]*grid-template-rows:\s*auto auto auto minmax\(150px, 1fr\) auto;/s);
   assert.match(html, /\.month-chart-shell\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*4;[^}]*height:\s*100%;[^}]*min-height:\s*0;/s);
-  assert.match(html, /\.month-list\s*\{[^}]*grid-column:\s*2;[^}]*grid-row:\s*4;/s);
-  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.vision-panel,[\s\S]*\.thickness-panel\s*\{[^}]*padding:\s*10px 12px;/s);
+  assert.match(html, /\.month-list\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*5;/s);
   assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-cards\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/s);
   assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-row\s*\{[^}]*grid-template-columns:\s*minmax\(92px, 0\.8fr\) minmax\(40px, 1fr\) 48px;/s);
+});
+
+test("uses the approved production and quality TV layout", () => {
+  assert.match(html, /\.screen\s*\{[^}]*grid-template-rows:\s*auto 1fr;/s);
+  assert.match(html, /class="zone-heading production-heading"/);
+  assert.match(html, /class="zone-heading quality-heading"/);
+  assert.match(html, /\.kpis\s*\{[^}]*grid-area:\s*kpis;/s);
+  assert.match(html, /grid-template-columns:\s*minmax\(250px, 1\.05fr\) minmax\(320px, 1\.15fr\) minmax\(320px, 1\.15fr\) minmax\(420px, 1\.45fr\)/);
+  assert.match(html, /grid-template-rows:\s*40px repeat\(9, minmax\(0, 1fr\)\)/);
+  assert.match(html, /grid-template-areas:\s*"production production production quality"\s*"kpis kpis kpis vision"\s*"kpis kpis kpis vision"\s*"spec shift month vision"\s*"spec shift month vision"\s*"spec shift month thickness"\s*"spec downtime month thickness"\s*"spec downtime month thickness"\s*"spec downtime month thickness"\s*"spec downtime month thickness"/s);
+  assert.match(html, /\.vision-bars\s*\{[^}]*grid-template-columns:\s*1fr;/s);
+  assert.match(html, /\.thickness-image-button img\s*\{[^}]*object-fit:\s*contain;/s);
 });
 
 test("uses compact canvas labels only when chart space is constrained", () => {
@@ -116,7 +127,7 @@ test("renders absent visual density as no data", () => {
 });
 
 test("uses complete fixed slots for the six dashboard panels", () => {
-  assert.match(html, /grid-template-areas:\s*"spec shift month month"\s*"spec shift month month"\s*"spec downtime month month"\s*"spec downtime vision thickness"/s);
+  assert.match(html, /grid-template-areas:\s*"production production production quality"[\s\S]*"spec downtime month thickness"/s);
   for (const id of ["spec", "shift", "downtime", "month", "vision", "thickness"]) {
     assert.match(html, new RegExp(`data-panel-id="${id}"[^>]*data-slot="${id}"|data-slot="${id}"[^>]*data-panel-id="${id}"`));
   }
