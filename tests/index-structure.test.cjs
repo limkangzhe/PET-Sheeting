@@ -96,7 +96,7 @@ test("fits charts and quality panels inside the default TV grid", () => {
   assert.match(html, /\.month-panel\s*\{[^}]*grid-template-columns:\s*1fr;[^}]*grid-template-rows:\s*auto auto auto minmax\(150px, 1fr\) auto;/s);
   assert.match(html, /\.month-chart-shell\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*4;[^}]*height:\s*100%;[^}]*min-height:\s*0;/s);
   assert.match(html, /\.month-list\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*5;/s);
-  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-cards\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/s);
+  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-cards\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s);
   assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-row\s*\{[^}]*grid-template-columns:\s*minmax\(92px, 0\.8fr\) minmax\(40px, 1fr\) 48px;/s);
 });
 
@@ -110,6 +110,15 @@ test("uses the approved production and quality TV layout", () => {
   assert.match(html, /grid-template-areas:\s*"production production production quality"\s*"kpis kpis kpis vision"\s*"kpis kpis kpis vision"\s*"spec shift month vision"\s*"spec shift month vision"\s*"spec shift month thickness"\s*"spec downtime month thickness"\s*"spec downtime month thickness"\s*"spec downtime month thickness"\s*"spec downtime month thickness"/s);
   assert.match(html, /\.vision-bars\s*\{[^}]*grid-template-columns:\s*1fr;/s);
   assert.match(html, /\.thickness-image-button img\s*\{[^}]*object-fit:\s*contain;/s);
+});
+
+test("keeps production cards readable in the narrower production zone", () => {
+  assert.match(html, /\.kpi\s*\{[^}]*overflow-x:\s*hidden;[^}]*overflow-y:\s*auto;/s);
+  assert.match(html, /\.panel\s*\{[^}]*overflow-x:\s*hidden;[^}]*overflow-y:\s*auto;/s);
+  assert.match(html, /\.number\s*\{[^}]*font-size:\s*clamp\(36px, 2\.6vw, 58px\);/s);
+  assert.match(html, /@media \(max-height:\s*1200px\)[\s\S]*\.month-cards\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s);
+  assert.match(html, /\.quality-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);/s);
+  assert.match(html, /\.panel-tag\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;/s);
 });
 
 test("uses compact canvas labels only when chart space is constrained", () => {

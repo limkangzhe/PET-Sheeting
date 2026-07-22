@@ -321,12 +321,13 @@
 
     .kpi {
       min-height: 136px;
-      padding: 18px 18px 16px 24px;
+      padding: 14px 12px 12px 18px;
       display: grid;
       grid-template-rows: auto 1fr auto;
-      gap: 8px;
+      gap: 6px;
       resize: both;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .kpi-label,
@@ -347,7 +348,7 @@
 
     .number {
       font-variant-numeric: tabular-nums;
-      font-size: clamp(42px, 3.35vw, 68px);
+      font-size: clamp(36px, 2.6vw, 58px);
       line-height: 0.96;
       font-weight: 850;
       white-space: nowrap;
@@ -355,7 +356,7 @@
 
     .unit {
       color: var(--muted);
-      font-size: clamp(17px, 1.1vw, 24px);
+      font-size: clamp(14px, 0.82vw, 18px);
       font-weight: 800;
       white-space: nowrap;
     }
@@ -446,7 +447,8 @@
       min-height: min(140px, 100%);
       padding: clamp(16px, 1vw, 22px);
       resize: both;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
       justify-self: stretch;
       align-self: stretch;
     }
@@ -464,6 +466,10 @@
       justify-content: space-between;
       gap: 14px;
       margin-bottom: 15px;
+    }
+
+    .panel-header > * {
+      min-width: 0;
     }
 
     .panel-title {
@@ -485,6 +491,9 @@
     }
 
     .panel-tag {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: var(--muted);
       font-size: clamp(13px, 0.82vw, 15px);
       font-variant-numeric: tabular-nums;
@@ -873,7 +882,7 @@
 
     .quality-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
       margin-bottom: 10px;
     }
@@ -959,7 +968,7 @@
 
     @media (max-height: 1200px) {
       .month-cards {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 7px;
         margin-bottom: 8px;
       }
