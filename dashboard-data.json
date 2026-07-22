@@ -1,6 +1,6 @@
 {
   "source": "质量数据导入 / Quality Import",
-  "syncedAt": "2026-07-22T07:03:25.741Z",
+  "syncedAt": "2026-07-22T07:04:27.285Z",
   "selectedDate": "2026-07-21",
   "dailyRecords": [
     {
@@ -3435,7 +3435,7 @@
     },
     "2026-07-21": {
       "sourceFile": "Report.pdf",
-      "importedAt": "2026-07-22T07:03:24.494Z",
+      "importedAt": "2026-07-22T07:04:19.719Z",
       "workOrderCount": 31,
       "totalDefects": 4616,
       "overallDensity": 0.07883799908003776,
