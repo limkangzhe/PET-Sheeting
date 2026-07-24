@@ -1,6 +1,6 @@
 {
   "source": "质量数据导入 / Quality Import",
-  "syncedAt": "2026-07-24T02:34:13.565Z",
+  "syncedAt": "2026-07-24T02:37:53.141Z",
   "selectedDate": "2026-07-23",
   "dailyRecords": [
     {
@@ -1720,7 +1720,1221 @@
       }
     }
   ],
-  "qualityByDate": {},
+  "qualityByDate": {
+    "2026-07-23": {
+      "sourceFile": "Report.pdf",
+      "importedAt": "2026-07-24T02:37:51.856Z",
+      "workOrderCount": 25,
+      "totalDefects": 5946,
+      "overallDensity": 0.09232808346264959,
+      "topDefects": [
+        {
+          "name": "N-Crystal Point-G1",
+          "count": 2680,
+          "density": 0.041614406942465675
+        },
+        {
+          "name": "O-Crystal Point-G2",
+          "count": 1157,
+          "density": 0.01796562269866895
+        },
+        {
+          "name": "AA-press sludge-G2",
+          "count": 944,
+          "density": 0.014658209012569997
+        }
+      ],
+      "defects": [
+        {
+          "name": "N-Crystal Point-G1",
+          "count": 2680,
+          "density": 0.041614406942465675
+        },
+        {
+          "name": "O-Crystal Point-G2",
+          "count": 1157,
+          "density": 0.01796562269866895
+        },
+        {
+          "name": "AA-press sludge-G2",
+          "count": 944,
+          "density": 0.014658209012569997
+        },
+        {
+          "name": "Y-press sludge-G0",
+          "count": 712,
+          "density": 0.011055767814565506
+        },
+        {
+          "name": "Z-press sludge-G1",
+          "count": 365,
+          "density": 0.005667633781343272
+        },
+        {
+          "name": "F-UNKNOWN",
+          "count": 84,
+          "density": 0.0013043321578981779
+        },
+        {
+          "name": "Q-Black-G1",
+          "count": 4,
+          "density": 0.00006211105513800846
+        }
+      ],
+      "workOrders": [
+        {
+          "id": "--432",
+          "endTime": "2026/7/24 7:59:49",
+          "startTime": "2026/7/24 7:56:13",
+          "lengthM": 69.9,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 1,
+              "density": 0.010519
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 1,
+          "totalDensity": 0.010519
+        },
+        {
+          "id": "--431",
+          "endTime": "2026/7/24 7:55:59",
+          "startTime": "2026/7/24 6:41:37",
+          "lengthM": 751.35,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 184,
+              "density": 0.180068
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 3,
+              "density": 0.002936
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 641,
+              "density": 0.627302
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 592,
+              "density": 0.579349
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 139,
+              "density": 0.13603
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 70,
+              "density": 0.068504
+            }
+          },
+          "totalCount": 1629,
+          "totalDensity": 1.594189
+        },
+        {
+          "id": "--430",
+          "endTime": "2026/7/24 6:41:24",
+          "startTime": "2026/7/24 5:48:50",
+          "lengthM": 2203.1,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 41,
+              "density": 0.013684
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 6,
+              "density": 0.002003
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 47,
+          "totalDensity": 0.015687
+        },
+        {
+          "id": "--429",
+          "endTime": "2026/7/24 5:48:39",
+          "startTime": "2026/7/24 4:56:07",
+          "lengthM": 2200.62,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 51,
+              "density": 0.017041
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 51,
+          "totalDensity": 0.017041
+        },
+        {
+          "id": "--428",
+          "endTime": "2026/7/24 4:55:55",
+          "startTime": "2026/7/24 4:03:37",
+          "lengthM": 2192.09,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 19,
+              "density": 0.006373
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 19,
+          "totalDensity": 0.006373
+        },
+        {
+          "id": "--427",
+          "endTime": "2026/7/24 4:03:26",
+          "startTime": "2026/7/24 3:10:03",
+          "lengthM": 2236.48,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 63,
+              "density": 0.020713
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 63,
+          "totalDensity": 0.020713
+        },
+        {
+          "id": "--426",
+          "endTime": "2026/7/24 3:09:50",
+          "startTime": "2026/7/24 2:17:32",
+          "lengthM": 2192.24,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 56,
+              "density": 0.018783
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 3,
+              "density": 0.001006
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 1,
+              "density": 0.000335
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 60,
+          "totalDensity": 0.020124
+        },
+        {
+          "id": "--425",
+          "endTime": "2026/7/24 2:17:20",
+          "startTime": "2026/7/24 1:24:57",
+          "lengthM": 2195.35,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 10,
+              "density": 0.003349
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 1,
+              "density": 0.000335
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 11,
+          "totalDensity": 0.003684
+        },
+        {
+          "id": "--424",
+          "endTime": "2026/7/24 1:24:45",
+          "startTime": "2026/7/24 0:32:13",
+          "lengthM": 2201.65,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 60,
+              "density": 0.020038
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 1,
+              "density": 0.000334
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 61,
+          "totalDensity": 0.020372
+        },
+        {
+          "id": "--423",
+          "endTime": "2026/7/24 0:32:00",
+          "startTime": "2026/7/23 23:39:44",
+          "lengthM": 2191.36,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 26,
+              "density": 0.008724
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 1,
+              "density": 0.000336
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 27,
+          "totalDensity": 0.00906
+        },
+        {
+          "id": "--422",
+          "endTime": "2026/7/23 23:39:33",
+          "startTime": "2026/7/23 22:47:12",
+          "lengthM": 2193.39,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 36,
+              "density": 0.012068
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 36,
+          "totalDensity": 0.012068
+        },
+        {
+          "id": "--421",
+          "endTime": "2026/7/23 22:46:59",
+          "startTime": "2026/7/23 21:54:30",
+          "lengthM": 2200.75,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 49,
+              "density": 0.016371
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 49,
+          "totalDensity": 0.016371
+        },
+        {
+          "id": "--420",
+          "endTime": "2026/7/23 21:54:17",
+          "startTime": "2026/7/23 21:02:01",
+          "lengthM": 2191.35,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 18,
+              "density": 0.00604
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 1,
+              "density": 0.000336
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 19,
+          "totalDensity": 0.006376
+        },
+        {
+          "id": "--419",
+          "endTime": "2026/7/23 21:01:48",
+          "startTime": "2026/7/23 20:09:12",
+          "lengthM": 2205.33,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 69,
+              "density": 0.023006
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 3,
+              "density": 0.001
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 72,
+          "totalDensity": 0.024006
+        },
+        {
+          "id": "--418",
+          "endTime": "2026/7/23 20:09:01",
+          "startTime": "2026/7/23 19:16:36",
+          "lengthM": 2196.46,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 44,
+              "density": 0.01473
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 1,
+              "density": 0.000335
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 1,
+              "density": 0.000335
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 5,
+              "density": 0.001674
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 51,
+          "totalDensity": 0.017074
+        },
+        {
+          "id": "--417",
+          "endTime": "2026/7/23 19:16:25",
+          "startTime": "2026/7/23 18:24:07",
+          "lengthM": 2191.74,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 66,
+              "density": 0.022142
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 4,
+              "density": 0.001342
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 70,
+          "totalDensity": 0.023484
+        },
+        {
+          "id": "--416",
+          "endTime": "2026/7/23 18:23:54",
+          "startTime": "2026/7/23 18:13:37",
+          "lengthM": 429.77,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 8,
+              "density": 0.013687
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 1,
+              "density": 0.001711
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 9,
+          "totalDensity": 0.015398
+        },
+        {
+          "id": "--415",
+          "endTime": "2026/7/23 18:13:24",
+          "startTime": "2026/7/23 17:19:12",
+          "lengthM": 2246.95,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 389,
+              "density": 0.127297
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 53,
+              "density": 0.017344
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 51,
+              "density": 0.016689
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 43,
+              "density": 0.014071
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 53,
+              "density": 0.017344
+            }
+          },
+          "totalCount": 589,
+          "totalDensity": 0.192745
+        },
+        {
+          "id": "--414",
+          "endTime": "2026/7/23 17:19:00",
+          "startTime": "2026/7/23 17:02:56",
+          "lengthM": 467.53,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 44,
+              "density": 0.0692
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 53,
+              "density": 0.083354
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 22,
+              "density": 0.0346
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 1,
+              "density": 0.001573
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 81,
+              "density": 0.12739
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 39,
+              "density": 0.061336
+            }
+          },
+          "totalCount": 240,
+          "totalDensity": 0.377453
+        },
+        {
+          "id": "--413",
+          "endTime": "2026/7/23 17:02:43",
+          "startTime": "2026/7/23 15:42:39",
+          "lengthM": 1371.32,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 327,
+              "density": 0.175336
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 28,
+              "density": 0.015013
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 1118,
+              "density": 0.599465
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 532,
+              "density": 0.285255
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 2,
+              "density": 0.001072
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 426,
+              "density": 0.228419
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 203,
+              "density": 0.108847
+            }
+          },
+          "totalCount": 2636,
+          "totalDensity": 1.413407
+        },
+        {
+          "id": "--412",
+          "endTime": "2026/7/23 15:42:26",
+          "startTime": "2026/7/23 14:51:55",
+          "lengthM": 2242.86,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 17,
+              "density": 0.005573
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 17,
+          "totalDensity": 0.005573
+        },
+        {
+          "id": "--411",
+          "endTime": "2026/7/23 14:51:44",
+          "startTime": "2026/7/23 14:01:10",
+          "lengthM": 2244.06,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 23,
+              "density": 0.007536
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 0,
+              "density": 0
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 1,
+              "density": 0.000328
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 24,
+          "totalDensity": 0.007864
+        },
+        {
+          "id": "--410",
+          "endTime": "2026/7/23 14:00:57",
+          "startTime": "2026/7/23 13:10:21",
+          "lengthM": 2246.77,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 37,
+              "density": 0.012109
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 1,
+              "density": 0.000327
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 38,
+          "totalDensity": 0.012436
+        },
+        {
+          "id": "--409",
+          "endTime": "2026/7/23 13:10:10",
+          "startTime": "2026/7/23 12:19:41",
+          "lengthM": 2240.81,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 82,
+              "density": 0.026907
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 3,
+              "density": 0.000984
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 85,
+          "totalDensity": 0.027891
+        },
+        {
+          "id": "--408",
+          "endTime": "2026/7/23 12:19:29",
+          "startTime": "2026/7/23 11:28:47",
+          "lengthM": 2250.28,
+          "widthCm": 136,
+          "defects": {
+            "AA-press sludge-G2": {
+              "name": "AA-press sludge-G2",
+              "count": 0,
+              "density": 0
+            },
+            "F-UNKNOWN": {
+              "name": "F-UNKNOWN",
+              "count": 0,
+              "density": 0
+            },
+            "N-Crystal Point-G1": {
+              "name": "N-Crystal Point-G1",
+              "count": 41,
+              "density": 0.013397
+            },
+            "O-Crystal Point-G2": {
+              "name": "O-Crystal Point-G2",
+              "count": 1,
+              "density": 0.000327
+            },
+            "Q-Black-G1": {
+              "name": "Q-Black-G1",
+              "count": 0,
+              "density": 0
+            },
+            "Y-press sludge-G0": {
+              "name": "Y-press sludge-G0",
+              "count": 0,
+              "density": 0
+            },
+            "Z-press sludge-G1": {
+              "name": "Z-press sludge-G1",
+              "count": 0,
+              "density": 0
+            }
+          },
+          "totalCount": 42,
+          "totalDensity": 0.013724
+        }
+      ]
+    }
+  },
   "thicknessByDate": {
     "2026-07-23": {
       "sourceFile": "2026.07.23-23.59.01.Pro.jpg",
