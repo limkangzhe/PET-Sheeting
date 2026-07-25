@@ -1,7 +1,7 @@
 {
-  "source": "质量数据导入 / Quality Import",
-  "syncedAt": "2026-07-24T02:37:53.141Z",
-  "selectedDate": "2026-07-23",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (35).xlsx)",
+  "syncedAt": "2026-07-25T00:04:14.738Z",
+  "selectedDate": "2026-07-24",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -64,7 +64,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
+        "changeover": 60,
         "production": 60,
         "equipment": 0,
         "maintenance": 0
@@ -197,7 +197,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 90,
+        "changeover": 180,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -207,8 +207,8 @@
         "rejectKg": 225,
         "flakesKg": 1310,
         "purgingKg": 280,
-        "lossKg": 220,
-        "totalKg": 24780
+        "lossKg": 321,
+        "totalKg": 125780
       }
     },
     {
@@ -304,7 +304,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 90,
+        "changeover": 180,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -393,8 +393,8 @@
         "rejectKg": 136,
         "flakesKg": 1486,
         "purgingKg": 0,
-        "lossKg": 330,
-        "totalKg": 34902
+        "lossKg": 500,
+        "totalKg": 204902
       }
     },
     {
@@ -456,7 +456,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -466,8 +466,8 @@
         "rejectKg": 147,
         "flakesKg": 2192,
         "purgingKg": 231,
-        "lossKg": 260,
-        "totalKg": 31841
+        "lossKg": 415,
+        "totalKg": 186841
       }
     },
     {
@@ -535,8 +535,8 @@
         "rejectKg": 97,
         "flakesKg": 1848,
         "purgingKg": 0,
-        "lossKg": 270,
-        "totalKg": 34005
+        "lossKg": 440,
+        "totalKg": 204005
       }
     },
     {
@@ -592,7 +592,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
+        "changeover": 30,
         "production": 30,
         "equipment": 0,
         "maintenance": 0
@@ -602,8 +602,8 @@
         "rejectKg": 242,
         "flakesKg": 1608,
         "purgingKg": 0,
-        "lossKg": 300,
-        "totalKg": 31786
+        "lossKg": 470,
+        "totalKg": 201786
       }
     },
     {
@@ -671,7 +671,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 150,
+        "changeover": 270,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -750,8 +750,8 @@
         "rejectKg": 106,
         "flakesKg": 3270,
         "purgingKg": 0,
-        "lossKg": 310,
-        "totalKg": 32948
+        "lossKg": 481,
+        "totalKg": 203948
       }
     },
     {
@@ -806,7 +806,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -816,8 +816,8 @@
         "rejectKg": 104,
         "flakesKg": 2548,
         "purgingKg": 160,
-        "lossKg": 270,
-        "totalKg": 33252
+        "lossKg": 425,
+        "totalKg": 188252
       }
     },
     {
@@ -872,7 +872,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
+        "changeover": 60,
         "production": 60,
         "equipment": 0,
         "maintenance": 0
@@ -938,7 +938,7 @@
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
         "changeover": 0,
-        "production": 60,
+        "production": 120,
         "equipment": 0,
         "maintenance": 0
       },
@@ -947,8 +947,8 @@
         "rejectKg": 256,
         "flakesKg": 2503,
         "purgingKg": 660,
-        "lossKg": 250,
-        "totalKg": 32438
+        "lossKg": 403,
+        "totalKg": 185438
       }
     },
     {
@@ -1002,7 +1002,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
+        "changeover": 60,
         "production": 60,
         "equipment": 0,
         "maintenance": 0
@@ -1012,8 +1012,8 @@
         "rejectKg": 458,
         "flakesKg": 2434,
         "purgingKg": 0,
-        "lossKg": 250,
-        "totalKg": 32025
+        "lossKg": 405,
+        "totalKg": 187025
       }
     },
     {
@@ -1079,8 +1079,8 @@
         "rejectKg": 625,
         "flakesKg": 1590,
         "purgingKg": 0,
-        "lossKg": 270,
-        "totalKg": 34151
+        "lossKg": 443,
+        "totalKg": 207151
       }
     },
     {
@@ -1133,7 +1133,7 @@
       "downtime": {
         "changeover": 0,
         "production": 60,
-        "equipment": 240,
+        "equipment": 480,
         "maintenance": 0
       },
       "productionBreakdown": {
@@ -1141,8 +1141,8 @@
         "rejectKg": 536,
         "flakesKg": 2284,
         "purgingKg": 0,
-        "lossKg": 200,
-        "totalKg": 27561
+        "lossKg": 311,
+        "totalKg": 138561
       }
     },
     {
@@ -1206,8 +1206,8 @@
         "rejectKg": 692,
         "flakesKg": 1433,
         "purgingKg": 211,
-        "lossKg": 240,
-        "totalKg": 31859
+        "lossKg": 397,
+        "totalKg": 188859
       }
     },
     {
@@ -1262,7 +1262,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1272,8 +1272,8 @@
         "rejectKg": 350,
         "flakesKg": 2315,
         "purgingKg": 428,
-        "lossKg": 140,
-        "totalKg": 32267
+        "lossKg": 290,
+        "totalKg": 182267
       }
     },
     {
@@ -1342,8 +1342,8 @@
         "rejectKg": 0,
         "flakesKg": 1521,
         "purgingKg": 0,
-        "lossKg": 300,
-        "totalKg": 30799
+        "lossKg": 454,
+        "totalKg": 184799
       }
     },
     {
@@ -1398,7 +1398,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
+        "changeover": 60,
         "production": 60,
         "equipment": 0,
         "maintenance": 0
@@ -1408,8 +1408,8 @@
         "rejectKg": 364,
         "flakesKg": 2878,
         "purgingKg": 0,
-        "lossKg": 230,
-        "totalKg": 29950
+        "lossKg": 390,
+        "totalKg": 189950
       }
     },
     {
@@ -1641,7 +1641,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 240,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1705,8 +1705,8 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
-        "production": 150,
+        "changeover": 90,
+        "production": 210,
         "equipment": 60,
         "maintenance": 0
       },
@@ -1717,6 +1717,89 @@
         "purgingKg": 0,
         "lossKg": 310,
         "totalKg": 32037
+      }
+    },
+    {
+      "date": "2026-07-24",
+      "dayRollsKg": [
+        668,
+        669,
+        669,
+        670,
+        671,
+        667,
+        668,
+        669,
+        670,
+        671,
+        667,
+        668,
+        669,
+        670,
+        671,
+        667,
+        668,
+        669,
+        670,
+        671
+      ],
+      "nightRollsKg": [
+        652,
+        653,
+        654,
+        655,
+        656,
+        652,
+        653,
+        654,
+        655,
+        656,
+        652,
+        653,
+        653,
+        654,
+        655,
+        651,
+        652,
+        653,
+        654,
+        655,
+        651,
+        652
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1550,
+      "speedSet": 1500,
+      "goodRate": 84.8,
+      "goodTarget": 88,
+      "scrapRate": 15.2,
+      "scrapLimit": 3,
+      "progress": 99.13214285714285,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 680.0MM*0.300MM/RS5001 660.0MM*0.889MM/RS0001 650.0MM*0.350MM",
+      "thickness": "0.3 / 0.889 / 0.35 mm",
+      "width": "680 / 660 / 650 mm",
+      "orderNo": "RSZIB26006/RSGLB26005",
+      "customer": "ZIBZA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 60,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 27757,
+        "rejectKg": 1944,
+        "flakesKg": 2390,
+        "purgingKg": 348,
+        "lossKg": 310,
+        "totalKg": 32749
       }
     }
   ],
