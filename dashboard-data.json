@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (38).xlsx)",
-  "syncedAt": "2026-07-29T00:07:42.710Z",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (1).xlsx)",
+  "syncedAt": "2026-07-29T05:14:02.416Z",
   "selectedDate": "2026-07-28",
   "dailyRecords": [
     {
@@ -207,8 +207,8 @@
         "rejectKg": 225,
         "flakesKg": 1310,
         "purgingKg": 280,
-        "lossKg": 321,
-        "totalKg": 125780
+        "lossKg": 220,
+        "totalKg": 24780
       }
     },
     {
@@ -393,8 +393,8 @@
         "rejectKg": 136,
         "flakesKg": 1486,
         "purgingKg": 0,
-        "lossKg": 500,
-        "totalKg": 204902
+        "lossKg": 330,
+        "totalKg": 34902
       }
     },
     {
@@ -438,9 +438,9 @@
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 91.1,
+      "goodRate": 90.8,
       "goodTarget": 88,
-      "scrapRate": 8.9,
+      "scrapRate": 9.2,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -463,11 +463,11 @@
       },
       "productionBreakdown": {
         "goodKg": 29011,
-        "rejectKg": 147,
+        "rejectKg": 247,
         "flakesKg": 2192,
         "purgingKg": 231,
-        "lossKg": 415,
-        "totalKg": 186841
+        "lossKg": 260,
+        "totalKg": 31941
       }
     },
     {
@@ -535,8 +535,8 @@
         "rejectKg": 97,
         "flakesKg": 1848,
         "purgingKg": 0,
-        "lossKg": 440,
-        "totalKg": 204005
+        "lossKg": 270,
+        "totalKg": 34005
       }
     },
     {
@@ -602,8 +602,8 @@
         "rejectKg": 242,
         "flakesKg": 1608,
         "purgingKg": 0,
-        "lossKg": 470,
-        "totalKg": 201786
+        "lossKg": 300,
+        "totalKg": 31786
       }
     },
     {
@@ -750,8 +750,8 @@
         "rejectKg": 106,
         "flakesKg": 3270,
         "purgingKg": 0,
-        "lossKg": 481,
-        "totalKg": 203948
+        "lossKg": 310,
+        "totalKg": 32948
       }
     },
     {
@@ -816,8 +816,8 @@
         "rejectKg": 104,
         "flakesKg": 2548,
         "purgingKg": 160,
-        "lossKg": 425,
-        "totalKg": 188252
+        "lossKg": 270,
+        "totalKg": 33252
       }
     },
     {
@@ -947,8 +947,8 @@
         "rejectKg": 256,
         "flakesKg": 2503,
         "purgingKg": 660,
-        "lossKg": 403,
-        "totalKg": 185438
+        "lossKg": 250,
+        "totalKg": 32438
       }
     },
     {
@@ -1012,8 +1012,8 @@
         "rejectKg": 458,
         "flakesKg": 2434,
         "purgingKg": 0,
-        "lossKg": 405,
-        "totalKg": 187025
+        "lossKg": 250,
+        "totalKg": 32025
       }
     },
     {
@@ -1079,8 +1079,8 @@
         "rejectKg": 625,
         "flakesKg": 1590,
         "purgingKg": 0,
-        "lossKg": 443,
-        "totalKg": 207151
+        "lossKg": 270,
+        "totalKg": 34151
       }
     },
     {
@@ -1141,8 +1141,8 @@
         "rejectKg": 536,
         "flakesKg": 2284,
         "purgingKg": 0,
-        "lossKg": 311,
-        "totalKg": 138561
+        "lossKg": 200,
+        "totalKg": 27561
       }
     },
     {
@@ -1206,8 +1206,8 @@
         "rejectKg": 692,
         "flakesKg": 1433,
         "purgingKg": 211,
-        "lossKg": 397,
-        "totalKg": 188859
+        "lossKg": 240,
+        "totalKg": 31859
       }
     },
     {
@@ -1244,9 +1244,9 @@
       "targetOutput": 28,
       "lineSpeed": 1400,
       "speedSet": 1500,
-      "goodRate": 90,
+      "goodRate": 89.7,
       "goodTarget": 88,
-      "scrapRate": 10,
+      "scrapRate": 10.3,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -1269,11 +1269,11 @@
       },
       "productionBreakdown": {
         "goodKg": 29034,
-        "rejectKg": 350,
+        "rejectKg": 450,
         "flakesKg": 2315,
         "purgingKg": 428,
-        "lossKg": 290,
-        "totalKg": 182267
+        "lossKg": 140,
+        "totalKg": 32367
       }
     },
     {
@@ -1342,8 +1342,8 @@
         "rejectKg": 0,
         "flakesKg": 1521,
         "purgingKg": 0,
-        "lossKg": 454,
-        "totalKg": 184799
+        "lossKg": 300,
+        "totalKg": 30799
       }
     },
     {
@@ -1408,8 +1408,8 @@
         "rejectKg": 364,
         "flakesKg": 2878,
         "purgingKg": 0,
-        "lossKg": 390,
-        "totalKg": 189950
+        "lossKg": 230,
+        "totalKg": 29950
       }
     },
     {
@@ -1467,11 +1467,11 @@
       },
       "productionBreakdown": {
         "goodKg": 11974,
-        "rejectKg": 572,
+        "rejectKg": 578,
         "flakesKg": 3,
         "purgingKg": 180,
         "lossKg": 105,
-        "totalKg": 12834
+        "totalKg": 12840
       }
     },
     {
@@ -2017,9 +2017,9 @@
       "targetOutput": 28,
       "lineSpeed": 1560,
       "speedSet": 1500,
-      "goodRate": 90.9,
+      "goodRate": 87.1,
       "goodTarget": 88,
-      "scrapRate": 9.1,
+      "scrapRate": 12.9,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -2042,11 +2042,11 @@
       },
       "productionBreakdown": {
         "goodKg": 31044,
-        "rejectKg": 0,
+        "rejectKg": 1480,
         "flakesKg": 2474,
         "purgingKg": 380,
         "lossKg": 250,
-        "totalKg": 34148
+        "totalKg": 35628
       }
     },
     {
