@@ -1910,6 +1910,7 @@
   </aside>
 
   <script src="vendor/pdf.min.js"></script>
+  <script src="production-metrics.js"></script>
   <script src="quality-import.js"></script>
   <script>
     const storageKey = "pet-sheet-dashboard-daily-monthly-v4";
@@ -2412,8 +2413,9 @@
       if (lower.endsWith(".xlsx")) {
         const workbook = await parseXlsxFile(file);
         const month = inferMonthFromName(name);
-        const records = parseTotalProductionRows(workbook.sheets.get("总产量") || firstNonEmptySheet(workbook), month);
-        mergeRecordMaps(records, parseDailyWorksheets(workbook, month));
+        const summaryRecords = parseTotalProductionRows(workbook.sheets.get("总产量") || firstNonEmptySheet(workbook), month);
+        const dailyRecords = parseDailyWorksheets(workbook, month);
+        const records = PetProductionMetrics.selectProductionRecords(summaryRecords, dailyRecords);
         const downtimeRows = workbook.sheets.get("每小时产量") || [];
         if (downtimeRows.length) mergeDowntimeRows(records, downtimeRows, month);
         return payloadFromRecords(records, `Excel网页上传 / Excel Upload (${name})`);
@@ -2686,19 +2688,22 @@
         if (!day || !shift) continue;
         const date = `${month}-${String(day).padStart(2, "0")}`;
         const record = ensureParsedRecord(records, date);
-        const goodKg = numberFrom(row[columns.goodKg]);
-        const rejectKg = numberFrom(row[columns.rejectKg]) + numberFrom(row[columns.badProductKg]);
-        const flakesKg = numberFrom(row[columns.flakesKg]);
-        const purgingKg = numberFrom(row[columns.purgingKg]);
-        const lossKg = numberFrom(row[columns.lossKg]);
-        const componentKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
-        const outputKg = normalizeKg(componentKg || numberFrom(row[columns.outputKg]));
+        const shiftBreakdown = PetProductionMetrics.breakdownFromParts({
+          goodKg: row[columns.goodKg],
+          rejectKg: row[columns.rejectKg],
+          badProductKg: row[columns.badProductKg],
+          flakesKg: row[columns.flakesKg],
+          purgingKg: row[columns.purgingKg],
+          lossKg: row[columns.lossKg],
+          outputKg: row[columns.outputKg]
+        });
+        const combinedBreakdown = addBreakdown(record.productionBreakdown, shiftBreakdown);
         const rollCount = Math.max(1, Math.round(numberFrom(row[columns.goodRolls]) + numberFrom(row[columns.badRolls])));
-        const rolls = goodKg > 0 ? distributeRolls(goodKg, rollCount) : [];
+        const rolls = shiftBreakdown.goodKg > 0 ? distributeRolls(shiftBreakdown.goodKg, rollCount) : [];
         if (shift === "day") record.dayRollsKg = rolls;
         if (shift === "night") record.nightRollsKg = rolls;
-        applyProductionFormula(record, { goodKg, rejectKg, flakesKg, purgingKg, lossKg, totalKg: outputKg });
-        record.progress = clamp(goodKg / (record.targetOutput * 1000) * 100, 0, 100);
+        applyProductionFormula(record, combinedBreakdown);
+        record.progress = clamp(combinedBreakdown.goodKg / (record.targetOutput * 1000) * 100, 0, 100);
         record.orderNo = text(row[columns.poNo]) || record.orderNo;
         record.customer = text(row[columns.customer]) || record.customer;
         record.material = text(row[columns.material]) || record.material;
@@ -2747,15 +2752,23 @@
       const statsRows = rows.slice(dateRowIndex + 17, dateRowIndex + 24);
       const goodKg = numberAfterLabelInRows(outputRows, "Goods", 8, 13);
       const rejectKg = numberAfterLabelInRows(outputRows, "Reject", 8, 13);
+      const badProductKg = numberAfterLabelInRows(outputRows, "Rej Roll", 8, 13);
       const flakesKg = numberAfterLabelInRows(outputRows, "Flakes", 8, 13);
       const purgingKg = numberAfterLabelInRows(outputRows, "Purging", 8, 13);
       const lossKg = numberAfterLabelInRows(outputRows, "Loss", 8, 13);
-      const totalKg = goodKg + rejectKg + flakesKg + purgingKg + lossKg;
+      const productionBreakdown = PetProductionMetrics.breakdownFromParts({
+        goodKg,
+        rejectKg,
+        badProductKg,
+        flakesKg,
+        purgingKg,
+        lossKg
+      });
+      const totalKg = productionBreakdown.totalKg;
       const goodsRolls = numberAfterLabel(customerRow, "Goods Roll");
       const rejectRolls = numberAfterLabel(customerRow, "Rej Roll");
       const rollCount = Math.max(1, Math.round(goodsRolls + rejectRolls));
       const lineSpeed = numberAfterLabelInRows(outputRows, "Line Speed", 14, 19) || 1400;
-      const productionBreakdown = { goodKg, rejectKg, flakesKg, purgingKg, lossKg, totalKg };
       const spec = valueAfterLabel(poRow, "Type") || "透明片材 / Clear Sheet";
       const specSize = sizeFromSpec(spec);
       const record = {
