@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (July 2026 (1).xlsx)",
-  "syncedAt": "2026-07-29T06:38:22.478Z",
-  "selectedDate": "2026-07-28",
+  "source": "Excel网页上传 / Excel Upload (July 2026 (39).xlsx)",
+  "syncedAt": "2026-07-30T00:04:04.567Z",
+  "selectedDate": "2026-07-29",
   "dailyRecords": [
     {
       "date": "2026-07-01",
@@ -207,8 +207,8 @@
         "rejectKg": 225,
         "flakesKg": 1310,
         "purgingKg": 280,
-        "lossKg": 220,
-        "totalKg": 24780
+        "lossKg": 321,
+        "totalKg": 125780
       }
     },
     {
@@ -393,8 +393,8 @@
         "rejectKg": 136,
         "flakesKg": 1486,
         "purgingKg": 0,
-        "lossKg": 330,
-        "totalKg": 34902
+        "lossKg": 500,
+        "totalKg": 204902
       }
     },
     {
@@ -438,9 +438,9 @@
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 90.8,
+      "goodRate": 91.1,
       "goodTarget": 88,
-      "scrapRate": 9.2,
+      "scrapRate": 8.9,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -463,11 +463,11 @@
       },
       "productionBreakdown": {
         "goodKg": 29011,
-        "rejectKg": 247,
+        "rejectKg": 147,
         "flakesKg": 2192,
         "purgingKg": 231,
-        "lossKg": 260,
-        "totalKg": 31941
+        "lossKg": 415,
+        "totalKg": 186841
       }
     },
     {
@@ -535,8 +535,8 @@
         "rejectKg": 97,
         "flakesKg": 1848,
         "purgingKg": 0,
-        "lossKg": 270,
-        "totalKg": 34005
+        "lossKg": 440,
+        "totalKg": 204005
       }
     },
     {
@@ -602,8 +602,8 @@
         "rejectKg": 242,
         "flakesKg": 1608,
         "purgingKg": 0,
-        "lossKg": 300,
-        "totalKg": 31786
+        "lossKg": 470,
+        "totalKg": 201786
       }
     },
     {
@@ -750,8 +750,8 @@
         "rejectKg": 106,
         "flakesKg": 3270,
         "purgingKg": 0,
-        "lossKg": 310,
-        "totalKg": 32948
+        "lossKg": 481,
+        "totalKg": 203948
       }
     },
     {
@@ -816,8 +816,8 @@
         "rejectKg": 104,
         "flakesKg": 2548,
         "purgingKg": 160,
-        "lossKg": 270,
-        "totalKg": 33252
+        "lossKg": 425,
+        "totalKg": 188252
       }
     },
     {
@@ -947,8 +947,8 @@
         "rejectKg": 256,
         "flakesKg": 2503,
         "purgingKg": 660,
-        "lossKg": 250,
-        "totalKg": 32438
+        "lossKg": 403,
+        "totalKg": 185438
       }
     },
     {
@@ -1012,8 +1012,8 @@
         "rejectKg": 458,
         "flakesKg": 2434,
         "purgingKg": 0,
-        "lossKg": 250,
-        "totalKg": 32025
+        "lossKg": 405,
+        "totalKg": 187025
       }
     },
     {
@@ -1079,8 +1079,8 @@
         "rejectKg": 625,
         "flakesKg": 1590,
         "purgingKg": 0,
-        "lossKg": 270,
-        "totalKg": 34151
+        "lossKg": 443,
+        "totalKg": 207151
       }
     },
     {
@@ -1141,8 +1141,8 @@
         "rejectKg": 536,
         "flakesKg": 2284,
         "purgingKg": 0,
-        "lossKg": 200,
-        "totalKg": 27561
+        "lossKg": 311,
+        "totalKg": 138561
       }
     },
     {
@@ -1206,8 +1206,8 @@
         "rejectKg": 692,
         "flakesKg": 1433,
         "purgingKg": 211,
-        "lossKg": 240,
-        "totalKg": 31859
+        "lossKg": 397,
+        "totalKg": 188859
       }
     },
     {
@@ -1244,9 +1244,9 @@
       "targetOutput": 28,
       "lineSpeed": 1400,
       "speedSet": 1500,
-      "goodRate": 89.7,
+      "goodRate": 90,
       "goodTarget": 88,
-      "scrapRate": 10.3,
+      "scrapRate": 10,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -1269,11 +1269,11 @@
       },
       "productionBreakdown": {
         "goodKg": 29034,
-        "rejectKg": 450,
+        "rejectKg": 350,
         "flakesKg": 2315,
         "purgingKg": 428,
-        "lossKg": 140,
-        "totalKg": 32367
+        "lossKg": 290,
+        "totalKg": 182267
       }
     },
     {
@@ -1342,8 +1342,8 @@
         "rejectKg": 0,
         "flakesKg": 1521,
         "purgingKg": 0,
-        "lossKg": 300,
-        "totalKg": 30799
+        "lossKg": 454,
+        "totalKg": 184799
       }
     },
     {
@@ -1408,8 +1408,8 @@
         "rejectKg": 364,
         "flakesKg": 2878,
         "purgingKg": 0,
-        "lossKg": 230,
-        "totalKg": 29950
+        "lossKg": 390,
+        "totalKg": 189950
       }
     },
     {
@@ -1467,11 +1467,11 @@
       },
       "productionBreakdown": {
         "goodKg": 11974,
-        "rejectKg": 578,
+        "rejectKg": 572,
         "flakesKg": 3,
         "purgingKg": 180,
         "lossKg": 105,
-        "totalKg": 12840
+        "totalKg": 12834
       }
     },
     {
@@ -2017,9 +2017,9 @@
       "targetOutput": 28,
       "lineSpeed": 1560,
       "speedSet": 1500,
-      "goodRate": 87.1,
+      "goodRate": 90.9,
       "goodTarget": 88,
-      "scrapRate": 12.9,
+      "scrapRate": 9.1,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -2042,11 +2042,11 @@
       },
       "productionBreakdown": {
         "goodKg": 31044,
-        "rejectKg": 1480,
+        "rejectKg": 0,
         "flakesKg": 2474,
         "purgingKg": 380,
         "lossKg": 250,
-        "totalKg": 35628
+        "totalKg": 34148
       }
     },
     {
@@ -2128,6 +2128,75 @@
         "purgingKg": 0,
         "lossKg": 270,
         "totalKg": 34154
+      }
+    },
+    {
+      "date": "2026-07-29",
+      "dayRollsKg": [
+        834,
+        835,
+        836,
+        837,
+        837,
+        833,
+        834,
+        835,
+        836,
+        837,
+        833,
+        834,
+        835,
+        836,
+        837,
+        833,
+        834,
+        835
+      ],
+      "nightRollsKg": [
+        700,
+        701,
+        702,
+        703,
+        704,
+        700,
+        701,
+        701,
+        702,
+        703
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1500,
+      "speedSet": 1500,
+      "goodRate": 83,
+      "goodTarget": 88,
+      "scrapRate": 17,
+      "scrapLimit": 3,
+      "progress": 78.74285714285715,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 810.0MM*0.400MM",
+      "thickness": "0.4 mm",
+      "width": "810 mm",
+      "orderNo": "RSVCP26006",
+      "customer": "VCPAU",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 60,
+        "production": 60,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 22048,
+        "rejectKg": 3355,
+        "flakesKg": 637,
+        "purgingKg": 350,
+        "lossKg": 165,
+        "totalKg": 26555
       }
     }
   ],
