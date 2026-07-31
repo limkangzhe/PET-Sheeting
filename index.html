@@ -2257,26 +2257,9 @@
     function getBreakdown(record) {
       const stats = rollStats(record);
       const breakdown = record.productionBreakdown || {};
-      const values = {
-        goodKg: numberFrom(breakdown.goodKg, NaN),
-        rejectKg: numberFrom(breakdown.rejectKg, NaN),
-        flakesKg: numberFrom(breakdown.flakesKg, NaN),
-        purgingKg: numberFrom(breakdown.purgingKg, NaN),
-        lossKg: numberFrom(breakdown.lossKg, NaN)
-      };
-      const hasParts = Object.values(values).some((value) => Number.isFinite(value));
-      const partsTotal = Object.values(values).reduce((sum, value) => sum + (Number.isFinite(value) ? value : 0), 0);
-      const totalKg = numberFrom(breakdown.totalKg, NaN);
-      const resolvedTotal = Number.isFinite(totalKg) && totalKg > 0 ? totalKg : (partsTotal || stats.totalKg);
-      const resolvedGood = Number.isFinite(values.goodKg) ? values.goodKg : Math.round(resolvedTotal * asNumber(record.goodRate) / 100);
-      return {
-        goodKg: resolvedGood,
-        rejectKg: Number.isFinite(values.rejectKg) ? values.rejectKg : (hasParts ? 0 : Math.max(0, resolvedTotal - resolvedGood)),
-        flakesKg: Number.isFinite(values.flakesKg) ? values.flakesKg : 0,
-        purgingKg: Number.isFinite(values.purgingKg) ? values.purgingKg : 0,
-        lossKg: Number.isFinite(values.lossKg) ? values.lossKg : 0,
-        totalKg: resolvedTotal
-      };
+      const storedTotalKg = numberFrom(breakdown.totalKg, NaN);
+      const fallbackTotalKg = Number.isFinite(storedTotalKg) && storedTotalKg > 0 ? storedTotalKg : stats.totalKg;
+      return PetProductionMetrics.reconcileRecordBreakdown(breakdown, fallbackTotalKg, record.goodRate);
     }
 
     function kgText(value) {
@@ -3635,12 +3618,22 @@
       const optionalMaps = {
         thicknessByDate: data.thicknessByDate || {}
       };
+      const dailyRecords = data.dailyRecords.map((record) => {
+        const productionBreakdown = getBreakdown(record);
+        const totalKg = productionBreakdown.totalKg;
+        return {
+          ...record,
+          goodRate: totalKg ? round(productionBreakdown.goodKg / totalKg * 100, 1) : 0,
+          scrapRate: totalKg ? round((totalKg - productionBreakdown.goodKg) / totalKg * 100, 1) : 0,
+          productionBreakdown
+        };
+      });
       data.syncedAt = syncedAt;
       return {
         source: dataSourceLabel,
         syncedAt,
         selectedDate: data.selectedDate,
-        dailyRecords: data.dailyRecords,
+        dailyRecords,
         qualityByDate: data.qualityByDate || {},
         thicknessByDate: PetQualityImport.trimThicknessHistory(optionalMaps.thicknessByDate, 7)
       };
