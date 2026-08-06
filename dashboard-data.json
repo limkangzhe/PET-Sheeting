@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (August 2026 (2).xlsx)",
-  "syncedAt": "2026-08-04T23:49:42.177Z",
-  "selectedDate": "2026-08-04",
+  "source": "Excel网页上传 / Excel Upload (August 2026 (3).xlsx)",
+  "syncedAt": "2026-08-06T00:10:14.918Z",
+  "selectedDate": "2026-08-05",
   "dailyRecords": [
     {
       "date": "2026-08-01",
@@ -71,8 +71,8 @@
         "rejectKg": 333,
         "flakesKg": 2248,
         "purgingKg": 237,
-        "lossKg": 320,
-        "totalKg": 32634
+        "lossKg": 475,
+        "totalKg": 187634
       }
     },
     {
@@ -139,8 +139,8 @@
         "rejectKg": 1480,
         "flakesKg": 1653,
         "purgingKg": 0,
-        "lossKg": 250,
-        "totalKg": 29057
+        "lossKg": 385,
+        "totalKg": 164057
       }
     },
     {
@@ -223,8 +223,8 @@
         "rejectKg": 1732,
         "flakesKg": 1545,
         "purgingKg": 300,
-        "lossKg": 340,
-        "totalKg": 35875
+        "lossKg": 518,
+        "totalKg": 213875
       }
     },
     {
@@ -254,28 +254,28 @@
         739
       ],
       "nightRollsKg": [
-        759,
+        761,
+        762,
+        763,
+        764,
+        765,
+        761,
+        762,
+        763,
+        763,
+        764,
         760,
         761,
         762,
         763,
-        759,
+        764,
         760,
         761,
         762,
         763,
-        759,
+        764,
         760,
-        761,
-        762,
-        763,
-        759,
-        760,
-        761,
-        762,
-        763,
-        759,
-        760
+        761
       ],
       "targetOutput": 28,
       "lineSpeed": 1500,
@@ -304,12 +304,75 @@
         "maintenance": 0
       },
       "productionBreakdown": {
-        "goodKg": 33027,
+        "goodKg": 33057,
         "rejectKg": 290,
         "flakesKg": 1454,
         "purgingKg": 0,
-        "lossKg": 320,
-        "totalKg": 35091
+        "lossKg": 498,
+        "totalKg": 213121
+      }
+    },
+    {
+      "date": "2026-08-05",
+      "dayRollsKg": [],
+      "nightRollsKg": [
+        730,
+        731,
+        732,
+        733,
+        734,
+        730,
+        730,
+        731,
+        732,
+        733,
+        729,
+        730,
+        731,
+        732,
+        733,
+        729,
+        730,
+        731,
+        732,
+        733,
+        729,
+        730,
+        731
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1622,
+      "speedSet": 1500,
+      "goodRate": 90.6,
+      "goodTarget": 88,
+      "scrapRate": 9.4,
+      "scrapLimit": 3,
+      "progress": 65.24285714285715,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS8001 730.0MM*0.350MM",
+      "thickness": "0.35 mm",
+      "width": "730 mm",
+      "orderNo": "RSGDP26003",
+      "customer": "GDPAU",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 600,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 18268,
+        "rejectKg": 415,
+        "flakesKg": 768,
+        "purgingKg": 582,
+        "lossKg": 140,
+        "totalKg": 20173
       }
     }
   ],
