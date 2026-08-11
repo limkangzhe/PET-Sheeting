@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (August 2026 (8).xlsx)",
-  "syncedAt": "2026-08-10T00:02:09.846Z",
-  "selectedDate": "2026-08-09",
+  "source": "Excel网页上传 / Excel Upload (August 2026 (9).xlsx)",
+  "syncedAt": "2026-08-11T00:12:33.852Z",
+  "selectedDate": "2026-08-10",
   "dailyRecords": [
     {
       "date": "2026-08-01",
@@ -71,8 +71,8 @@
         "rejectKg": 333,
         "flakesKg": 2248,
         "purgingKg": 237,
-        "lossKg": 475,
-        "totalKg": 187634
+        "lossKg": 320,
+        "totalKg": 32634
       }
     },
     {
@@ -111,9 +111,9 @@
       "targetOutput": 28,
       "lineSpeed": 1580,
       "speedSet": 1500,
-      "goodRate": 88.4,
+      "goodRate": 88.3,
       "goodTarget": 88,
-      "scrapRate": 11.6,
+      "scrapRate": 11.7,
       "scrapLimit": 3,
       "progress": 91.69285714285714,
       "dayTarget": 14,
@@ -136,11 +136,11 @@
       },
       "productionBreakdown": {
         "goodKg": 25674,
-        "rejectKg": 1480,
+        "rejectKg": 1486,
         "flakesKg": 1653,
         "purgingKg": 0,
-        "lossKg": 385,
-        "totalKg": 164057
+        "lossKg": 250,
+        "totalKg": 29063
       }
     },
     {
@@ -223,8 +223,8 @@
         "rejectKg": 1732,
         "flakesKg": 1545,
         "purgingKg": 300,
-        "lossKg": 518,
-        "totalKg": 213875
+        "lossKg": 340,
+        "totalKg": 35875
       }
     },
     {
@@ -308,8 +308,8 @@
         "rejectKg": 290,
         "flakesKg": 1454,
         "purgingKg": 0,
-        "lossKg": 498,
-        "totalKg": 213121
+        "lossKg": 320,
+        "totalKg": 35121
       }
     },
     {
@@ -692,9 +692,9 @@
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 93.3,
+      "goodRate": 92.9,
       "goodTarget": 88,
-      "scrapRate": 6.7,
+      "scrapRate": 7.1,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -711,7 +711,7 @@
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
         "changeover": 0,
-        "production": 30,
+        "production": 60,
         "equipment": 0,
         "maintenance": 0
       },
@@ -720,8 +720,70 @@
         "rejectKg": 301,
         "flakesKg": 1558,
         "purgingKg": 249,
-        "lossKg": 180,
-        "totalKg": 34262
+        "lossKg": 350,
+        "totalKg": 34432
+      }
+    },
+    {
+      "date": "2026-08-10",
+      "dayRollsKg": [
+        739,
+        740,
+        741,
+        742,
+        743,
+        739,
+        740,
+        741,
+        742,
+        742,
+        738,
+        739,
+        740,
+        741,
+        742,
+        738,
+        739,
+        740,
+        741,
+        742,
+        738,
+        739
+      ],
+      "nightRollsKg": [],
+      "targetOutput": 28,
+      "lineSpeed": 1626,
+      "speedSet": 1500,
+      "goodRate": 92.2,
+      "goodTarget": 88,
+      "scrapRate": 7.8,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS8001 730.0MM*0.550MM",
+      "thickness": "0.55 mm",
+      "width": "730 mm",
+      "orderNo": "RSGDP26003",
+      "customer": "GDPAU",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 34073,
+        "rejectKg": 112,
+        "flakesKg": 2405,
+        "purgingKg": 0,
+        "lossKg": 360,
+        "totalKg": 36950
       }
     }
   ],
