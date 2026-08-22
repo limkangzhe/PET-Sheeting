@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (August 2026 (16).xlsx)",
-  "syncedAt": "2026-08-20T23:40:29.062Z",
-  "selectedDate": "2026-08-20",
+  "source": "Excel网页上传 / Excel Upload (August 2026 (17).xlsx)",
+  "syncedAt": "2026-08-22T00:02:59.269Z",
+  "selectedDate": "2026-08-21",
   "dailyRecords": [
     {
       "date": "2026-08-01",
@@ -61,7 +61,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -129,9 +129,9 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 0,
         "production": 0,
-        "equipment": 0,
+        "equipment": 240,
         "maintenance": 0
       },
       "productionBreakdown": {
@@ -538,7 +538,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -710,8 +710,8 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
-        "production": 60,
+        "changeover": 120,
+        "production": 0,
         "equipment": 0,
         "maintenance": 0
       },
@@ -886,7 +886,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -962,7 +962,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1028,7 +1028,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 30,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1219,7 +1219,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 0,
+        "changeover": 90,
         "production": 90,
         "equipment": 0,
         "maintenance": 0
@@ -1378,7 +1378,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 120,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1553,6 +1553,60 @@
         "purgingKg": 356,
         "lossKg": 310,
         "totalKg": 34334
+      }
+    },
+    {
+      "date": "2026-08-21",
+      "dayRollsKg": [],
+      "nightRollsKg": [
+        1223,
+        1224,
+        1225,
+        1226,
+        1227,
+        1223,
+        1224,
+        1225,
+        1226,
+        1227,
+        1223,
+        1224,
+        1225,
+        1225
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1550,
+      "speedSet": 1500,
+      "goodRate": 93.9,
+      "goodTarget": 88,
+      "scrapRate": 6.1,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 1085.8MM*0.368MM",
+      "thickness": "0.368 mm",
+      "width": "1085.8 mm",
+      "orderNo": "RSHPS26002",
+      "customer": "HPSUS",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 60,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 31329,
+        "rejectKg": 202,
+        "flakesKg": 1527,
+        "purgingKg": 0,
+        "lossKg": 300,
+        "totalKg": 33358
       }
     }
   ],
