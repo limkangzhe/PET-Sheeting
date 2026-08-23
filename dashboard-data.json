@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (August 2026 (18).xlsx)",
-  "syncedAt": "2026-08-23T00:00:49.147Z",
+  "source": "Excel网页上传 / Excel Upload (August 2026 (19).xlsx)",
+  "syncedAt": "2026-08-23T00:02:11.882Z",
   "selectedDate": "2026-08-22",
   "dailyRecords": [
     {
@@ -1611,7 +1611,21 @@
     },
     {
       "date": "2026-08-22",
-      "dayRollsKg": [],
+      "dayRollsKg": [
+        1220,
+        1221,
+        1222,
+        1223,
+        1224,
+        1220,
+        1221,
+        1222,
+        1223,
+        1224,
+        1220,
+        1220,
+        1221
+      ],
       "nightRollsKg": [
         1221,
         1221,
