@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (August 2026 (22).xlsx)",
-  "syncedAt": "2026-08-26T00:02:06.742Z",
-  "selectedDate": "2026-08-25",
+  "source": "Excel网页上传 / Excel Upload (August 2026 (23).xlsx)",
+  "syncedAt": "2026-08-27T00:00:00.007Z",
+  "selectedDate": "2026-08-26",
   "dailyRecords": [
     {
       "date": "2026-08-01",
@@ -61,7 +61,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -131,8 +131,8 @@
       "downtime": {
         "changeover": 0,
         "production": 0,
-        "equipment": 240,
-        "maintenance": 0
+        "equipment": 120,
+        "maintenance": 120
       },
       "productionBreakdown": {
         "goodKg": 25674,
@@ -366,7 +366,7 @@
       "downtime": {
         "changeover": 0,
         "production": 0,
-        "equipment": 600,
+        "equipment": 0,
         "maintenance": 0
       },
       "productionBreakdown": {
@@ -538,7 +538,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -710,7 +710,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -886,7 +886,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -962,7 +962,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1028,7 +1028,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 60,
+        "changeover": 30,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1219,7 +1219,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 90,
+        "changeover": 0,
         "production": 90,
         "equipment": 0,
         "maintenance": 0
@@ -1378,7 +1378,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1595,7 +1595,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1729,7 +1729,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 120,
+        "changeover": 60,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -1795,7 +1795,7 @@
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
         "changeover": 60,
-        "production": 60,
+        "production": 0,
         "equipment": 0,
         "maintenance": 0
       },
@@ -1864,7 +1864,7 @@
         "changeover": 60,
         "production": 0,
         "equipment": 30,
-        "maintenance": 0
+        "maintenance": 30
       },
       "productionBreakdown": {
         "goodKg": 28808,
@@ -1873,6 +1873,89 @@
         "purgingKg": 258,
         "lossKg": 290,
         "totalKg": 32794
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "dayRollsKg": [
+        801,
+        802,
+        803,
+        804,
+        805,
+        800,
+        801,
+        802,
+        803,
+        804,
+        800,
+        801,
+        802,
+        803,
+        804,
+        800,
+        801,
+        802,
+        803,
+        804,
+        800,
+        801
+      ],
+      "nightRollsKg": [
+        803,
+        804,
+        805,
+        806,
+        807,
+        803,
+        804,
+        805,
+        806,
+        807,
+        803,
+        803,
+        804,
+        805,
+        806,
+        802,
+        803,
+        804,
+        805,
+        806
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1564,
+      "speedSet": 1500,
+      "goodRate": 94.8,
+      "goodTarget": 88,
+      "scrapRate": 5.2,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS8001 706.0MM*0.300MM",
+      "thickness": "0.3 mm",
+      "width": "706 mm",
+      "orderNo": "RSPPT26001",
+      "customer": "PPTZA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 33737,
+        "rejectKg": 80,
+        "flakesKg": 1472,
+        "purgingKg": 0,
+        "lossKg": 310,
+        "totalKg": 35599
       }
     }
   ],
