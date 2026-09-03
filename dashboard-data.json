@@ -1,7 +1,7 @@
 {
-  "source": "质量数据导入 / Quality Import",
-  "syncedAt": "2026-09-03T03:55:12.002Z",
-  "selectedDate": "2026-08-10",
+  "source": "Excel网页上传 / Excel Upload (September 2026 (3).xlsx)",
+  "syncedAt": "2026-09-03T23:38:15.968Z",
+  "selectedDate": "2026-09-03",
   "dailyRecords": [
     {
       "date": "2026-09-01",
@@ -104,9 +104,9 @@
       "targetOutput": 28,
       "lineSpeed": 1550,
       "speedSet": 1500,
-      "goodRate": 87.3,
+      "goodRate": 89.3,
       "goodTarget": 88,
-      "scrapRate": 12.7,
+      "scrapRate": 10.7,
       "scrapLimit": 3,
       "progress": 98.25357142857143,
       "dayTarget": 14,
@@ -130,24 +130,50 @@
       "productionBreakdown": {
         "goodKg": 27511,
         "rejectKg": 1453,
-        "flakesKg": 2270,
+        "flakesKg": 1562,
         "purgingKg": 0,
         "lossKg": 290,
-        "totalKg": 31524
+        "totalKg": 30816
       }
     },
     {
-      "date": "2026-08-10",
-      "dayRollsKg": [],
-      "nightRollsKg": [],
+      "date": "2026-09-03",
+      "dayRollsKg": [
+        1207,
+        1208,
+        1209,
+        1210,
+        1211,
+        1207,
+        1208,
+        1209,
+        1209,
+        1210,
+        1206
+      ],
+      "nightRollsKg": [
+        1188,
+        1189,
+        1189,
+        1190,
+        1191,
+        1187,
+        1188,
+        1189,
+        1190,
+        1191,
+        1187,
+        1188,
+        1189
+      ],
       "targetOutput": 28,
       "lineSpeed": 1550,
       "speedSet": 1500,
-      "goodRate": 87.3,
+      "goodRate": 89.5,
       "goodTarget": 88,
-      "scrapRate": 12.7,
+      "scrapRate": 10.5,
       "scrapLimit": 3,
-      "progress": 0,
+      "progress": 100,
       "dayTarget": 14,
       "nightTarget": 14,
       "lineName": "PET-A01 主线 / PET-A01 Main Line",
@@ -156,23 +182,23 @@
       "spec": "RS0001 1085.8MM*0.368MM",
       "thickness": "0.368 mm",
       "width": "1085.8 mm",
-      "orderNo": "PO-260810-001",
+      "orderNo": "RSHPS26003",
       "customer": "HPSUS",
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
         "changeover": 0,
         "production": 0,
-        "equipment": 0,
-        "maintenance": 0
+        "equipment": 120,
+        "maintenance": 120
       },
       "productionBreakdown": {
-        "goodKg": 27511,
-        "rejectKg": 1453,
-        "flakesKg": 2270,
-        "purgingKg": 0,
-        "lossKg": 290,
-        "totalKg": 31524
+        "goodKg": 28750,
+        "rejectKg": 1270,
+        "flakesKg": 1393,
+        "purgingKg": 400,
+        "lossKg": 300,
+        "totalKg": 32113
       }
     }
   ],
