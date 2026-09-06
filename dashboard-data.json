@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (September 2026 (4).xlsx)",
-  "syncedAt": "2026-09-05T00:09:04.415Z",
-  "selectedDate": "2026-09-04",
+  "source": "Excel网页上传 / Excel Upload (September 2026 (5).xlsx)",
+  "syncedAt": "2026-09-06T00:01:30.397Z",
+  "selectedDate": "2026-09-05",
   "dailyRecords": [
     {
       "date": "2026-09-01",
@@ -276,6 +276,67 @@
         "purgingKg": 180,
         "lossKg": 290,
         "totalKg": 33858
+      }
+    },
+    {
+      "date": "2026-09-05",
+      "dayRollsKg": [],
+      "nightRollsKg": [
+        805,
+        805,
+        806,
+        807,
+        808,
+        804,
+        805,
+        806,
+        807,
+        808,
+        804,
+        805,
+        806,
+        807,
+        808,
+        804,
+        805,
+        806,
+        807,
+        808,
+        804
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1600,
+      "speedSet": 1500,
+      "goodRate": 90.8,
+      "goodTarget": 88,
+      "scrapRate": 9.2,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS8001 706.0MM*0.320MM",
+      "thickness": "0.32 mm",
+      "width": "706 mm",
+      "orderNo": "RSPPT26002",
+      "customer": "PPTZA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 0,
+        "production": 0,
+        "equipment": 30,
+        "maintenance": 30
+      },
+      "productionBreakdown": {
+        "goodKg": 31529,
+        "rejectKg": 418,
+        "flakesKg": 2159,
+        "purgingKg": 284,
+        "lossKg": 330,
+        "totalKg": 34720
       }
     }
   ],
