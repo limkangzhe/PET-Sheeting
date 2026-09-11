@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (September 2026 (10).xlsx)",
-  "syncedAt": "2026-09-10T00:04:51.275Z",
-  "selectedDate": "2026-09-09",
+  "source": "Excel网页上传 / Excel Upload (September 2026 (11).xlsx)",
+  "syncedAt": "2026-09-11T00:03:55.612Z",
+  "selectedDate": "2026-09-10",
   "dailyRecords": [
     {
       "date": "2026-09-01",
@@ -620,7 +620,7 @@
       "material": "15%新料 / 85%回料",
       "traction": "张力稳定 / Stable Tension",
       "downtime": {
-        "changeover": 630,
+        "changeover": 0,
         "production": 0,
         "equipment": 0,
         "maintenance": 0
@@ -632,6 +632,77 @@
         "purgingKg": 0,
         "lossKg": 170,
         "totalKg": 19257
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "dayRollsKg": [
+        919,
+        920,
+        921,
+        922,
+        923,
+        919,
+        919,
+        920,
+        921,
+        922,
+        918,
+        919,
+        920,
+        921,
+        922,
+        918
+      ],
+      "nightRollsKg": [
+        861,
+        862,
+        863,
+        864,
+        865,
+        861,
+        861,
+        862,
+        863,
+        864,
+        860,
+        861,
+        862,
+        863
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1550,
+      "speedSet": 1500,
+      "goodRate": 87.6,
+      "goodTarget": 88,
+      "scrapRate": 12.4,
+      "scrapLimit": 3,
+      "progress": 95.7,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS0001 1000.0MM*0.300MM/RS8001 706.0MM*0.320MM",
+      "thickness": "0.3 / 0.32 mm",
+      "width": "1000 / 706 mm",
+      "orderNo": "RSVCP26007/RSPPT26002",
+      "customer": "VCPAU/PPTZA",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 60,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 26796,
+        "rejectKg": 705,
+        "flakesKg": 2715,
+        "purgingKg": 96,
+        "lossKg": 290,
+        "totalKg": 30602
       }
     }
   ],
