@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (September 2026.xlsx)",
-  "syncedAt": "2026-09-21T00:15:11.863Z",
-  "selectedDate": "2026-09-20",
+  "source": "Excel网页上传 / Excel Upload (September 2026 (1).xlsx)",
+  "syncedAt": "2026-09-22T00:09:02.727Z",
+  "selectedDate": "2026-09-21",
   "dailyRecords": [
     {
       "date": "2026-09-01",
@@ -1504,6 +1504,71 @@
         "purgingKg": 0,
         "lossKg": 280,
         "totalKg": 31927
+      }
+    },
+    {
+      "date": "2026-09-21",
+      "dayRollsKg": [
+        1118,
+        1119,
+        1120,
+        1121,
+        1122,
+        1118,
+        1119,
+        1120,
+        1121,
+        1122,
+        1118,
+        1119,
+        1119
+      ],
+      "nightRollsKg": [
+        1180,
+        1181,
+        1182,
+        1183,
+        1184,
+        1180,
+        1181,
+        1182,
+        1183,
+        1184,
+        1179
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1500,
+      "speedSet": 1500,
+      "goodRate": 86.1,
+      "goodTarget": 88,
+      "scrapRate": 13.9,
+      "scrapLimit": 3,
+      "progress": 98.41071428571428,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS5001 1006.6MM*0.318MM/RS0001 1085.8MM*0.368MM",
+      "thickness": "0.318 / 0.368 mm",
+      "width": "1006.6 / 1085.8 mm",
+      "orderNo": "R5SGPC26004/RSHPS26003",
+      "customer": "GPC/HPSUS",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 30,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 27555,
+        "rejectKg": 734,
+        "flakesKg": 3084,
+        "purgingKg": 326,
+        "lossKg": 300,
+        "totalKg": 31999
       }
     }
   ],
