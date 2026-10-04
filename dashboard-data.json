@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (October 2026 (2).xlsx)",
-  "syncedAt": "2026-10-04T00:08:07.101Z",
+  "source": "Excel网页上传 / Excel Upload (October 2026 (3).xlsx)",
+  "syncedAt": "2026-10-04T00:09:09.668Z",
   "selectedDate": "2026-10-03",
   "dailyRecords": [
     {
@@ -142,7 +142,30 @@
     },
     {
       "date": "2026-10-03",
-      "dayRollsKg": [],
+      "dayRollsKg": [
+        807,
+        808,
+        809,
+        810,
+        811,
+        807,
+        808,
+        809,
+        810,
+        811,
+        807,
+        808,
+        809,
+        809,
+        810,
+        806,
+        807,
+        808,
+        809,
+        810,
+        806,
+        807
+      ],
       "nightRollsKg": [
         815,
         816,
