@@ -1,6 +1,6 @@
 {
-  "source": "Excel网页上传 / Excel Upload (October 2026 (26).xlsx)",
-  "syncedAt": "2026-11-01T00:40:39.616Z",
+  "source": "Excel网页上传 / Excel Upload (October 2026 (27).xlsx)",
+  "syncedAt": "2026-11-01T12:11:07.862Z",
   "selectedDate": "2026-10-31",
   "dailyRecords": [
     {
@@ -2562,27 +2562,43 @@
     },
     {
       "date": "2026-10-31",
-      "dayRollsKg": [],
+      "dayRollsKg": [
+        1195,
+        1196,
+        1197,
+        1198,
+        1199,
+        1195,
+        1196,
+        1197,
+        1197,
+        1198,
+        1194,
+        1195,
+        1196,
+        1197
+      ],
       "nightRollsKg": [
-        1212,
-        1213,
-        1214,
-        1215,
-        1216,
-        1211,
-        1212,
-        1213,
-        1214,
-        1215,
-        1211,
-        1212
+        1205,
+        1206,
+        1207,
+        1208,
+        1209,
+        1205,
+        1206,
+        1207,
+        1208,
+        1209,
+        1204,
+        1205,
+        1206
       ],
       "targetOutput": 28,
       "lineSpeed": 1600,
       "speedSet": 1500,
-      "goodRate": 93.2,
+      "goodRate": 93.4,
       "goodTarget": 88,
-      "scrapRate": 6.8,
+      "scrapRate": 6.6,
       "scrapLimit": 3,
       "progress": 100,
       "dayTarget": 14,
@@ -2604,12 +2620,12 @@
         "maintenance": 0
       },
       "productionBreakdown": {
-        "goodKg": 31308,
+        "goodKg": 32435,
         "rejectKg": 191,
         "flakesKg": 1780,
         "purgingKg": 0,
         "lossKg": 320,
-        "totalKg": 33599
+        "totalKg": 34726
       }
     }
   ],
