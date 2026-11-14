@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (November 2026 (6).xlsx)",
-  "syncedAt": "2026-11-13T00:05:15.449Z",
-  "selectedDate": "2026-11-12",
+  "source": "Excel网页上传 / Excel Upload (November 2026 (5).xlsx)",
+  "syncedAt": "2026-11-14T00:37:09.474Z",
+  "selectedDate": "2026-11-08",
   "dailyRecords": [
     {
       "date": "2026-11-01",
@@ -557,102 +557,6 @@
         "purgingKg": 395,
         "lossKg": 320,
         "totalKg": 32610
-      }
-    },
-    {
-      "date": "2026-11-09",
-      "dayRollsKg": [
-        780,
-        780,
-        781,
-        782,
-        783,
-        779
-      ],
-      "nightRollsKg": [
-        1
-      ],
-      "targetOutput": 28,
-      "lineSpeed": 1400,
-      "speedSet": 1500,
-      "goodRate": 82.3,
-      "goodTarget": 88,
-      "scrapRate": 17.7,
-      "scrapLimit": 3,
-      "progress": 16.735714285714288,
-      "dayTarget": 14,
-      "nightTarget": 14,
-      "lineName": "PET-A01 主线 / PET-A01 Main Line",
-      "runState": "RUN",
-      "batchStatus": "批次进行中 / Batch Running",
-      "spec": "透明片材 / Clear Sheet",
-      "thickness": "0.80 mm",
-      "width": "820 mm",
-      "orderNo": "Type（规格）",
-      "customer": "Team",
-      "material": "15%新料 / 85%回料",
-      "traction": "张力稳定 / Stable Tension",
-      "downtime": {
-        "changeover": 0,
-        "production": 0,
-        "equipment": 540,
-        "maintenance": 540
-      },
-      "productionBreakdown": {
-        "goodKg": 4686,
-        "rejectKg": 8,
-        "flakesKg": 941,
-        "purgingKg": 4,
-        "lossKg": 55,
-        "totalKg": 5694
-      }
-    },
-    {
-      "date": "2026-11-12",
-      "dayRollsKg": [
-        1
-      ],
-      "nightRollsKg": [
-        843,
-        844,
-        845,
-        846,
-        847,
-        843
-      ],
-      "targetOutput": 28,
-      "lineSpeed": 1400,
-      "speedSet": 1500,
-      "goodRate": 69.7,
-      "goodTarget": 88,
-      "scrapRate": 30.3,
-      "scrapLimit": 3,
-      "progress": 18.103571428571428,
-      "dayTarget": 14,
-      "nightTarget": 14,
-      "lineName": "PET-A01 主线 / PET-A01 Main Line",
-      "runState": "RUN",
-      "batchStatus": "批次进行中 / Batch Running",
-      "spec": "RS3001 628.6MM*0.508MM",
-      "thickness": "0.508 mm",
-      "width": "628.6 mm",
-      "orderNo": "RSCCP26008",
-      "customer": "CCPUS",
-      "material": "15%新料 / 85%回料",
-      "traction": "张力稳定 / Stable Tension",
-      "downtime": {
-        "changeover": 0,
-        "production": 0,
-        "equipment": 300,
-        "maintenance": 300
-      },
-      "productionBreakdown": {
-        "goodKg": 5069,
-        "rejectKg": 2003,
-        "flakesKg": 3,
-        "purgingKg": 126,
-        "lossKg": 75,
-        "totalKg": 7276
       }
     }
   ],
