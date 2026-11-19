@@ -1,7 +1,7 @@
 {
-  "source": "Excel网页上传 / Excel Upload (November 2026 (11).xlsx)",
-  "syncedAt": "2026-11-18T00:01:03.939Z",
-  "selectedDate": "2026-11-17",
+  "source": "Excel网页上传 / Excel Upload (November 2026 (12).xlsx)",
+  "syncedAt": "2026-11-19T00:03:39.543Z",
+  "selectedDate": "2026-11-18",
   "dailyRecords": [
     {
       "date": "2026-11-01",
@@ -825,28 +825,28 @@
         1034
       ],
       "nightRollsKg": [
-        1,
-        1,
-        1,
-        2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        2,
-        1,
-        1,
-        1
+        1134,
+        1134,
+        1135,
+        1136,
+        1137,
+        1133,
+        1134,
+        1135,
+        1136,
+        1137,
+        1133,
+        1134,
+        1135
       ],
       "targetOutput": 28,
       "lineSpeed": 1500,
       "speedSet": 1500,
-      "goodRate": 75.5,
+      "goodRate": 88.8,
       "goodTarget": 88,
-      "scrapRate": 24.5,
+      "scrapRate": 11.2,
       "scrapLimit": 3,
-      "progress": 33.214285714285715,
+      "progress": 85.9,
       "dayTarget": 14,
       "nightTarget": 14,
       "lineName": "PET-A01 主线 / PET-A01 Main Line",
@@ -866,12 +866,12 @@
         "maintenance": 90
       },
       "productionBreakdown": {
-        "goodKg": 9300,
+        "goodKg": 24052,
         "rejectKg": 1138,
         "flakesKg": 1490,
         "purgingKg": 299,
         "lossKg": 95,
-        "totalKg": 12322
+        "totalKg": 27074
       }
     },
     {
@@ -1008,6 +1008,72 @@
         "purgingKg": 0,
         "lossKg": 320,
         "totalKg": 33852
+      }
+    },
+    {
+      "date": "2026-11-18",
+      "dayRollsKg": [
+        1134,
+        1135,
+        1135,
+        1136,
+        1137,
+        1133,
+        1134,
+        1135,
+        1136,
+        1137,
+        1133,
+        1134,
+        1135
+      ],
+      "nightRollsKg": [
+        1206,
+        1207,
+        1208,
+        1209,
+        1210,
+        1206,
+        1207,
+        1207,
+        1208,
+        1209,
+        1205,
+        1206
+      ],
+      "targetOutput": 28,
+      "lineSpeed": 1600,
+      "speedSet": 1500,
+      "goodRate": 91.3,
+      "goodTarget": 88,
+      "scrapRate": 8.7,
+      "scrapLimit": 3,
+      "progress": 100,
+      "dayTarget": 14,
+      "nightTarget": 14,
+      "lineName": "PET-A01 主线 / PET-A01 Main Line",
+      "runState": "RUN",
+      "batchStatus": "批次进行中 / Batch Running",
+      "spec": "RS2001 1193.8MM*0.457MM",
+      "thickness": "0.457 mm",
+      "width": "1193.8 mm",
+      "orderNo": "RSHPS26005",
+      "customer": "HPSUS",
+      "material": "15%新料 / 85%回料",
+      "traction": "张力稳定 / Stable Tension",
+      "downtime": {
+        "changeover": 30,
+        "production": 0,
+        "equipment": 0,
+        "maintenance": 0
+      },
+      "productionBreakdown": {
+        "goodKg": 29242,
+        "rejectKg": 948,
+        "flakesKg": 1505,
+        "purgingKg": 0,
+        "lossKg": 320,
+        "totalKg": 32015
       }
     }
   ],
